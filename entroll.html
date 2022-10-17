@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="entroll_style.css">
+    <title>共享機車_註冊</title>
+</head>
+<body>
+<script type="text/javascript"src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript"src="app.js"></script>
+<script src="entroll_fun.js"></script>
+<main>
+    <div class="about">
+        <div class="entroll">
+            <div class="entroll_title">
+                註冊
+            </div>
+            <div class="entroll_img">
+                <img src="vespa.png">
+            </div>
+            <form  method="post">
+                <div class="info">
+                    電子郵件: <input type="email" name="email" id="email"><br>
+                    密碼: <input type="text" name="password"><br>
+                </div>
+                <div class="choose_identity">
+                    選擇身分:<br><input type="radio" name="identity" value="owner">車主
+                    <br><input type="radio" name="identity" value="passenger">乘客
+                </div>
+                <div class="btn" onclick="test()">
+                    <button type="submit" onclick="test()">Start</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div class="title">
+        海大共乘系統
+    </div>
+    <div class="image">
+        <img src="https://cdn.store-assets.com/s/473530/f/5413517.gif">
+    </div>
+</main>
+</body>
+</html>

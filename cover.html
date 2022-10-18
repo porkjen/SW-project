@@ -11,23 +11,60 @@
             
             margin:0px;
             padding:0px;
-            background:antiquewhite url(motorcycle.jfif) center center fixed no-repeat;
-            background-size: contain;
+            background:antiquewhite;
         } 
         .box{
-            text-align:center;
+            /*text-align:center;*/
             font-size:1cm;
+        }
+        .name{
+            position:relative;
+            top: 50px;
+            left: 50px;
+            writing-mode: vertical-rl;
+            text-align:center;
+            font-size:1.2cm;
+        }
+        .btn1{
+            position:relative;
+            top: 0px;
+            left: 50px;
+            background-color:antiquewhite;
+            border-radius: 10px;
+            height: 50px;
+            font-size:0.8cm;
+        }.btn2{
+            position:relative;
+            top: 10px;
+            left: 50px;
+            background-color:antiquewhite;
+            border-radius: 10px;
+            height: 50px;
+            font-size:0.8cm;
+        }
+        .img{
+            position:relative;
+            top: -50px;
+            left: 100px;
         }
         </style>
     </head>
-    <body >     
+    <body >   
+        
+        <div class="name">海大共乘網頁</div>
+        <div class="img">
+            <img src="scooter.png" height="100" width="100"/>
+        </div>
         <div class="box">
             <a href="SignIn.html">
-                <h5 style="background-color:antiquewhite;display:inline;">已經有帳號了(登入)</h5>
-            </a>/
-            <a href="entroll.html">
-                <h5 style="background-color:antiquewhite;display:inline;">註冊</h5>
+                <button type="button" class="btn1">已經有帳號了(登入)</button>
             </a>
-        </div>        
+            </br>
+            <a href="entroll.html">
+                <button type="button" class="btn2">註冊</button>
+            </a>
+            
+        </div>  
+        
     </body>
 </html>

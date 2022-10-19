@@ -35,20 +35,18 @@ app.use(function(err, req, res, next) {
 
 module.exports = app;
 
-// get values from form
+// get values from form to enroll
 app.get('/', function(req, res){ 
 
-  var identity = req.query.identity //身分: 車主or乘客
-  var name  = req.query.name     //姓名
-  var email = req.query.email    //帳號(email)
-  var key   = req.query.key      //密碼
+  var account  = req.query.account     //帳號
+  var password = req.query.password    //密碼
+  var email    = req.query.email       //email
 
   //send value to router
   res.send({  
-    identity: identity,
-    name:     name,
-    email:    email,
-    key:      key
+    account:  account,
+    password: password,
+    email:    email
   });
 
   res.end()

@@ -10,12 +10,11 @@ router.get('/', function(req, res, next) {
 /*********** 在express上新增的 --(頭)  ************/
 
 router.get('/collectSignData', function(req, res) {
-  var identity = req.query.identity;
-  var name = req.query.name;
-  var email = req.query.email;
-  var key = req.query.key;
+  var account  = req.query.account;
+  var password = req.query.password;
+  var email    = req.query.email;
 
-  console.log('get test!');
+  console.log('enroll test!');
 
   //connect with mongodb
   MongoClient.connect("mongodb://localhost:27017/signData", function(err,db){
@@ -27,10 +26,9 @@ router.get('/collectSignData', function(req, res) {
 
     var dbo = db.db('signData');
     var insertData = {
-      identity: identity,
-      name: name,
-      email: email,
-      key: key
+      account:  account,
+      password: password,
+      email: email
     };
     dbo.collection('userList').insert(insertData, function(err, res){
       if(err){

@@ -1,25 +1,50 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <link rel=stylesheet type="text/css" href="stylesheets/style.css">
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js">
-    </script>
-    <script type="text/javascript" src="app.js"></script>
-    <title>MyApp</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./stylesheets/entroll_style.css">
+    <title>共享機車_註冊</title>
 </head>
-
 <body>
-    <h1>註冊</h1>
-    <form action="/collectSignData" method="get">
-      身分: <input type="text" id="identity" name="identity"><br>
-      姓名: <input type="text" id="name" name="name"><br>
-      email: <input type="text" id="email" name="email"><br>
-      密碼: <input type="text" id="key" name="key"><br>
-      <button type="submit" value="送出" id="submit" >
-    </form>
+<script type="text/javascript" src="/js/jquery/jquery.form.js"></script>
+<script type="text/javascript" src="/js/jquery/jquery-1.8.0.min.js"></script>
+<script type="text/javascript"src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript"src="app.js"></script>
+<script src="./javascripts/entroll_fun.js"></script>
+<main>
+    <div class="about">
+        <div class="entroll">
+            <div class="entroll_title">
+                註冊
+            </div>
+            <div class="entroll_img">
+                <img src="./images/vespa.png">
+            </div>
+            <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+                <form id="upload" action="http://127.0.0.1:3000/collectSignData" method="get" target="dummyframe">
+                    <div class="info">
+                        帳號: <input type="text" name="account" id="account"><br>
+                        密碼: <input type="text" name="password" id="password"><br>
+                        E-mail:<input type="email" name="email" id="email"><br>
+                    </div>
+                    <div class="btn">
+                        <a href="SignIn.html">
+                            <button type="submit" onclick="window.location.href = 'SignIn.html';" >Start</button>
+                        </a>
+                    </div>
+                </form>
 
-       
+
+
+
+        </div>
+    </div>
+    <div class="title">
+        海大共乘系統
+    </div>
+    <div class="image">
+        <img src="https://cdn.store-assets.com/s/473530/f/5413517.gif">
+    </div>
+</main>
 </body>
-
 </html>

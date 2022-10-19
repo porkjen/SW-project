@@ -39,7 +39,7 @@ main{
     text-align: right;
     position:absolute;
     left:50px;
-    bottom:200px;
+    bottom:130px;
     font-size:0.5cm;
     font-family: 'Noto Serif TC', serif;
 }
@@ -51,21 +51,22 @@ main{
     margin-bottom:30px;
 }
 
+/*
 .choose_identity{
     font-size:0.5cm;
     position:absolute;
     bottom:120px;
     left:56px;
     font-family: 'Noto Serif TC', serif;
-}
+}*/
 
 .btn{
     position:absolute;
-    bottom:20px;
+    bottom:50px;
     left:135px;
 }
 
-.btn > button{
+a > button{
     font-family: 'Josefin Sans', sans-serif;
     font-size:large;
     background-color:#FFFFFF;
@@ -74,7 +75,7 @@ main{
     height:50px;
 }
 
-.btn > button:hover{
+a > button:hover{
     cursor: pointer;
     background-color: #F2FFFF;
 }

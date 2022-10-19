@@ -6,6 +6,8 @@
     <title>共享機車_註冊</title>
 </head>
 <body>
+<script type="text/javascript" src="/js/jquery/jquery.form.js"></script>
+<script type="text/javascript" src="/js/jquery/jquery-1.8.0.min.js"></script>
 <script type="text/javascript"src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript"src="app.js"></script>
 <script src="entroll_fun.js"></script>
@@ -18,20 +20,23 @@
             <div class="entroll_img">
                 <img src="vespa.png">
             </div>
-            <form  method="post" action="http://127.0.0.1:8080/test">
-                <div class="info">
-                    電子郵件: <input type="email" name="account" id="account"><br>
-                    密碼: <input type="text" name="password"><br>
-                </div>
-                <div class="choose_identity">
-                    選擇身分:<br><input type="radio" name="identity" value="owner">車主
-                    <br><input type="radio" name="identity" value="passenger">乘客
-                </div>
-                <div class="btn" onclick="test()">
-                    <button type="submit" onclick="test()">Start</button>
-                </div>
+            <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+                <form id="upload" action="http://127.0.0.1:8080/test" method="post" target="dummyframe">
+                    <div class="info">
+                        帳號: <input type="text" name="account" id="account"><br>
+                        密碼: <input type="text" name="password"><br>
+                        E-mail:<input type="email" name="email" id="email"><br>
+                    </div>
+                    <div class="btn">
+                        <a href="SignIn.html">
+                            <button type="submit" onclick="window.location.href = 'SignIn.html';" >Start</button>
+                        </a>
+                    </div>
+                </form>
 
-            </form>
+
+
+
         </div>
     </div>
     <div class="title">

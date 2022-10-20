@@ -4,7 +4,7 @@ var router = express.Router();
 
 /*********** 在express上新增的 --(頭)  ************/
 
-router.get('/collectSignData', function(req, res) {
+router.get('/collectEnrollData', function(req, res) {
   var account  = req.query.account;
   var password = req.query.password;
   var email    = req.query.email;

@@ -32,7 +32,7 @@
                 margin: 10px;
                 text-align:center;
             }
-            #username, #password{
+            #account, #password{
                 width: 200px;
                 height: 25px;
                 margin: 10px;
@@ -69,6 +69,7 @@
         </style>
     </html>
   <body>
+	<script type="text/javascript"src="app.js"></script>
     <img class="bg1" src="./images/cloud1.png" title="準備一起加入我們~">
     <a href="https://zh.lovepik.com/images/png-855865.html"></a>
     <div class="Project_Name">
@@ -82,11 +83,11 @@
           
           <h2 class="title">登入 Login</h2>
 
-          
-            <input type="text" id="username" name="username" placeholder="帳號Account" required>
+			<form id="loadCheck" action="http://127.0.0.1:3000/login" method="post">
+            <input type="text" id="account" name="account" placeholder="帳號Account" required>
             <input type="text" id="password" name="password" placeholder="密碼Password" required>
             <input type="submit" value="Let's Go!" class="submit">
-           
+			</form>
 
           <a href="index.html"><h5 class="Login_up" >註冊帳號</h5></a>
 

@@ -15,23 +15,16 @@ module.exports = function passengerRequest(passengerData){
 
             var dbo = db.db('signData');
             
-            dbo.collection('userList').findOne(memberData, function(err, res){
-            if(err){
-                console.log(err);
-                result.status = "連線失敗"
-                result.err = "伺服器錯誤!"
-                reject(result);
-                return;
-            }else{
-                if(res==null){
+            dbo.collection('passenger').insert(passengerData, function(err, res){
+                if(err){
+                    console.log(err);
+                    result.status = "連線失敗"
+                    result.err = "伺服器錯誤!"
                     reject(result);
+                    return;
                 }
-                else{
-                    result.loginMember = memberData;
+                result.loginMember = passengerData;
                     resolve(result);
-                }
-                
-            }
             })
         })
     })

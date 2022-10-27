@@ -48,7 +48,8 @@ module.exports = class member{
         var passengerData = {
             account:      req.body.account,
             location:     req.body.location,
-            destination:  req.body.destination
+            destination:  req.body.destination,
+            requestStatus:false
         };
 
         passengerRequest(passengerData).then(result => {

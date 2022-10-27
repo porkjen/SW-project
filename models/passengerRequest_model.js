@@ -23,9 +23,9 @@ module.exports = function passengerRequest(passengerData){
                     reject(result);
                     return;
                 }
-                result.loginMember = passengerData;
-                    resolve(result);
             })
+            result.loginMember = passengerData;
+            resolve(result);
         })
     })
 }

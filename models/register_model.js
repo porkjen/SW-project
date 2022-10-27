@@ -1,7 +1,4 @@
 var MongoClient = require('mongodb').MongoClient;
-var express = require('express');
-var router = express.Router();
-//const db = require('./connectDB');
 
 module.exports = function register(memberData){
     let result = {};

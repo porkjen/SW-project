@@ -43,4 +43,24 @@ module.exports = class member{
         })
     }
 
+    postPassenger(req, res, next){
+    
+        var passengerData = {
+            account:      req.body.account,
+            location:     req.body.location,
+            destination:  req.body.destination
+        };
+
+        passengerRequest(passengerData).then(result => {
+            res.json({
+                status: "要求送出成功",
+                result: result
+            })
+        },(err) => {
+            res.json({
+                status: "要求送出失敗",
+                result: err
+            })
+        })
+    }
 }

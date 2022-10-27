@@ -6,10 +6,7 @@ var MemberModifyMethod = require('../controllers/modify_controller');
 MemberModifyMethod = new MemberModifyMethod();
 router.post('/register',MemberModifyMethod.postRegister);
 router.post('/login',MemberModifyMethod.postLogin);
-/* POST home page. 
-router.post('/', function(req, res, next) {
-  console.log(req.body.test)
-  //res.render('index', { title: 'Express' });
-});*/
+router.post('/passengerRequest',MemberModifyMethod.postPassenger);
+
 
 module.exports = router;

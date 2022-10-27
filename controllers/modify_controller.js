@@ -1,5 +1,7 @@
 const toRegister = require('../models/register_model');
 const loginAction = require('../models/login_model');
+const loginAction = require('../models/passengerRequest_model');
+
 
 module.exports = class member{
 
@@ -47,9 +49,9 @@ module.exports = class member{
     
         var passengerData = {
             account:      req.body.account,
-            location:     req.body.location,
-            destination:  req.body.destination,
-            requestStatus:false
+            location:     req.body.location,        //所在地
+            destination:  req.body.destination,     //目的地
+            requestStatus:false                     // 訂單未被接單，true 表示已被接單
         };
 
         passengerRequest(passengerData).then(result => {

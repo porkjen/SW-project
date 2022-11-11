@@ -16,13 +16,13 @@ module.exports = function register(memberData){
             var dbo = db.db('signData');
             
             dbo.collection('userList').insert(memberData, function(err, res){
-            if(err){
-                console.log(err);
-                result.status = "連線失敗"
-                result.err = "伺服器錯誤!"
-                reject(result);
-                return;
-            }
+                if(err){
+                    console.log(err);
+                    result.status = "連線失敗"
+                    result.err = "伺服器錯誤!"
+                    reject(result);
+                    return;
+                }
             })
             result.registerMember = memberData;
             resolve(result);

@@ -1,6 +1,7 @@
 const toRegister = require('../models/register_model');
 const loginAction = require('../models/login_model');
-const loginAction = require('../models/passengerInfo_model');
+const inputPassengerData = require('../models/passengerInfo_model');
+const inputOwnerData = require('../models/ownerInfo_model');
 
 
 module.exports = class member{

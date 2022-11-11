@@ -1,6 +1,6 @@
 const toRegister = require('../models/register_model');
 const loginAction = require('../models/login_model');
-const loginAction = require('../models/passengerRequest_model');
+const loginAction = require('../models/passengerInfo_model');
 
 
 module.exports = class member{
@@ -48,13 +48,41 @@ module.exports = class member{
     postPassenger(req, res, next){
     
         var passengerData = {
-            account:      req.body.account,
-            location:     req.body.location,        //所在地
-            destination:  req.body.destination,     //目的地
-            requestStatus:false                     // 訂單未被接單，true 表示已被接單
+            account:    req.body.account,
+            name:       req.body.name,
+            phone:      req.body.phone,
+            gender:     req.body.gender,
+            identity:   "passenger"
         };
 
-        passengerRequest(passengerData).then(result => {
+        inputPassengerData(passengerData).then(result => {
+            res.json({
+                status: "要求送出成功",
+                result: result
+            })
+        },(err) => {
+            res.json({
+                status: "要求送出失敗",
+                result: err
+            })
+        })
+    }
+
+    postOwner(req, res, next){
+    
+        var ownerData = {
+            account:            req.body.account,
+            name:               req.body.name,
+            phone:              req.body.phone,
+            gender:             req.body.gender,
+            licensePlateNum:    req.body.licensePlateNum,   //車牌號碼
+            workingTime:        req.body.workingTime,       //可載客時間
+            acceptDeparture:    req.body.acceptDeparture,   //可乘車地點
+            other:              req.body.other,             //其他說明
+            identity:           "owner"
+        };
+
+        inputOwnerDataData(ownerData).then(result => {
             res.json({
                 status: "要求送出成功",
                 result: result

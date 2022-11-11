@@ -58,12 +58,12 @@ module.exports = class member{
 
         inputPassengerData(passengerData).then(result => {
             res.json({
-                status: "要求送出成功",
+                status: "input data 成功",
                 result: result
             })
         },(err) => {
             res.json({
-                status: "要求送出失敗",
+                status: "input data 失敗",
                 result: err
             })
         })
@@ -85,12 +85,12 @@ module.exports = class member{
 
         inputOwnerDataData(ownerData).then(result => {
             res.json({
-                status: "要求送出成功",
+                status: "input data 成功",
                 result: result
             })
         },(err) => {
             res.json({
-                status: "要求送出失敗",
+                status: "input data 失敗",
                 result: err
             })
         })

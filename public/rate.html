@@ -11,8 +11,8 @@
                 font-family: 'Noto Sans TC', sans-serif;
             }
             body{
-                background-color: rgba(123, 89, 2, 0.324);
-                background-image: url(motorcycle-10.png);
+                background-color: antiquewhite;
+                /*background-image: url(motorcycle-10.png);*/
                 background-attachment: fixed;
                 background-position: center;
                 background-size: cover;
@@ -34,7 +34,7 @@
             .ratestars label{
                 float:right;
                 text-align:center;
-                font-size: 100px;
+                font-size: 80px;
                 color: lightgray;
                 text-shadow:1px 1px black;
             }
@@ -52,8 +52,9 @@
                 box-shadow: 0px 0px 2px 2px rgb(0,0,0);
             }
             textarea{
-                background-color: rgba(160, 128, 49, 0.203);
+                background-color: rgb(253, 255, 251);
                 font-size: small;
+                width: 70%;
             }
             /*
             .ratestars .result::before{
@@ -84,28 +85,35 @@
             <div class="p1">
                 <b>滿意度</b>
             </div>
-            <div class="p2">
-                <div class = "ratestars">   
-                    <input type="radio" id="five" name="rate" value="5">
-                    <label for="five"></label>
-                    <input type="radio" id="four" name="rate" value="4">
-                    <label for="four"></label>
-                    <input type="radio" id="three" name="rate" value="3">
-                    <label for="three"></label>
-                    <input type="radio" id="two" name="rate" value="2">
-                    <label for="two"></label>
-                    <input type="radio" id="one" name="rate" value="1">
-                    <label for="one"></label>                     
-                    <span class="result"></span>
+            <form action="http://127.0.0.1:3000/rate" method="post">
+                <div class="p2">
+                    <div class = "ratestars">   
+                        <input type="radio" id="five" name="rate" value="5">
+                        <label for="five"></label>
+                        <input type="radio" id="four" name="rate" value="4">
+                        <label for="four"></label>
+                        <input type="radio" id="three" name="rate" value="3">
+                        <label for="three"></label>
+                        <input type="radio" id="two" name="rate" value="2">
+                        <label for="two"></label>
+                        <input type="radio" id="one" name="rate" value="1">
+                        <label for="one"></label>                     
+                        <span class="result"></span>
+                    </div>
                 </div>
-            </div>
+            </form>
+            
             <br><br><br><br><br>
             
-        </div><div align="center">
-                <h3><b>還想對他說些什麼</b></h3> 
-                <textarea id="comment" rows="10" cols="40" ></textarea><br>
-                <button type="button" onclick="submit()">送出</button>
         </div>
+        <form action="http://127.0.0.1:3000/rate" method="post">
+            <div align="center">
+                    <h3><b>還想對他說些什麼</b></h3> 
+                    <textarea id="comment" rows="10" cols="40" ></textarea><br>
+                    <button type="button" onclick="submit()">送出</button>
+            </div>
+        </form>
+        
             
     </body>
     <script type="text/javascript">

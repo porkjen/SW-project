@@ -80,6 +80,7 @@ module.exports = class member{
             workingTime:        req.body.workingTime,       //可載客時間
             helmet:             req.body.helmet,            //是否有安全帽
             other:              req.body.other,             //其他說明
+            status:             "online",                   //上線狀態
             identity:           "owner"
         };
 

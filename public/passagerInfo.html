@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./stylesheets/passagerInfo.css">
+  <title>設定乘客個人資料</title>
+</head>
+<body>
+<div class="img1"><img src="./images/reading-side.png"></div>
+<div class="container">
+  <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+  <form action="http://127.0.0.1:8080/info" target="dummyframe" method="post">
+    <div class="information" >
+      <div class="page_title">個人資訊設定</div>
+      <div class="info-group">
+        <label for="name">姓名</label>
+        <input type="text" required name="name" id="name">
+      </div>
+      <div class="info-group">
+        <label for="sex">性別</label>
+        <select required name="sex" id="sex">
+          <option value="">請選擇你的性別</option>
+          <option value="man">男</option>
+          <option value="female">女</option>
+        </select>
+      </div>
+      <div class="info-group">
+        <label for="telephone">手機號碼</label>
+        <input type="tel" required name="telephone" id="telephone" pattern="[0-9]{10}" >
+      </div>
+      <button type="Submit" onclick="window.location.href = 'SignIn.html';">Submit</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>

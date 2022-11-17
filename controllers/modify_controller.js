@@ -2,12 +2,14 @@ const toRegister = require('../models/register_model');
 const loginAction = require('../models/login_model');
 const inputPassengerData = require('../models/passengerInfo_model');
 const inputOwnerData = require('../models/ownerInfo_model');
-
+var Account;
 
 module.exports = class member{
 
+    
     postRegister(req, res, next){
     
+        Account = req.body.account;
         var memberData = {
             account: req.body.account,
             password: req.body.password,
@@ -72,7 +74,7 @@ module.exports = class member{
     postOwner(req, res, next){
     
         var ownerData = {
-            account:            req.body.account,
+            account:            Account,
             name:               req.body.name,
             phone:              req.body.phone,
             gender:             req.body.gender,

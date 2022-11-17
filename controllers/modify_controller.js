@@ -78,7 +78,7 @@ module.exports = class member{
             gender:             req.body.gender,
             licensePlateNum:    req.body.licensePlateNum,   //車牌號碼
             workingTime:        req.body.workingTime,       //可載客時間
-            acceptDeparture:    req.body.acceptDeparture,   //可乘車地點
+            helmet:             req.body.helmet,            //是否有安全帽
             other:              req.body.other,             //其他說明
             identity:           "owner"
         };

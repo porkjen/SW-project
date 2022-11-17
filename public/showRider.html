@@ -46,7 +46,7 @@
             <div class="modal-body">
               <form>
                 <div class="form-group1">
-                  性別
+                  偏好車主性別
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="Sex" id="sexM" value="boy">
                     <label class="form-check-label" for="sexM">男</label>
@@ -69,7 +69,20 @@
                   </div>
                 </div>
               </form>              
-              <br>              
+              <br> 
+              <form>
+                <div class="input-group">
+                <span class="input-group-text" id="destination">目的地</span>
+                <input type="text" class="form-control" placeholder="完整地址" aria-label="Username" aria-describedby="destination" id="d">
+              </div>
+              <br>      
+              <div class="input-group">
+                <span class="input-group-text" id="getOn">乘車地點</span>
+                <input type="text" class="form-control" placeholder="完整地址" aria-label="Username" aria-describedby="getOn" id="g">
+              </div>
+              </form>     
+              
+              <!--
               <select class="form-select" aria-label="Default select example">
                 <option selected>地區</option>
                 <option value="1">仁愛區</option>
@@ -80,6 +93,8 @@
                 <option value="6">七堵區</option>
                 <option value="7">暖暖區</option>
               </select>
+              -->
+              
               <br>
               <button type="button" class="btn btn-primary" onclick="selectAnswer()">確認</button>
             </div>
@@ -143,7 +158,11 @@
       function selectAnswer(){
         var s = $("[name='Sex']:checked").val();
         var h = $("[name='Helmet']:checked").val();
-        var z = $('select').val();
+        var d = document.getElementById("d").value;
+        var g = document.getElementById("g").value;
+        alert(d);
+        alert(g);
+        //var z = $('select').val();
       }
   </script>
 </html>

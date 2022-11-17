@@ -79,6 +79,7 @@ module.exports = class member{
             phone:              req.body.phone,
             gender:             req.body.gender,
             licensePlateNum:    req.body.licensePlateNum,   //車牌號碼
+            location:           req.body.location,          //可接送地點
             workingTime:        req.body.workingTime,       //可載客時間
             helmet:             req.body.helmet,            //是否有安全帽
             other:              req.body.other,             //其他說明

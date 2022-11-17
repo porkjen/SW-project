@@ -84,7 +84,7 @@ module.exports = class member{
             identity:           "owner"
         };
 
-        inputOwnerDataData(ownerData).then(result => {
+        inputOwnerData(ownerData).then(result => {
             res.json({
                 status: "input data 成功",
                 result: result

@@ -13,9 +13,8 @@ module.exports = function inputOwnerData(ownerData){
             }
 
             var dbo = db.db('signData');
-            var myQuery = {account:ownerData.account};
             
-            dbo.collection('userList').updateOne(myQuery, ownerData, function(err, res){
+            dbo.collection('userList').findByIdAndUpdate(ownerData.account, ownerData, function(err, res){
                 if(err){
                     console.log("資料庫連線失敗");
                     result.status = "連線失敗"
@@ -23,7 +22,7 @@ module.exports = function inputOwnerData(ownerData){
                     reject(result);
                     return;
                 }
-                console.log("updated successfully");
+                console.log("更新成功");
             });
             result.ownerMember = ownerData;
             resolve(result);

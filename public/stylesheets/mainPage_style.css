@@ -3,22 +3,43 @@
 
 @media (max-width:569px) {
     .card{
-        width:100%;
+        max-width:90%;
         height:auto;
+        margin: 10px;
     }
     .logo{
-        font-size: 20px;
+        font-size: 4vw;
+        padding-left: 0px;
     }
     button{
         padding-right: 0;
     }
+    .header-nav{
+        width: 15vw;
+    }
+    .header-content{
+        min-width: 80vw;
+        padding-right: 0px;
+    }
+    
+    .bg img {
+        background-position: center center;
+        width: 100%;
+    }
+    
 }
 
 body{
+    background-image: url("../images/background2.png");
+    background-position:center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
     font-family: 'Noto Serif TC', serif;
     margin: 0;
     min-height: 100vh;
-    background-color: bisque;
+    min-width: 80vw;
+    
 }
 
 a{
@@ -30,52 +51,54 @@ a{
     color: rgb(229, 136, 14);
     cursor: pointer;
 }
-
-
-
+/*
+header{
+    height: 100px;
+    width: 100vw;
+    background-color: white; 
+    z-index: 1;
+}
+*/
 .header-content{
+    min-width: 100vw;
     height: 70px;
     padding-left: 20px;
-    padding-right: 20px;
+    padding-right: 5vw;
     display: flex;
+    /*將空白空間分配在東西之間*/
     justify-content: space-between;
     align-items: center;
+    background-color: rgb(190, 241, 202);
+    margin: 10px;
 }
 
 .logo{
-    width: 45vw;
-    text-align: left;
+    text-align: center;
     align-items: center;
     justify-content:left;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 6px;
 }
 
 .header-nav{
-    width: 200px;
+    min-width: 200px;
     display: flex;
     justify-content: space-between;
 }
 
-
-
-.line{
-    background-color: white;
-    height: 5px;
-}
-
 .pair{
-    min-height: 100vh;
     min-width: 60vw;
+    padding-top: 20px;
 }
 
 .container{
-    background-color: bisque;
+    /*background-color: bisque;*/
     display: flex;
     flex-direction:column;
     justify-content: center;
     align-items: center;
-    padding: auto;
-    min-height: 100vh;
-
+    
 }
 
 .change_info{
@@ -96,36 +119,10 @@ a{
 
 
 .card{
-    width: 18rem;
+    width: 25rem;
+    margin-bottom:10px;
 }
 
-/*
-.get_info{
-    position: relative;
-    border-radius: 8px;
-    background-color: white;
-    height:700px;
-    width:600px;
-    border-style: none;
-}
-
-.get_info th{
-    border-bottom: solid 1px;
-    text-align: center;
-}
-
-.get_info td{
-    border-bottom: solid 1px;
-    text-align: center;
-    
-}
-
-.get_info button{
-    font-family: 'Noto Serif TC', serif;
-    border-radius: 5px;
-    border: 3px;
-}
-*/
 
 button{
     padding-right: 10px;
@@ -133,14 +130,4 @@ button{
 
 button:hover{
     cursor: pointer;
-}
-
-
-
-.img{
-    position: absolute;
-    left: 60px;
-    bottom: 30px;
-    width: 40%;
-    height: 20%;
 }

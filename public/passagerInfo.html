@@ -11,7 +11,7 @@
 <div class="img1"><img src="./images/reading-side.png"></div>
 <div class="container">
   <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
-  <form action="http://127.0.0.1:8080/passagerInfo" target="dummyframe" method="post">
+  <form action="http://127.0.0.1:3000/passagerInfo" target="dummyframe" method="post">
     <div class="information" >
       <div class="page_title">個人資訊設定</div>
       <div class="info-group">
@@ -19,16 +19,16 @@
         <input type="text" required name="name" id="name">
       </div>
       <div class="info-group">
-        <label for="sex">性別</label>
-        <select required name="sex" id="sex">
+        <label for="gender">性別</label>
+        <select required name="gender" id="gender">
           <option value="">請選擇你的性別</option>
-          <option value="man">男</option>
+          <option value="male">男</option>
           <option value="female">女</option>
         </select>
       </div>
       <div class="info-group">
-        <label for="telephone">手機號碼</label>
-        <input type="tel" required name="telephone" id="telephone" pattern="[0-9]{10}" >
+        <label for="phone">手機號碼</label>
+        <input type="tel" required name="phone" id="phone" pattern="[0-9]{10}" >
       </div>
       <button type="Submit" onclick="window.location.href = 'SignIn.html';">Submit</button>
     </div>

@@ -9,6 +9,8 @@ router.post('/login', MemberModifyMethod.postLogin);
 router.post('/passengerInfo', MemberModifyMethod.postPassenger);
 router.post('/ownerInfo', MemberModifyMethod.postChangeInfo);
 router.post('/changeOwnerInfo', MemberModifyMethod.postChangeInfo);
+router.post('/changeOwnerTime', MemberModifyMethod.postChangeInfo);
+router.post('/changeOwnerLoc', MemberModifyMethod.postChangeInfo);
 router.post('/identityInfo', MemberModifyMethod.postChangeInfo);
 
 

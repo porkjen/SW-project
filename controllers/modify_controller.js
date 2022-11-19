@@ -93,6 +93,7 @@ module.exports = class member{
             account:            LOCAL_IDENTITY.account,     //帳號
             name:               req.body.name,              //姓名
             phone:              req.body.phone,             //電話
+            email:              req.body.email,             //email
             gender:             req.body.gender,            //性別
             licensePlateNum:    req.body.licensePlateNum,   //車牌號碼
             location:           req.body.location,          //可接送地點

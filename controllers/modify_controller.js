@@ -77,6 +77,7 @@ module.exports = class member{
                 status: "登入失敗",
                 result: err
             })
+            alert("帳號或密碼錯誤! ");
         })
 
         var loginData = {

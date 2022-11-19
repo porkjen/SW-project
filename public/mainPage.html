@@ -39,39 +39,38 @@
                         </div>
                         <div class="modal-body">
                           <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
-                          <form method="post" action="http://127.0.0.1:3000/changeOwnerInfo" target="dummyframe">
+                          <form method="post" action="http://127.0.0.1:3000/changeOwnerBasic" target="dummyframe">
                             <div class="change_info">
                               <label for="name">姓名:</label>
                               <input type="text" name="name" id="name">
                             </div>
                             <div class="change_info">
-                                <label for="gender">性別:</label>
-                                <select required name="gender" id="gender">
-                                    <option value="">請選擇你的性別</option>
-                                    <option value="male">男</option>
-                                    <option value="female">女</option>
-                                  </select>
+                              <label for="gender">性別:</label>
+                              <select required name="gender" id="gender">
+                                  <option value="">請選擇你的性別</option>
+                                  <option value="male">男</option>
+                                  <option value="female">女</option>
+                                </select>
                             </div>
                             <div class="change_info">
-                                <label for="phone">手機號碼:</label>
-                                <input type="tel"name="phone" id="phone" pattern="[0-9]{10}" >
-                              </div>
-                              <div class="change_info">
-                                <label for="licensePlateNum">車牌:</label>
-                                <input type="text" name="licensePlateNum" id="licensePlateNum" >
-                              </div>
-                              <div class="change_info">
-
-                                <p><label for="helmet">是否提供安全帽:</label>
-                                <input type="radio" value="yes" name="helmet" id="helmet">是
-                                <input type="radio" value="no" name="helmet" id="helmet">否</p>
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Close</button>
-                                <a href="mainPage.html">
-                                  <button type="submit" class="btn btn-outline-success" onclick="window.location.href = 'mainPage.html';">確認</button>
-                                </a>
-                              </div>
+                              <label for="phone">手機號碼:</label>
+                              <input type="tel"name="phone" id="phone" pattern="[0-9]{10}" >
+                            </div>
+                            <div class="change_info">
+                              <label for="licensePlateNum">車牌:</label>
+                              <input type="text" name="licensePlateNum" id="licensePlateNum" >
+                            </div>
+                            <div class="change_info">
+                              <p><label for="helmet">是否提供安全帽:</label>
+                              <input type="radio" value="yes" name="helmet" id="helmet">是
+                              <input type="radio" value="no" name="helmet" id="helmet">否</p>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Close</button>
+                              <a href="mainPage.html">
+                                <button type="submit" class="btn btn-outline-success" onclick="window.location.href = 'mainPage.html';">確認</button>
+                              </a>
+                            </div>
                           </form>
                         </div>
                       </div>

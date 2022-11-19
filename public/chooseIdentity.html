@@ -6,20 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./stylesheets/chooseIdentity_style.css">
     <title>Title</title>
-</head>
+</head> 
 <body>
     <div class="container">
-      <div class="choice">
-        <h1>選擇你的身分</h1>
-        <div class="btn">
-          <a href="mainPage.html">
-            <button type="button" class="owner">車主</button>
-          </a>
-          <a>
-            <button type="button" class="passager">乘客</button>
-          </a>
+      <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+      <form id="chooseIdentity" action="http://127.0.0.1:3000/identityInfo" method="post" target="dummyframe">
+        <div class="choice">
+          <h1>選擇你的身分</h1>
+          <div class="btn">
+            <a href="mainPage.html">
+              <button type="submit" class="owner" id="identity" name="identity" value="owner" onclick="window.location.href = 'mainPage.html';">車主</button>
+            </a>
+            <a href="mainPage.html">
+              <button type="submit" class="passager" id="identity" name="identity" value="passenger" onclick="window.location.href = 'mainPage.html';">乘客</button>
+            </a>
+          </div>
         </div>
-      </div>
+      </form>
       <img class="arrow" src="./images/doodle-green-spiral-arrow.png">
       <img class="star" src="./images/doodle-orange-texture-star.png">
       <img class="pointed-star" src="./images/doodle-red-seven-pointed-star.png">

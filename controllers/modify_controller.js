@@ -1,6 +1,5 @@
-const toRegister = require('../models/register_model');
+const insertNewData = require('../models/register_model');
 const loginAction = require('../models/login_model');
-const inputPassengerData = require('../models/passengerInfo_model');
 const inputDataByAcc = require('../models/inputData_model');
 const findDataByCondition = require('../models/findDataByCondition_model');
 
@@ -18,7 +17,10 @@ var LOCAL_IDENTITY = {
     identity : null
 };
 
-function updateLocalVar(identityData) {
+
+/* To avoid the data not changed to cover old data.  
+    Must be called before call inputDataByAcc !!      */
+function updateLocalVar(identityData) { 
     LOCAL_IDENTITY.account     = (identityData.account)     ? identityData.account : LOCAL_IDENTITY.account;    
     LOCAL_IDENTITY.name        = (identityData.name)        ? identityData.name : LOCAL_IDENTITY.name;    
     LOCAL_IDENTITY.phone       = (identityData.phone)       ? identityData.phone : LOCAL_IDENTITY.phone;  
@@ -43,10 +45,9 @@ module.exports = class member{
             email: req.body.email
         };
         
-        toRegister(memberData).then(result =>{
-
+        insertNewData(memberData).then(result =>{
             res.json({
-                status: "註冊成功",
+                status: "insert 成功",
                 result: result
             })
         },(err) => {
@@ -55,6 +56,7 @@ module.exports = class member{
             })
         })
     }
+
     postLogin(req, res, next){
     
         var memberData = {
@@ -71,30 +73,6 @@ module.exports = class member{
         },(err) => {
             res.json({
                 status: "登入失敗",
-                result: err
-            })
-        })
-        //*/
-    }
-
-    postPassenger(req, res, next){
-    
-        var passengerData = {
-            account:    req.body.account,
-            name:       req.body.name,
-            phone:      req.body.phone,
-            gender:     req.body.gender,
-            identity:   "passenger"
-        };
-        
-        inputPassengerData(passengerData).then(result => {
-            res.json({
-                status: "input data 成功",
-                result: result
-            })
-        },(err) => {
-            res.json({
-                status: "input data 失敗",
                 result: err
             })
         })
@@ -129,8 +107,5 @@ module.exports = class member{
                 result: err
             })
         });
-
     }
-
-    
 }

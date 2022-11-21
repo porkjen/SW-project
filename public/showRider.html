@@ -15,11 +15,19 @@
         }
         header{
             text-align: center;
-            height: 100px;
+            height: 130px;
             background-color:rgb(157, 215, 233);
             background-image: url("sharing.png");
             background-position: center;
+            background-size: cover;
             background-repeat: no-repeat;
+        }
+        header .modal-body{
+          text-align: left;
+          
+        }
+        form{
+          margin: 10px;
         }
         .modal-body .btn{
           width: 100%;
@@ -30,6 +38,44 @@
     <header>
       <br>
         <h2>海大共乘系統</h2>
+        <div style="text-align: right;">
+          <a href="#" type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#infomodal">修改個人資料</a>
+        </div>
+        
+        <div class="modal fade" id="infomodal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5>修改資料</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                <form action="http://127.0.0.1:3000/showRider" method="post">
+                  <div class="input-group">
+                  <span class="input-group-text" id="newName">姓名</span>
+                  <input type="text" class="form-control" placeholder="新姓名" aria-label="Username" aria-describedby="newName" id="nN">
+                </div>     
+                <div class="input-group">
+                  <span class="input-group-text" id="newPhonenumber">手機號碼</span>
+                  <input type="text" class="form-control" aria-label="Username" aria-describedby="newPhonenumber" id="nP">
+                </div>              
+                <div class="form-group">
+                  性別
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="newSex" id="newsexM" value="boy">
+                    <label class="form-check-label" for="newsexM">男</label>
+                    <br>
+                    <input class="form-check-input" type="radio" name="newSex" id="newsexF" value="girl">
+                    <label class="form-check-label" for="newsexF">女</label>                   
+                  </div>                  
+                </div>
+                <button type="submit" class="btn btn-primary">確認</button>
+                </form>
+                
+              </div>
+            </div>
+          </div>
+        </div>
     </header>
     <br>
     <div class="container">
@@ -55,9 +101,9 @@
                     <label class="form-check-label" for="sexF">女</label>                   
                   </div>                  
                 </div>
-              </form>
+        
               <br>
-              <form action="http://127.0.0.1:3000/showRider" method="post">
+              
                 <div class="form-group2">
                   車主是否備有安全帽
                   <div class="form-check">
@@ -68,18 +114,19 @@
                     <label class="form-check-label" for="no">無</label>                   
                   </div>
                 </div>
-              </form>              
+                            
               <br> 
-              <form action="http://127.0.0.1:3000/showRider" method="post">
+              
                 <div class="input-group">
                 <span class="input-group-text" id="destination">目的地</span>
                 <input type="text" class="form-control" placeholder="完整地址" aria-label="Username" aria-describedby="destination" id="d">
-              </div>
-              <br>      
+              </div>                    
               <div class="input-group">
                 <span class="input-group-text" id="getOn">乘車地點</span>
                 <input type="text" class="form-control" placeholder="完整地址" aria-label="Username" aria-describedby="getOn" id="g">
               </div>
+              <br>
+              <button type="submit" class="btn btn-primary">確認</button>
               </form>     
               
               <!--
@@ -96,7 +143,7 @@
               -->
               
               <br>
-              <button type="button" class="btn btn-primary" onclick="selectAnswer()">確認</button>
+              
             </div>
           </div>
         </div>
@@ -163,6 +210,9 @@
         alert(d);
         alert(g);
         //var z = $('select').val();
+      }
+      function newinfo(){
+        
       }
   </script>
 </html>

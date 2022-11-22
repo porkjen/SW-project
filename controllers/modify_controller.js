@@ -1,6 +1,10 @@
+const MongoClient = require('mongodb').MongoClient;
+const connectAddr = "mongodb://localhost:27017/signData";
+
 const loginAction = require('../models/login_model');
 const insertNewData = require('../models/insertData_model');
 const inputDataByAcc = require('../models/updateData_model');
+const findDataByQuery = require('../models/findData_model');
 
 /*  global variables, for using the information conviniently.   
     password cannot be recorded in global variables for security. */
@@ -19,7 +23,6 @@ var LOCAL_IDENTITY = {
     identity    : "unknown"                                 //身分 (owner / passenger)
 };
 
-
 /*  To avoid the data not changed to cover old data.  
     Must be called before call inputDataByAcc !!      */
 function updateLocalVar(identityData) { 
@@ -34,7 +37,8 @@ function updateLocalVar(identityData) {
     LOCAL_IDENTITY.workingTime = (identityData.workingTime) ? identityData.workingTime : LOCAL_IDENTITY.workingTime;
     LOCAL_IDENTITY.other       = (identityData.other)       ? identityData.other : LOCAL_IDENTITY.other;
     LOCAL_IDENTITY.status      = (identityData.status)      ? identityData.status : LOCAL_IDENTITY.status;
-    LOCAL_IDENTITY.identity    = (identityData.identity)    ? identityData.identity : LOCAL_IDENTITY.identity;;
+    LOCAL_IDENTITY.identity    = (identityData.identity)    ? identityData.identity : LOCAL_IDENTITY.identity;
+    console.log("[succ] update local var");
 };
 
 module.exports = class member{
@@ -48,7 +52,7 @@ module.exports = class member{
             email: req.body.email
         };
         
-        insertNewData(registerData).then(result =>{
+        insertNewData(MongoClient, connectAddr, registerData).then(result =>{
             res.json({
                 status: "insert 成功",
                 result: result
@@ -66,8 +70,9 @@ module.exports = class member{
             account: req.body.account,
             password: req.body.password
         };
-
-        loginAction(signInData).then(result => {
+        updateLocalVar(signInData);
+        
+        loginAction(MongoClient, connectAddr, signInData).then(result => {
             res.json({
                 status: "登入成功",
                 result: result
@@ -78,17 +83,19 @@ module.exports = class member{
                 result: err
             })
             alert("帳號或密碼錯誤! ");
-        })
+        });
+        
 
         var loginData = {
             account:    signInData.account,
             status:     "online"
         }
+
         updateLocalVar(loginData);
+        inputDataByAcc(MongoClient, connectAddr, LOCAL_IDENTITY);
     }
 
     postChangeInfo(req, res, next){
-
         var changeData = {
             account:            LOCAL_IDENTITY.account,     //帳號
             name:               req.body.name,              //姓名
@@ -106,7 +113,7 @@ module.exports = class member{
 
         updateLocalVar(changeData);
         
-        inputDataByAcc(LOCAL_IDENTITY).then(result => {
+        inputDataByAcc(MongoClient, connectAddr, LOCAL_IDENTITY).then(result => {
             res.json({
                 status: "change data 成功",
                 result: result
@@ -117,5 +124,17 @@ module.exports = class member{
                 result: err
             })
         });
+    }
+
+    ListUserData(req, res, next){ // 未完成
+
+        var findDataQuery = {account: LOCAL_IDENTITY.account};
+        
+        findDataByQuery(MongoClient, connectAddr, findDataQuery).then(res => {
+            client.close();
+            res.json(result);
+        });
+        console.log(res);
+        updateLocalVar(res);
     }
 }

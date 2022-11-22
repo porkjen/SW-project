@@ -1,13 +1,8 @@
-var MongoClient = require('mongodb').MongoClient;
-var express = require('express');
-var router = express.Router();
-//const db = require('./connectDB');
-
-module.exports = function memberLogin(memberData){
+module.exports = function memberLogin(MongoClient, connectAddr, memberData){
 
     let result = {};
     return new Promise((resolve, reject) =>{
-        MongoClient.connect("mongodb://localhost:27017/signData", function(err,db){
+        MongoClient.connect(connectAddr, function(err,db){
             if(err){
                 console.log(err);
                 result.status = "連線失敗"
@@ -27,6 +22,7 @@ module.exports = function memberLogin(memberData){
                 return;
             }else{
                 if(res==null){
+                    result.status = "帳密錯誤";
                     reject(result);
                 }
                 else{

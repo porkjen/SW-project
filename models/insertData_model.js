@@ -12,9 +12,9 @@ module.exports = function register(MongoClient, connectAddr, memberData){
                 return;
             }
 
-            var dbo = db.db('signData');
+            var dbo = db.db('mydb');
             
-            dbo.collection('userList').insert(memberData, function(err, res){
+            dbo.collection('test').insert(memberData, function(err, res){
                 if(err){
                     console.log(err);
                     result.status = "連線失敗"

@@ -11,8 +11,9 @@ module.exports = function inputDataByAcc(MongoClient, connectAddr, inputData){
                 return;
             }
 
-            var dbo = db.db('signData');
-            dbo.collection('userList').updateOne({account:inputData.account}, {$set:inputData}, {upsert:true});
+            var dbo = db.db('mydb');
+            
+            dbo.collection('test').updateOne({account:inputData.account}, {$set:inputData}, {upsert:true});
             resolve(result);
         })
     })

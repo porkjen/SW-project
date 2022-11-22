@@ -11,9 +11,9 @@ module.exports = function memberLogin(MongoClient, connectAddr, memberData){
                 return;
             }
 
-            var dbo = db.db('signData');
+            var dbo = db.db('mydb');
             
-            dbo.collection('userList').findOne(memberData, function(err, res){
+            dbo.collection('test').findOne(memberData, function(err, res){
             if(err){
                 console.log(err);
                 result.status = "連線失敗"

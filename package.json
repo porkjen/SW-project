@@ -15,10 +15,19 @@
     "mongo": "^0.1.0",
     "mongodb": "^4.11.0",
     "mongoose": "^6.7.2",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "nodemon": "^2.0.20"
   },
   "main": "app.js",
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "被刪掉的前端檔案在 public 資料夾裡分好類了",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/porkjen/SW-project.git"
+  },
+  "bugs": {
+    "url": "https://github.com/porkjen/SW-project/issues"
+  },
+  "homepage": "https://github.com/porkjen/SW-project#readme"
 }

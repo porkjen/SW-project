@@ -1,5 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
-const connectAddr = "mongodb://localhost:27017/signData";
+const connectAddr = "mongodb+srv://victoria:cody97028@clustersw.wyqfzbh.mongodb.net/?retryWrites=true&w=majority";
 
 const loginAction = require('../models/login_model');
 const insertNewData = require('../models/insertData_model');
@@ -51,7 +51,7 @@ module.exports = class member{
             password: req.body.password,
             email: req.body.email
         };
-        
+        console.log("123");
         insertNewData(MongoClient, connectAddr, registerData).then(result =>{
             res.json({
                 status: "insert 成功",

@@ -1,6 +1,7 @@
 var MongoClient = require('mongodb').MongoClient;
 var express = require('express');
 var router = express.Router();
+var connectAddr = "mongodb+srv://victoria:cody97028@cluster17.mrmgdrw.mongodb.net/mydb?retryWrites=true&w=majority";
 //const db = require('./connectDB');
 
 module.exports = async function memberLogin(memberData){
@@ -8,7 +9,7 @@ module.exports = async function memberLogin(memberData){
     let result = {};
 
     return new Promise((resolve, reject) =>{
-        MongoClient.connect("mongodb://localhost:27017/signData", function(err,db){
+        MongoClient.connect(connectAddr, function(err,db){
             if(err){
                 console.log(err);
                 result.status = "連線失敗"
@@ -17,9 +18,9 @@ module.exports = async function memberLogin(memberData){
                 return;
             }
 
-            var dbo = db.db('signData');
+            var dbo = db.db('mydb');
             
-            dbo.collection('userList').findOne(memberData, function(err, res){
+            dbo.collection('test').findOne(memberData, function(err, res){
             if(err){
                 console.log(err);
                 result.status = "連線失敗"

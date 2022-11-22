@@ -115,6 +115,16 @@ header{
     padding-right: 10px;
     padding-top: 10px;
     gap: 5px;
+    text-align: center;
+    align-items: center;
+}
+
+.change_location{
+    padding-right: 10px;
+    padding-top: 10px;
+    gap: 5px;
+    text-align: center;
+    align-items: center;
 }
 
 

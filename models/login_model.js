@@ -1,8 +1,5 @@
 var MongoClient = require('mongodb').MongoClient;
-var express = require('express');
-var router = express.Router();
 var connectAddr = "mongodb+srv://victoria:cody97028@cluster17.mrmgdrw.mongodb.net/mydb?retryWrites=true&w=majority";
-//const db = require('./connectDB');
 
 module.exports = async function memberLogin(memberData){
 

@@ -1,7 +1,5 @@
-const loginAction = require('../models/login_model');
 const insertNewData = require('../models/insertData_model');
 const inputDataByAcc = require('../models/updateData_model');
-const findDataByAcc = require('../models/findData_model');
 const matchOwner = require('../models/matchOwner');
 var MongoClient = require('mongodb').MongoClient;
 var connectAddr = "mongodb+srv://victoria:cody97028@cluster17.mrmgdrw.mongodb.net/mydb?retryWrites=true&w=majority";

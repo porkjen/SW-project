@@ -1,6 +1,13 @@
-module.exports = function memberLogin(MongoClient, connectAddr, memberData){
+var MongoClient = require('mongodb').MongoClient;
+var express = require('express');
+var router = express.Router();
+var connectAddr = "mongodb+srv://victoria:cody97028@cluster17.mrmgdrw.mongodb.net/mydb?retryWrites=true&w=majority";
+//const db = require('./connectDB');
+
+module.exports = async function memberLogin(memberData){
 
     let result = {};
+
     return new Promise((resolve, reject) =>{
         MongoClient.connect(connectAddr, function(err,db){
             if(err){
@@ -22,14 +29,12 @@ module.exports = function memberLogin(MongoClient, connectAddr, memberData){
                 return;
             }else{
                 if(res==null){
-                    result.status = "帳密錯誤";
                     reject(result);
                 }
                 else{
                     result.loginMember = memberData;
                     resolve(result);
-                }
-                
+                }            
             }
             })
         })

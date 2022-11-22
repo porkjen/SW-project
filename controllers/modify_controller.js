@@ -48,8 +48,7 @@ module.exports = class member{
             password: req.body.password,
             email: req.body.email
         };
-        updateLocalVar(registerData);
-        insertNewData(LOCAL_IDENTITY).then(result =>{
+        insertNewData(registerData).then(result =>{
             res.json({
                 status: "insert 成功",
                 result: result
@@ -59,6 +58,7 @@ module.exports = class member{
                 result: err
             })
         })
+        updateLocalVar(registerData);
     }
 
     postLogin(req, res, next){

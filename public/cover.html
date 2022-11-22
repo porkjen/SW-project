@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./stylesheets/entroll_style.css">
     <title>共享機車_註冊</title>
 </head>
@@ -11,21 +13,29 @@
 <script type="text/javascript"src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript"src="app.js"></script>
 <script src="./javascripts/entroll_fun.js"></script>
-<main>
-    <div class="about">
-        <div class="entroll">
-            <div class="entroll_title">
-                註冊
+    <div class="title">
+        海大共乘系統
+    </div>
+    <div class="container">
+        <div class="image">
+            <img src="https://cdn.store-assets.com/s/473530/f/5413517.gif">
+        </div>
+        <div class="about">
+            <div class="title_mark">
+                <div class="entroll_title">
+                    註冊
+                </div>
+                <div class="entroll_img">
+                    <img src="./images/vespa.png">
+                </div>
             </div>
-            <div class="entroll_img">
-                <img src="./images/vespa.png">
-            </div>
+           
             <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
                 <form id="upload" action="http://127.0.0.1:3000/register" method="post" target="dummyframe">
                     <div class="info">
-                        帳號: <input type="text" name="account" id="account"><br>
-                        密碼: <input type="text" name="password" id="password"><br>
-                        E-mail:<input type="email" name="email" id="email"><br>
+                        帳號: &nbsp;&nbsp;&nbsp;<input type="text" required name="account" id="account"><br>
+                        密碼: &nbsp;&nbsp;&nbsp;<input type="text" required name="password"><br>
+                        E-mail:<input type="email" required  name="email" id="email"><br>
                     </div>
                     <div class="btn">
                         <a href="chooseIdentity_main.html">
@@ -35,13 +45,6 @@
                 </form>
         </div>
     </div>
-    <div class="title">
-        海大共乘系統
-    </div>
-    <div class="image">
-        <img src="https://cdn.store-assets.com/s/473530/f/5413517.gif">
-    </div>
-</main>
 
 </body>
-</html>>
+</html>

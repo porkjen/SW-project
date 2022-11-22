@@ -23,8 +23,7 @@
             background-repeat: no-repeat;
         }
         header .modal-body{
-          text-align: left;
-          
+          text-align: left;          
         }
         form{
           margin: 10px;
@@ -79,6 +78,7 @@
     </header>
     <br>
     <div class="container">
+      <!--篩選條件按鈕-->
       <a href="#" type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#selectmodal" style="align-items: center;">篩選條件</a>
       <!--跳出視窗-->  
       <div class="modal fade" id="selectmodal">
@@ -100,10 +100,8 @@
                     <input class="form-check-input" type="radio" name="Sex" id="sexF" value="girl">
                     <label class="form-check-label" for="sexF">女</label>                   
                   </div>                  
-                </div>
-        
-              <br>
-              
+                </div>        
+                <br>              
                 <div class="form-group2">
                   車主是否備有安全帽
                   <div class="form-check">
@@ -113,93 +111,81 @@
                     <input class="form-check-input" type="radio" name="Helmet" id="no" value="no">
                     <label class="form-check-label" for="no">無</label>                   
                   </div>
+                </div>                            
+                <br>    
+                <select class="form-select" aria-label="Default select example">
+                  <option selected>目的地地區</option>
+                  <option value="1">仁愛區</option>
+                  <option value="2">中正區</option>
+                  <option value="3">信義區</option>
+                  <option value="4">中山區</option>
+                  <option value="5">安樂區</option>
+                  <option value="6">七堵區</option>
+                  <option value="7">暖暖區</option>
+                </select>          
+                <div class="input-group">                  
+                  <span class="input-group-text" id="destination">目的地</span>
+                  <input type="text" class="form-control" placeholder="完整地址" aria-label="Username" aria-describedby="destination" id="d">
+                </div>      
+                <select class="form-select" aria-label="Default select example">
+                  <option selected>乘車地區</option>
+                  <option value="1">仁愛區</option>
+                  <option value="2">中正區</option>
+                  <option value="3">信義區</option>
+                  <option value="4">中山區</option>
+                  <option value="5">安樂區</option>
+                  <option value="6">七堵區</option>
+                  <option value="7">暖暖區</option>
+                </select>              
+                <div class="input-group">                  
+                  <span class="input-group-text" id="getOn">乘車地點</span>
+                  <input type="text" class="form-control" placeholder="完整地址" aria-label="Username" aria-describedby="getOn" id="g">
                 </div>
-                            
-              <br> 
-              
-                <div class="input-group">
-                <span class="input-group-text" id="destination">目的地</span>
-                <input type="text" class="form-control" placeholder="完整地址" aria-label="Username" aria-describedby="destination" id="d">
-              </div>                    
-              <div class="input-group">
-                <span class="input-group-text" id="getOn">乘車地點</span>
-                <input type="text" class="form-control" placeholder="完整地址" aria-label="Username" aria-describedby="getOn" id="g">
-              </div>
-              <br>
-              <button type="submit" class="btn btn-primary">確認</button>
-              </form>     
-              
-              <!--
-              <select class="form-select" aria-label="Default select example">
-                <option selected>地區</option>
-                <option value="1">仁愛區</option>
-                <option value="2">中正區</option>
-                <option value="3">信義區</option>
-                <option value="4">中山區</option>
-                <option value="5">安樂區</option>
-                <option value="6">七堵區</option>
-                <option value="7">暖暖區</option>
-              </select>
-              -->
-              
-              <br>
-              
+                <br>
+                <button type="submit" class="btn btn-primary">確認</button>
+              </form>      
             </div>
           </div>
         </div>
       </div>
-      <div class="list-group">
-        <a href="#" class="list-group-item list-group-item-action">
-          <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">姓名:</h5>
-            <small>評分: 星</small>
-          </div>
-          <p class="mb-1">性別:</p>
-          <small>
-            目的地:
-            <br>
-            搭乘地點:
-            <br>
-            是否備有安全帽:
-          </small>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action">
-          <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">List group item heading</h5>
-            <small class="text-muted">3 days ago</small>
-          </div>
-          <p class="mb-1">Some placeholder content in a paragraph.</p>
-          <small class="text-muted">And some muted small print.</small>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action">
-          <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">List group item heading</h5>
-            <small class="text-muted">3 days ago</small>
-          </div>
-          <p class="mb-1">Some placeholder content in a paragraph.</p>
-          <small class="text-muted">And some muted small print.</small>
-        </a>
-      </div>
+      <div class="card-group">
+
+      </div>      
     </div>
   </body>
   <script>
+    var i;
+    var count;
     $(document).ready(function () {
-      $('.list-group').append(
-        '<a href="#" class="list-group-item list-group-item-action">'+
-          '<div class="d-flex w-100 justify-content-between">'+
-            '<h5 class="mb-1">姓名:'+'</h5>'+
-            '<small>評分: '+' 星</small>'+
-          '</div>'+
-          '<p class="mb-1">性別:'+'</p>'+
-          '<small>'+
-            '目的地:'+
-            '<br>'+
-            '搭乘地點:'+
-            '<br>'+
-            '是否備有安全帽:'+
-          '</small>'+
-        '</a>'
-      )
+      for(i=1;i<=5;i++){
+        $('.card-group').append(   
+          '<div class="col-md-12">'+
+            '<div class="card border-primary">'+
+              '<div class="card-header" style="background-color: rgb(157, 215, 233)">'+
+                '林大美'+          
+              '</div>'+
+              '<div class="card-body" style="background-color: rgb(205, 238, 248)">'+
+                '可搭乘時間:'+
+                '<br>'+
+                '預定搭乘地點:'+
+                '<br>'+
+                '預定目的地:'+
+                '<br>'+
+                '聯絡方式:'+
+                '<br>'+
+                '是否備有安全帽:'+
+              '</div>'+
+              '<div class="card-footer" style="background-color: rgb(157, 215, 233)">'+
+                '<div style="text-align: center;">'+
+                  '評分: 星<br>'+
+                  '<button id="'+i+'" class="btn btn-primary btn-sm" onclick="sendRequest()" style="background-color: rgb(0, 0, 0); text-align: center;">發送請求</button>'+
+                '</div> '+         
+              '</div>'+
+            '</div>'+
+          '<div>'             
+        )
+      }
+      count=i;
       });
 
       function selectAnswer(){
@@ -211,7 +197,11 @@
         alert(g);
         //var z = $('select').val();
       }
-      function newinfo(){
+      function sendRequest(){
+        //alert(count);
+        for(var j=1;j<=count-1;j++){
+          document.getElementById(j).disabled=true;
+        }
         
       }
   </script>

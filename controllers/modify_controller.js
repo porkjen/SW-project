@@ -51,7 +51,6 @@ module.exports = class member{
             password: req.body.password,
             email: req.body.email
         };
-        
         insertNewData(registerData).then(result =>{
             res.json({
                 status: "insert 成功",

@@ -6,9 +6,10 @@ body{
     width: 100vw;
 }
 
-@media(max-width:569px) {
+@media(max-width:569px){
     .about{
         width: 100vw;
+        min-height: 60vh;
         align-items: center;
     }
     .image{
@@ -18,7 +19,15 @@ body{
         text-align: center;
         font-size: 10px;
     }
-    
+    .info{
+        padding-top: 50px;
+    }
+}
+
+@media(max-height:700px){
+    .about{
+        min-height: 80vh;
+    }
 }
 
 .title_mark{
@@ -59,16 +68,18 @@ body{
 .info{
     text-align: center;
     font-size:0.5cm;
-    padding-top: 80px;
+    padding-bottom: 20px;
     font-family: 'Noto Serif TC', serif;
+    min-height: 20vh;
 }
 
 .info > input[type="text"],[type="email"]{
     padding:10px 20px;
     border-radius:7px;
     border:1px black solid;
-    margin-bottom:30px;
+    margin-bottom:5vh;
     text-align: center;
+    padding-bottom: 10px;
 }
 
 /*
@@ -80,10 +91,7 @@ body{
     font-family: 'Noto Serif TC', serif;
 }*/
 
-.btn{
-    padding-bottom: 100px;
-    padding-left: 100px;
-}
+
 
 a > button{
     font-family: 'Josefin Sans', sans-serif;

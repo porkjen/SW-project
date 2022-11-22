@@ -1,7 +1,8 @@
-const loginAction = require('../models/login_model');
 const insertNewData = require('../models/insertData_model');
 const inputDataByAcc = require('../models/updateData_model');
 const matchOwner = require('../models/matchOwner');
+var MongoClient = require('mongodb').MongoClient;
+var connectAddr = "mongodb+srv://victoria:cody97028@cluster17.mrmgdrw.mongodb.net/mydb?retryWrites=true&w=majority";
 
 /*  global variables, for using the information conviniently.   
     password cannot be recorded in global variables for security. */
@@ -68,18 +69,39 @@ module.exports = class member{
             password: req.body.password
         };
 
-        loginAction(signInData).then(result => {
-            res.json({
-                status: "登入成功",
-                result: result
-            })
-        },(err) => {
-            res.json({
-                status: "登入失敗",
-                result: err
-            })
-        })
+        MongoClient.connect(connectAddr, function(err,db){
+            if(err){
+                console.log("資料庫連線失敗");
+                result.status = "連線失敗"
+                result.err = "伺服器錯誤!"
+                reject(result);
+                return;
+            }
 
+            var dbo = db.db('mydb');
+
+            console.log("[succ] connect to mongodb." );
+
+            dbo.collection('test').find(signInData).toArray((err, res) => {
+                if(err){
+                    console.log("[err] fail to connect collection." );
+                    console.log(err);
+                    result.status = "連線失敗";
+                    result.err = "伺服器錯誤!";
+                    throw err;
+                }else{
+                    console.log("[succ] succ to connect collection." );
+                    if(res == null){
+                        console.log("[err] fail to login (no found data)." );
+                    }
+                    else{
+                        console.log("[succ] succ to login." );
+                        updateLocalVar(res);
+                    }            
+                }
+            });
+        })
+        
         var loginData = {
             account:    signInData.account,
             status:     "online"

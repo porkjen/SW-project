@@ -15,8 +15,9 @@ module.exports = function register(memberData){
             }
 
             var dbo = db.db('mydb');
-            
+
             dbo.collection('test').insertOne(memberData, function(err, res){
+
                 if(err){
                     console.log(err);
                     result.status = "連線失敗"
@@ -28,7 +29,6 @@ module.exports = function register(memberData){
             })
             result.registerMember = memberData;
             resolve(result);
-            //db.close();
         })
     })
 }

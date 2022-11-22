@@ -71,15 +71,7 @@ module.exports = class member{
             password: req.body.password
         };
         updateLocalVar(signInData);
-        try{
-            var data = findDataByQuery(MongoClient, connectAddr, signInData);
-            console.log("data = "+ data);
-        }catch(err){
-            console.log("[err] return invalid.");
-            console.log(err);
-        }
         
-/*      
         loginAction(MongoClient, connectAddr, signInData).then(result => {
             res.json({
                 status: "登入成功",
@@ -92,7 +84,7 @@ module.exports = class member{
             })
             alert("帳號或密碼錯誤! ");
         });
-*/
+
         var loginData = {
             account:    signInData.account,
             status:     "online"

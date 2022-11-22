@@ -15,7 +15,7 @@ module.exports = function register(memberData){
 
             var dbo = db.db('signData');
             
-            dbo.collection('userList').insert(memberData, function(err, res){
+            dbo.collection('userList').insertOne(memberData, function(err, res){
                 if(err){
                     console.log(err);
                     result.status = "連線失敗"

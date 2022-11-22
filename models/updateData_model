@@ -1,8 +1,10 @@
-module.exports = function inputDataByAcc(MongoClient, connectAddr, inputData){
+var MongoClient = require('mongodb').MongoClient;
+
+module.exports = function inputDataByAcc(inputData){
 
     let result = {};
     return new Promise((resolve, reject) =>{
-        MongoClient.connect(connectAddr, function(err,db){
+        MongoClient.connect("mongodb://localhost:27017/signinputData", function(err,db){
             if(err){
                 console.log("資料庫連線失敗");
                 result.status = "連線失敗"

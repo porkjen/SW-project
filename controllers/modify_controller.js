@@ -1,6 +1,7 @@
 const insertNewData = require('../models/insertData_model');
 const inputDataByAcc = require('../models/updateData_model');
 const matchOwner = require('../models/matchOwner');
+const notify = require('../models/notify_model');
 var MongoClient = require('mongodb').MongoClient;
 var connectAddr = "mongodb+srv://victoria:cody97028@cluster17.mrmgdrw.mongodb.net/mydb?retryWrites=true&w=majority";
 
@@ -160,5 +161,9 @@ module.exports = class member{
                 result: err
             })
         });
+    }
+
+    postNotify(req, res, next){
+
     }
 }

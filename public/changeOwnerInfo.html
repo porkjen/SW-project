@@ -5,7 +5,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./stylesheets/infoPage_styles.css">
-  <script src="./javascripts/infoPage_scripts.js" defer></script>
+  <script src="./javascripts/infoPage_scripts.js" ></script>
+  <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+    </script>
   <title>設定個人資料</title>
 </head>
 <body>
@@ -59,8 +63,8 @@
           <input type="tel" required name="phone" id="phone" pattern="[0-9]{10}" >
         </div>
         <div class="info-group">
-          <label for="license">車牌</label>
-          <input type="text" required name="license" id="license" >
+          <label for="licensePlateNum">車牌</label>
+          <input type="text" required name="licensePlateNum" id="licensePlateNum" >
         </div>
         <div class="info-group">
           <p><label for="helmet">是否提供安全帽:</label>

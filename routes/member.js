@@ -12,5 +12,6 @@ router.post('/changeOwnerBasic', MemberModifyMethod.postChangeInfo);
 router.post('/changeOwnerTime', MemberModifyMethod.postChangeInfo);
 router.post('/changeOwnerLoc', MemberModifyMethod.postChangeInfo);
 router.post('/identityInfo', MemberModifyMethod.postChangeInfo);
+router.post('/sentAccept', MemberModifyMethod.postNotify);
 
 module.exports = router;

@@ -164,6 +164,19 @@ module.exports = class member{
     }
 
     postNotify(req, res, next){
+        var response = req.body; //.body.sth
 
+        notify(response).then(result => {
+            res.status(201).json({})
+
+            var payload = JSON.stringify({title: 'Section.io Push Notification' });
+                                    //result
+            webpush.sendNotification(response, payload).catch(err=> console.error(err));
+        },(err) => {
+            res.json({
+                status: "fail",
+                result: err
+            })
+        });
     }
 }

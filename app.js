@@ -39,7 +39,7 @@ app.post('/register', (req, res) => {
 
 //車主設定個人資訊到登入頁面
 app.post('/ownerInfo', (req, res) => {
-  res.sendFile( __dirname + '/public/index.html');
+  res.sendFile( __dirname + '/public/SignIn.html');
 });
 
 //選身分到填個人資訊
@@ -71,7 +71,7 @@ app.post('/rate', (req, res) => {
 
 //乘客填個人資訊到登入
 app.post('/passengerInfo', (req, res) => {
-  res.sendFile( __dirname + '/public/index.html');
+  res.sendFile( __dirname + '/public/SignIn.html');
 });
 
 //車主主畫面修改個人資訊

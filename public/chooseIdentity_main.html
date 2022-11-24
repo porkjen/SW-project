@@ -5,21 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./stylesheets/chooseIdentity_style.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+    </script>
     <title>Title</title>
 </head>
 <body>
     <div class="container"> 
-      <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
-      <form id="chooseIdentity_main" action="http://127.0.0.1:3000/identityInfo" method="post" target="dummyframe">
+      <form id="chooseIdentity_main" action="http://127.0.0.1:3000/identityInfo" method="post">
         <div class="choice">
           <h1>選擇你的身分</h1>
           <div class="btn">
-            <a href="ownerInfo.html">
-              <button class="owner" id="identity" name="identity" value="owner" onclick="window.location.href = 'ownerInfo.html';">車主</button>
-            </a>
-            <a href="passagerInfo.html">
-              <button class="passager" id="identity" name="identity" value="passenger" onclick="window.location.href = 'passagerInfo.html';">乘客</button>
-            </a>
+              <button class="owner" id="owner" name="identity" value="owner">車主</button>
+              <button class="passager" id="passager" name="identity" value="passenger">乘客</button>
           </div>
         </div>
       </form>

@@ -1,7 +1,8 @@
 const insertNewData = require('../models/insertData_model');
 const inputDataByAcc = require('../models/updateData_model');
 const matchOwner = require('../models/matchOwner');
-const notify = require('../models/notify_model');
+const riderFilter = require('../models/riderFilter_model');
+
 var MongoClient = require('mongodb').MongoClient;
 var connectAddr = "mongodb+srv://victoria:cody97028@cluster17.mrmgdrw.mongodb.net/mydb?retryWrites=true&w=majority";
 
@@ -31,7 +32,7 @@ function updateLocalVar(identityData) {
     LOCAL_IDENTITY.phone       = (identityData.phone)       ? identityData.phone : LOCAL_IDENTITY.phone;  
     LOCAL_IDENTITY.email       = (identityData.email)       ? identityData.email : LOCAL_IDENTITY.email;  
     LOCAL_IDENTITY.gender      = (identityData.gender)      ? identityData.gender : LOCAL_IDENTITY.gender;   
-    LOCAL_IDENTITY.license     = (identityData.licensePlateNum)     ? identityData.licensePlateNum : LOCAL_IDENTITY.license;
+    LOCAL_IDENTITY.license     = (identityData.license)     ? identityData.license : LOCAL_IDENTITY.license;
     LOCAL_IDENTITY.helmet      = (identityData.helmet)      ? identityData.helmet : LOCAL_IDENTITY.helmet;
     LOCAL_IDENTITY.location    = (identityData.location)    ? identityData.location : LOCAL_IDENTITY.location;
     LOCAL_IDENTITY.workingTime = (identityData.workingTime) ? identityData.workingTime : LOCAL_IDENTITY.workingTime;
@@ -66,8 +67,9 @@ module.exports = class member{
     postLogin(req, res, next){
     
         var signInData = {
-            account: req.body.account,
-            password: req.body.password
+            name:       req.body.name,
+            account:    req.body.account,
+            password:   req.body.password
         };
 
         MongoClient.connect(connectAddr, function(err,db){
@@ -139,7 +141,7 @@ module.exports = class member{
             phone:              req.body.phone,             //電話
             email:              req.body.email,             //email
             gender:             req.body.gender,            //性別
-            licensePlateNum:    req.body.licensePlateNum,   //車牌號碼
+            license:            req.body.license,           //車牌號碼
             location:           req.body.location,          //可接送地點
             workingTime:        req.body.workingTime,       //可載客時間
             helmet:             req.body.helmet,            //是否有安全帽
@@ -163,18 +165,24 @@ module.exports = class member{
         });
     }
 
-    postNotify(req, res, next){
-        var response = req.body; //.body.sth
+    postRiderFilter(req, res, next){
+        var filterData = {
+            gender:     req.body.gender,
+            helmet:     req.body.helmet
+        }
+        
+        console.log("[filter] gender: " + filterData.gender);
 
-        notify(response).then(result => {
-            res.status(201).json({})
-
-            var payload = JSON.stringify({title: 'Section.io Push Notification' });
-                                    //result
-            webpush.sendNotification(response, payload).catch(err=> console.error(err));
-        },(err) => {
+        riderFilter(filterData).then(result => {
+            console.log("[note] this is filter")
             res.json({
-                status: "fail",
+                status: "filt data 成功",
+                result: result
+            })
+        },(err) => {
+            console.log("[fail] fail to filt");
+            res.json({
+                status: "filt data 失敗",
                 result: err
             })
         });

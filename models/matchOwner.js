@@ -9,7 +9,7 @@ module.exports = async function matchOwner(matchData){
     MongoClient.connect(url,  {useNewUrlParser: true}, function(err, db) {
       if (err) throw err;
       var dbo = db.db("mydb");
-      dbo.collection("userList").find({ identity: "owner", status: "online", location: matchData.area },
+      dbo.collection("test").find({ identity: "owner", status: "online", location: matchData.area },
         { projection: { account: 0, name: 1, phone: 1, email: 0, gender: 1, licensePlateNum: 1, 
           location: 1, workingTime: 1, helmet: 1, other: 1, status: 1, identity: 0 } }).toArray(function (err, result) {
 

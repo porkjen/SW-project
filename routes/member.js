@@ -11,6 +11,7 @@ router.post('/ownerInfo', MemberModifyMethod.postChangeInfo);
 router.post('/changeOwnerBasic', MemberModifyMethod.postChangeInfo);
 router.post('/changeOwnerTime', MemberModifyMethod.postChangeInfo);
 router.post('/changeOwnerLoc', MemberModifyMethod.postChangeInfo);
+router.post('/changePassengerInfo', MemberModifyMethod.postChangeInfo);
 router.post('/identityInfo', MemberModifyMethod.postChangeInfo);
 router.post('/sentAccept', MemberModifyMethod.postNotify);
 

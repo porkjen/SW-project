@@ -1,7 +1,8 @@
 const insertNewData = require('../models/insertData_model');
 const inputDataByAcc = require('../models/updateData_model');
 const matchOwner = require('../models/matchOwner');
-const notify = require('../models/notify_model');
+
+
 var MongoClient = require('mongodb').MongoClient;
 var connectAddr = "mongodb+srv://victoria:cody97028@cluster17.mrmgdrw.mongodb.net/mydb?retryWrites=true&w=majority";
 
@@ -39,6 +40,24 @@ function updateLocalVar(identityData) {
     LOCAL_IDENTITY.status      = (identityData.status)      ? identityData.status : LOCAL_IDENTITY.status;
     LOCAL_IDENTITY.identity    = (identityData.identity)    ? identityData.identity : LOCAL_IDENTITY.identity;;
 };
+
+
+
+function askPermission() {
+    return new Promise(function (resolve, reject) {
+        const permissionResult = Notification.requestPermission(function (result) {
+            resolve(result);
+        });
+
+        if (permissionResult) {
+            permissionResult.then(resolve, reject);
+        }
+    }).then(function (permissionResult) {
+        if (permissionResult !== "granted") {
+            throw new Error("We weren't granted permission.");
+        }
+    });
+}
 
 module.exports = class member{
 
@@ -163,20 +182,27 @@ module.exports = class member{
         });
     }
 
-    postNotify(req, res, next){
-        var response = req.body; //.body.sth
+    async post_O2P_Notify(req, res, next){
+        
+        var PName = req.body.name;
 
-        notify(response).then(result => {
-            res.status(201).json({})
+        var returnItems = {
+            response:   req.body.response, // 同意或拒絕
+            reason:     req.body.reason,
+            name:       LOCAL_IDENTITY.name
+        };
+        
+        res.status(201).json({});
 
-            var payload = JSON.stringify({title: 'Section.io Push Notification' });
-                                    //result
-            webpush.sendNotification(response, payload).catch(err=> console.error(err));
-        },(err) => {
-            res.json({
-                status: "fail",
-                result: err
-            })
+        var payload = JSON.stringify({
+            title: PName + ' 向您發出一則新的共乘請求' 
         });
+
+        webpush
+            .sendNotification(returnItems, payload)
+            .catch(err => {
+                console.error('[err] webpush error.');
+                console.error(err);
+            });
     }
 }

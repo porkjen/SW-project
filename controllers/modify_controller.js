@@ -1,6 +1,7 @@
 const insertNewData = require('../models/insertData_model');
 const inputDataByAcc = require('../models/updateData_model');
 const matchOwner = require('../models/matchOwner');
+const notify = require('../models/notify_model');
 var MongoClient = require('mongodb').MongoClient;
 var connectAddr = "mongodb+srv://victoria:cody97028@cluster17.mrmgdrw.mongodb.net/mydb?retryWrites=true&w=majority";
 
@@ -157,6 +158,23 @@ module.exports = class member{
         },(err) => {
             res.json({
                 status: "change data 失敗",
+                result: err
+            })
+        });
+    }
+
+    postNotify(req, res, next){
+        var response = req.body; //.body.sth
+
+        notify(response).then(result => {
+            res.status(201).json({})
+
+            var payload = JSON.stringify({title: 'Section.io Push Notification' });
+                                    //result
+            webpush.sendNotification(response, payload).catch(err=> console.error(err));
+        },(err) => {
+            res.json({
+                status: "fail",
                 result: err
             })
         });

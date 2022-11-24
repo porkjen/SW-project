@@ -33,6 +33,7 @@ body{
 .title_mark{
     display: flex;
     padding-top: 10px;
+    padding-bottom: 20px;
 }
 
 .container{
@@ -73,7 +74,7 @@ body{
     min-height: 20vh;
 }
 
-.info > input[type="text"],[type="email"]{
+.info > input[type="text"],[type="email"],[type="password"]{
     padding:10px 20px;
     border-radius:7px;
     border:1px black solid;

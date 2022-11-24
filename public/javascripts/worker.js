@@ -82,7 +82,7 @@ function urlBase64ToUint8Array(base64String) {
 }   
 
 function subscribeUser() {
-    const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
+    const applicationServerKey = urlBase64ToUint8Array(applicationServerPublicKey);
     swRegistration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: applicationServerKey

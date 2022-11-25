@@ -1,7 +1,7 @@
 const insertNewData = require('../models/insertData_model');
 const inputDataByAcc = require('../models/updateData_model');
 const matchOwner = require('../models/matchOwner');
-
+const riderFilter = require('../models/riderFilter_model');
 
 var MongoClient = require('mongodb').MongoClient;
 var connectAddr = "mongodb+srv://victoria:cody97028@cluster17.mrmgdrw.mongodb.net/mydb?retryWrites=true&w=majority";
@@ -16,7 +16,7 @@ var LOCAL_IDENTITY = {
     gender      : "secret",                                 //性別 (male / female)
     license     : null,                                     //車牌號碼
     helmet      : "no",                                     //是否有安全帽 (yes / no)
-    area    : null,                                     //可接送地點 <Array> 
+    area        : null,                                     //可接送地點 <Array> 
     workingTime : null,                                     //可載客時間 <Array>
     other       : "No other condition or comment.",         //其他說明
     status      : "offline",                                //上線狀態 (online / busy / offline)
@@ -32,32 +32,14 @@ function updateLocalVar(identityData) {
     LOCAL_IDENTITY.phone       = (identityData.phone)       ? identityData.phone : LOCAL_IDENTITY.phone;  
     LOCAL_IDENTITY.email       = (identityData.email)       ? identityData.email : LOCAL_IDENTITY.email;  
     LOCAL_IDENTITY.gender      = (identityData.gender)      ? identityData.gender : LOCAL_IDENTITY.gender;   
-    LOCAL_IDENTITY.license     = (identityData.licensePlateNum)     ? identityData.licensePlateNum : LOCAL_IDENTITY.license;
+    LOCAL_IDENTITY.license     = (identityData.license)     ? identityData.license : LOCAL_IDENTITY.license;
     LOCAL_IDENTITY.helmet      = (identityData.helmet)      ? identityData.helmet : LOCAL_IDENTITY.helmet;
-    LOCAL_IDENTITY.area    = (identityData.area)    ? identityData.area : LOCAL_IDENTITY.area;
+    LOCAL_IDENTITY.area        = (identityData.area)    ? identityData.area : LOCAL_IDENTITY.area;
     LOCAL_IDENTITY.workingTime = (identityData.workingTime) ? identityData.workingTime : LOCAL_IDENTITY.workingTime;
     LOCAL_IDENTITY.other       = (identityData.other)       ? identityData.other : LOCAL_IDENTITY.other;
     LOCAL_IDENTITY.status      = (identityData.status)      ? identityData.status : LOCAL_IDENTITY.status;
     LOCAL_IDENTITY.identity    = (identityData.identity)    ? identityData.identity : LOCAL_IDENTITY.identity;;
 };
-
-
-
-function askPermission() {
-    return new Promise(function (resolve, reject) {
-        const permissionResult = Notification.requestPermission(function (result) {
-            resolve(result);
-        });
-
-        if (permissionResult) {
-            permissionResult.then(resolve, reject);
-        }
-    }).then(function (permissionResult) {
-        if (permissionResult !== "granted") {
-            throw new Error("We weren't granted permission.");
-        }
-    });
-}
 
 module.exports = class member{
 
@@ -85,8 +67,9 @@ module.exports = class member{
     postLogin(req, res, next){
     
         var signInData = {
-            account: req.body.account,
-            password: req.body.password
+            name:       req.body.name,
+            account:    req.body.account,
+            password:   req.body.password
         };
 
         MongoClient.connect(connectAddr, function(err,db){
@@ -158,8 +141,8 @@ module.exports = class member{
             phone:              req.body.phone,             //電話
             email:              req.body.email,             //email
             gender:             req.body.gender,            //性別
-            licensePlateNum:    req.body.licensePlateNum,   //車牌號碼
-            area:               req.body.area,          //可接送地點
+            license:            req.body.licensePlateNum,   //車牌號碼
+            area:               req.body.area,              //可接送地點
             workingTime:        req.body.workingTime,       //可載客時間
             helmet:             req.body.helmet,            //是否有安全帽
             other:              req.body.other,             //其他說明
@@ -182,27 +165,26 @@ module.exports = class member{
         });
     }
 
-    async post_O2P_Notify(req, res, next){
+    postRiderFilter(req, res, next){
+        var filterData = {
+            gender:     req.body.gender,
+            helmet:     req.body.helmet
+        }
         
-        var PName = req.body.name;
+        console.log("[filter] gender: " + filterData.gender);
 
-        var returnItems = {
-            response:   req.body.response, // 同意或拒絕
-            reason:     req.body.reason,
-            name:       LOCAL_IDENTITY.name
-        };
-        
-        res.status(201).json({});
-
-        var payload = JSON.stringify({
-            title: PName + ' 向您發出一則新的共乘請求' 
+        riderFilter(filterData).then(result => {
+            console.log("[note] this is filter")
+            res.json({
+                status: "filt data 成功",
+                result: result
+            })
+        },(err) => {
+            console.log("[fail] fail to filt");
+            res.json({
+                status: "filt data 失敗",
+                result: err
+            })
         });
-
-        webpush
-            .sendNotification(returnItems, payload)
-            .catch(err => {
-                console.error('[err] webpush error.');
-                console.error(err);
-            });
     }
 }

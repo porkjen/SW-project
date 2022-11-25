@@ -5,7 +5,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./stylesheets/infoPage_styles.css">
-  <script src="./javascripts/infoPage_scripts.js" defer></script>
+  <script src="./javascripts/infoPage_scripts.js" ></script>
+  <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+    </script>
   <title>設定個人資料</title>
 </head>
 <body>
@@ -59,8 +63,8 @@
           <input type="tel" required name="phone" id="phone" pattern="[0-9]{10}" >
         </div>
         <div class="info-group">
-          <label for="licensePlateNum">車牌</label>
-          <input type="text" required name="licensePlateNum" id="licensePlateNum" >
+          <label for="license">車牌</label>
+          <input type="text" required name="license" id="license" >
         </div>
         <div class="info-group">
           <p><label for="helmet">是否提供安全帽:</label>
@@ -105,14 +109,14 @@
       <div class="information" data-step>
         <h3 class="step-title">Step 3</h3>
         <div class="info-group">
-          <h3 class="area-title">可接受接送的區域</h3>
-          <p><input type="checkbox" value="Zhongzheng" name="area" id="Zhongzheng" style="vertical-align:middle;">中正區<br></p>
-          <p><input type="checkbox" value="Sinyi" name="area" id="Sinyi">信義區<br></p>
-          <p><input type="checkbox" value="Ren-ai" name="area" id="Ren-ai">仁愛區<br></p>
-          <p><input type="checkbox" value="Zhongshan" name="area" id="Zhongshan">中山區<br></p>
-          <p><input type="checkbox" value="Anle" name="area" id="Anle">安樂區<br></p>
-          <p><input type="checkbox" value="Nuannuan" name="area" id="Nuannuan">暖暖區<br></p>
-          <p><input type="checkbox" value="Qidu" name="area" id="Qidu">七堵區<br></p>
+          <h3 class="location-title">可接受接送的區域</h3>
+          <p><input type="checkbox" value="Zhongzheng" name="location" id="Zhongzheng" style="vertical-align:middle;">中正區<br></p>
+          <p><input type="checkbox" value="Sinyi" name="location" id="Sinyi">信義區<br></p>
+          <p><input type="checkbox" value="Ren-ai" name="location" id="Ren-ai">仁愛區<br></p>
+          <p><input type="checkbox" value="Zhongshan" name="location" id="Zhongshan">中山區<br></p>
+          <p><input type="checkbox" value="Anle" name="location" id="Anle">安樂區<br></p>
+          <p><input type="checkbox" value="Nuannuan" name="location" id="Nuannuan">暖暖區<br></p>
+          <p><input type="checkbox" value="Qidu" name="location" id="Qidu">七堵區<br></p>
         </div>
         <button type="button" class="preBtn-2" data-previous>Previous</button>
         <button type="button" class="nextBtn-2" data-next>Next</button>
@@ -120,7 +124,7 @@
       <div class="information" data-step>
         <h3 class="step-title">Step 4</h3>
         <div class="info-group">
-          <h3 class="area-title">其他需求</h3>
+          <h3 class="location-title">其他需求</h3>
           <p><textarea class="other_info">其他資訊...</textarea></p>
         </div>
         <button type="button" class="preBtn-3" data-previous>Previous</button>

@@ -6,6 +6,11 @@
     </html>
   <body>
 	<script type="text/javascript"src="app.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+    </script>
+  
     <img class="bg1" src="./images/cloud1.png" title="準備一起加入我們~">
     <a href="https://zh.lovepik.com/images/png-855865.html"></a>
     <div class="Project_Name">
@@ -18,14 +23,14 @@
         <div class="Login">  
           
           <h2 class="title">登入 Login</h2>
-           <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
-			<form id="loadCheck" action="http://127.0.0.1:3000/login" method="post" target="dummyframe">
+           
+			<form id="loadCheck" action="http://127.0.0.1:3000/login" method="post" >
                 <input type="text" id="account" name="account" placeholder="帳號Account" required>
-                <input type="password" id="password" name="password" placeholder="密碼Password" required>
-                <input type="submit" value="Let's Go!" class="submit" onclick="window.location.href = 'chooseIdentity.html';">
+                <input type="text" id="password" name="password" placeholder="密碼Password" required>
+                <input type="Submit" value="Let's Go!" class="submit" >
 			</form>
 
-          <a href="cover.html"><h5 class="Login_up" >註冊帳號</h5></a>
+          <a href="index.html"><h5 class="Login_up" >註冊帳號</h5></a>
 
           <img class="bg2" src="./images/scooter.png" title="快來一起開心騎ㄅㄨㄅㄨ吧!!!">
           

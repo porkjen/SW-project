@@ -16,7 +16,7 @@ var LOCAL_IDENTITY = {
     gender      : "secret",                                 //性別 (male / female)
     license     : null,                                     //車牌號碼
     helmet      : "no",                                     //是否有安全帽 (yes / no)
-    location    : null,                                    //可接送地點 <Array>
+    area    : null,                                     //可接送地點 <Array> 
     workingTime : null,                                     //可載客時間 <Array>
     other       : "No other condition or comment.",         //其他說明
     status      : "offline",                                //上線狀態 (online / busy / offline)
@@ -34,7 +34,7 @@ function updateLocalVar(identityData) {
     LOCAL_IDENTITY.gender      = (identityData.gender)      ? identityData.gender : LOCAL_IDENTITY.gender;   
     LOCAL_IDENTITY.license     = (identityData.licensePlateNum)     ? identityData.licensePlateNum : LOCAL_IDENTITY.license;
     LOCAL_IDENTITY.helmet      = (identityData.helmet)      ? identityData.helmet : LOCAL_IDENTITY.helmet;
-    LOCAL_IDENTITY.location    = (identityData.location)    ? identityData.location : LOCAL_IDENTITY.location;
+    LOCAL_IDENTITY.area    = (identityData.area)    ? identityData.area : LOCAL_IDENTITY.area;
     LOCAL_IDENTITY.workingTime = (identityData.workingTime) ? identityData.workingTime : LOCAL_IDENTITY.workingTime;
     LOCAL_IDENTITY.other       = (identityData.other)       ? identityData.other : LOCAL_IDENTITY.other;
     LOCAL_IDENTITY.status      = (identityData.status)      ? identityData.status : LOCAL_IDENTITY.status;
@@ -135,7 +135,7 @@ module.exports = class member{
         var matchData = {
             identity: req.body.identity,
             status: req.body.status,
-            location: req.body.location
+            area: req.body.area
         };
         
         matchOwner(matchData).then(result =>{
@@ -159,7 +159,7 @@ module.exports = class member{
             email:              req.body.email,             //email
             gender:             req.body.gender,            //性別
             licensePlateNum:    req.body.licensePlateNum,   //車牌號碼
-            location:           req.body.location,          //可接送地點
+            area:               req.body.area,          //可接送地點
             workingTime:        req.body.workingTime,       //可載客時間
             helmet:             req.body.helmet,            //是否有安全帽
             other:              req.body.other,             //其他說明

@@ -23,12 +23,12 @@
         <div class="Login">  
           
           <h2 class="title">登入 Login</h2>
-           
-			<form id="loadCheck" action="http://127.0.0.1:3000/login" method="post" >
-                <input type="text" id="account" name="account" placeholder="帳號Account" required>
-                <input type="text" id="password" name="password" placeholder="密碼Password" required>
-                <input type="Submit" value="Let's Go!" class="submit" >
-			</form>
+           <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+          <form id="loadCheck" action="http://127.0.0.1:3000/login" method="post" target="dummyframe">
+            <input type="text" required id="username" name="username" placeholder="帳號Account" required>
+            <input type="text" id="password" name="password" placeholder="密碼Password" required>
+            <input type="submit" value="Let's Go!" class="submit" onclick="window.location.href = 'chooseIdentity.html';">
+          </form>
 
           <a href="index.html"><h5 class="Login_up" >註冊帳號</h5></a>
 

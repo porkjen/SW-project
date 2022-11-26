@@ -13,10 +13,6 @@
 <script type="text/javascript"src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript"src="app.js"></script>
 <script src="./javascripts/entroll_fun.js"></script>
-<script src="/socket.io/socket.io.js"></script>
-    <script>
-        var socket = io();
-    </script>
     <div class="title">
         海大共乘系統
     </div>
@@ -34,13 +30,16 @@
                 </div>
             </div>
            
-                <form id="upload" action="http://127.0.0.1:3000/register" method="post">
+            <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+                <form id="upload" action="http://127.0.0.1:3000/register" method="post" target="dummyframe">
                     <div class="info">
                         帳號: &nbsp;&nbsp;&nbsp;<input type="text" required name="account" id="account"><br>
-                        密碼: &nbsp;&nbsp;&nbsp;<input type="password" required name="password"><br>
+                        密碼: &nbsp;&nbsp;<input type="password" required name="password"><br>
                         E-mail:<input type="email" required  name="email" id="email"><br>
-                         <div class="btn">
-                            <button type="submit">Start</button>
+                        <div class="btn">
+                            <a href="chooseIdentity_main.html">
+                                <button type="submit" onclick="window.location.href = 'chooseIdentity.html';" >Start</button>
+                            </a>
                         </div>
                     </div>
                 </form>

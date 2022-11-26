@@ -6,6 +6,7 @@ webPush.setVapidDetails("mailto:SW@gmail.com", vapidKeys.publicKey, vapidKeys.pr
 console.log("[publicKey] = " + vapidKeys.publicKey);
 console.log("[privateKey] = " + vapidKeys.privateKey);
 
+var swRegistration;
 
 if ("serviceWorker" in navigator && "PushManager" in window) {
     console.log('[succ] Service Worker and Push is supported.');

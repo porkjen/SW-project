@@ -6,10 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./stylesheets/infoPage_styles.css">
   <script src="./javascripts/infoPage_scripts.js" defer></script>
-  <script src="/socket.io/socket.io.js"></script>
-    <script>
-        var socket = io();
-    </script>
   <title>設定個人資料</title>
 </head>
 <body>
@@ -42,7 +38,8 @@
         </div>
       </div>
     </div>
-    <form data-multi-step class="multi-data-form" action="http://127.0.0.1:3000/ownerInfo" method="post">
+    <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+    <form data-multi-step class="multi-data-form" action="http://127.0.0.1:3000/ownerInfo" target="dummyframe" method="post">
       <div class="information" data-step>
         <h3 class="step-title">Step 1</h3>
         <div class="info-group">
@@ -127,7 +124,7 @@
           <p><input type="text" class="other_info" name="other" id="other" value="其他資訊..." height="50px" width="50px"></p>
         </div>
         <button type="button" class="preBtn-3" data-previous>Previous</button>
-        <button type="Submit">Submit</button>
+        <button type="submit" onclick="window.location.href = 'SignIn.html';">Submit</button>
       </div>
     </form>
   </div>

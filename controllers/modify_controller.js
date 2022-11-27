@@ -138,7 +138,7 @@ module.exports = class member{
             email:              req.body.email,             //email
             gender:             req.body.gender,            //性別
             license:            req.body.license,           //車牌號碼
-            area:               req.body.area,          //可接送地點
+            area:               req.body.area,              //可接送地點
             workingTime:        req.body.workingTime,       //可載客時間
             helmet:             req.body.helmet,            //是否有安全帽
             other:              req.body.other,             //其他說明

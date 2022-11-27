@@ -266,7 +266,7 @@ module.exports = class member{
         })
     }
 
-    postFindOwner(req, res, next){   //列出車主 mainPage 的乘客資料
+    postFindOwner(req, res, next){   //乘客被接單的車主資料
         
         updateLocalVar({pairData : req.body.ownerName});
         MongoClient.connect(connectAddr, function(err,db){

@@ -15,8 +15,8 @@ var LOCAL_IDENTITY = {
     email       : null,                                     //email
     gender      : "secret",                                 //性別 (male / female)
     license     : null,                                     //車牌號碼
-    helmet      : "no",                                     //是否有安全帽 (yes / no)
-    location    : null,                                    //可接送地點 <Array>
+    helmet      : null,                                     //是否有安全帽 (yes / no)
+    area        : null,                                     //可接送地點 <Array>
     workingTime : null,                                     //可載客時間 <Array>
     other       : "No other condition or comment.",         //其他說明
     status      : "offline",                                //上線狀態 (online / busy / offline)
@@ -27,18 +27,19 @@ var LOCAL_IDENTITY = {
 /*  To avoid the data not changed to cover old data.  
     Must be called before call inputDataByAcc !!      */
 function updateLocalVar(identityData) { 
-    LOCAL_IDENTITY.account     = (identityData.account)     ? identityData.account : LOCAL_IDENTITY.account;    
-    LOCAL_IDENTITY.name        = (identityData.name)        ? identityData.name : LOCAL_IDENTITY.name;    
-    LOCAL_IDENTITY.phone       = (identityData.phone)       ? identityData.phone : LOCAL_IDENTITY.phone;  
-    LOCAL_IDENTITY.email       = (identityData.email)       ? identityData.email : LOCAL_IDENTITY.email;  
-    LOCAL_IDENTITY.gender      = (identityData.gender)      ? identityData.gender : LOCAL_IDENTITY.gender;   
-    LOCAL_IDENTITY.license     = (identityData.license)     ? identityData.license : LOCAL_IDENTITY.license;
-    LOCAL_IDENTITY.helmet      = (identityData.helmet)      ? identityData.helmet : LOCAL_IDENTITY.helmet;
-    LOCAL_IDENTITY.location    = (identityData.location)    ? identityData.location : LOCAL_IDENTITY.location;
-    LOCAL_IDENTITY.workingTime = (identityData.workingTime) ? identityData.workingTime : LOCAL_IDENTITY.workingTime;
-    LOCAL_IDENTITY.other       = (identityData.other)       ? identityData.other : LOCAL_IDENTITY.other;
-    LOCAL_IDENTITY.status      = (identityData.status)      ? identityData.status : LOCAL_IDENTITY.status;
-    LOCAL_IDENTITY.identity    = (identityData.identity)    ? identityData.identity : LOCAL_IDENTITY.identity;;
+    LOCAL_IDENTITY.account     = (identityData.account)     ? identityData.account      : LOCAL_IDENTITY.account;    
+    LOCAL_IDENTITY.name        = (identityData.name)        ? identityData.name         : LOCAL_IDENTITY.name;    
+    LOCAL_IDENTITY.phone       = (identityData.phone)       ? identityData.phone        : LOCAL_IDENTITY.phone;  
+    LOCAL_IDENTITY.email       = (identityData.email)       ? identityData.email        : LOCAL_IDENTITY.email;  
+    LOCAL_IDENTITY.gender      = (identityData.gender)      ? identityData.gender       : LOCAL_IDENTITY.gender;   
+    LOCAL_IDENTITY.license     = (identityData.license)     ? identityData.license      : LOCAL_IDENTITY.license;
+    LOCAL_IDENTITY.helmet      = (identityData.helmet)      ? identityData.helmet       : LOCAL_IDENTITY.helmet;
+    LOCAL_IDENTITY.area        = (identityData.area)        ? identityData.area         : LOCAL_IDENTITY.area;
+    LOCAL_IDENTITY.workingTime = (identityData.workingTime) ? identityData.workingTime  : LOCAL_IDENTITY.workingTime;
+    LOCAL_IDENTITY.other       = (identityData.other)       ? identityData.other        : LOCAL_IDENTITY.other;
+    LOCAL_IDENTITY.status      = (identityData.status)      ? identityData.status       : LOCAL_IDENTITY.status;
+    LOCAL_IDENTITY.identity    = (identityData.identity)    ? identityData.identity     : LOCAL_IDENTITY.identity;
+    console.log("[succ] update local variable successfully." );
 };
 
 module.exports = class member{
@@ -67,7 +68,6 @@ module.exports = class member{
     postLogin(req, res, next){
     
         var signInData = {
-            name:       req.body.name,
             account:    req.body.account,
             password:   req.body.password
         };
@@ -94,22 +94,18 @@ module.exports = class member{
                     throw err;
                 }else{
                     console.log("[succ] succ to connect collection." );
-                    if(res == null){
+                    if(res[0] == null){
                         console.log("[err] fail to login (no found data)." );
                     }
                     else{
                         console.log("[succ] succ to login." );
-                        updateLocalVar(res);
+                        updateLocalVar(res[0]);
+                        LOCAL_IDENTITY.status = "online";
+                        inputDataByAcc(LOCAL_IDENTITY);
                     }            
                 }
             });
         })
-        
-        var loginData = {
-            account:    signInData.account,
-            status:     "online"
-        }
-        updateLocalVar(loginData);
     }
 
     postMatchOwner(req, res, next){
@@ -118,7 +114,7 @@ module.exports = class member{
         var matchData = {
             identity: req.body.identity,
             status: req.body.status,
-            location: req.body.location
+            area: req.body.area
         };
         
         matchOwner(matchData).then(result =>{
@@ -142,7 +138,7 @@ module.exports = class member{
             email:              req.body.email,             //email
             gender:             req.body.gender,            //性別
             license:            req.body.license,           //車牌號碼
-            location:           req.body.location,          //可接送地點
+            area:               req.body.area,          //可接送地點
             workingTime:        req.body.workingTime,       //可載客時間
             helmet:             req.body.helmet,            //是否有安全帽
             other:              req.body.other,             //其他說明

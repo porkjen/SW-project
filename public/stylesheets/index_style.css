@@ -1,0 +1,63 @@
+@import url(https://fonts.googleapis.com/earlyaccess/cwtexyen.css);
+*{
+    font-family:'cwTeXYen', Comic Sans MS;  
+}
+body {
+    
+    margin:0px;
+    padding:20px;
+    background:antiquewhite;
+} 
+nav{
+    background-color: bisque;            
+    text-align: center;
+}
+.container{
+    text-align: center;
+}
+nav .navbar-brand{
+    font-size: 70px;
+}
+.body{
+    text-align:center;
+    font-size:1.2cm;
+}
+.btn1{
+    background-color:antiquewhite;
+    border-radius: 10px;
+    height: 50px;
+    font-size:0.8cm;
+}
+.btn2{            
+    background-color:antiquewhite;
+    border-radius: 10px;
+    height: 50px;
+    font-size:0.8cm;
+}
+.img{
+    position:relative;
+    top: -50px;
+    left: 100px;
+}
+@media (max-width:500px) {            
+    .btn1{
+        background-color:antiquewhite;
+        border-radius: 10px;
+        height: 75px;
+        font-size:1.3cm;
+    }
+    .btn2{            
+        background-color:antiquewhite;
+        border-radius: 10px;
+        height: 75px;
+        font-size:1.3cm;
+    }
+    img{
+        width: 200px;
+        height: 200px;
+    }
+    nav .navbar-brand{
+        text-align: center;
+        font-size: 50px;
+    }
+}

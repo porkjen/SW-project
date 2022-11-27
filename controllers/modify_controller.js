@@ -20,10 +20,9 @@ var LOCAL_IDENTITY = {
     workingTime : null,                                     //可載客時間 <Array>
     other       : "No other condition or comment.",         //其他說明
     status      : "offline",                                //上線狀態 (online / busy / offline)
-    identity    : "unknown"                                 //身分 (owner / passenger)
+    identity    : "unknown",                                //身分 (owner / passenger)
+    findPair    : null                                      //乘客要找的車主姓名 or 車主要找的乘客姓名
 };
-
-
 /*  To avoid the data not changed to cover old data.  
     Must be called before call inputDataByAcc !!      */
 function updateLocalVar(identityData) { 
@@ -37,10 +36,49 @@ function updateLocalVar(identityData) {
     LOCAL_IDENTITY.area        = (identityData.area)        ? identityData.area         : LOCAL_IDENTITY.area;
     LOCAL_IDENTITY.workingTime = (identityData.workingTime) ? identityData.workingTime  : LOCAL_IDENTITY.workingTime;
     LOCAL_IDENTITY.other       = (identityData.other)       ? identityData.other        : LOCAL_IDENTITY.other;
-    LOCAL_IDENTITY.status      = (identityData.status)      ? identityData.status       : LOCAL_IDENTITY.status;
     LOCAL_IDENTITY.identity    = (identityData.identity)    ? identityData.identity     : LOCAL_IDENTITY.identity;
+    LOCAL_IDENTITY.status      = (identityData.status)      ? identityData.status       : LOCAL_IDENTITY.status;
+    LOCAL_IDENTITY.findPair    = (identityData.findPair)    ? identityData.findPair     : LOCAL_IDENTITY.findPair;
     console.log("[succ] update local variable successfully." );
 };
+
+
+/*  global variables, for using the information conviniently.   
+    password cannot be recorded in global variables for security. */
+var PAIR_IDENTITY = {  
+    account     : null,                                     //帳號
+    name        : null,                                     //姓名
+    phone       : null,                                     //電話
+    email       : null,                                     //email
+    gender      : "secret",                                 //性別 (male / female)
+    license     : null,                                     //車牌號碼
+    helmet      : null,                                     //是否有安全帽 (yes / no)
+    area        : null,                                     //可接送地點 <Array>
+    workingTime : null,                                     //可載客時間 <Array>
+    other       : "No other condition or comment.",         //其他說明
+    status      : "offline",                                //上線狀態 (online / busy / offline)
+    identity    : "unknown",                                //身分 (owner / passenger)
+    findPair    : null                                      //乘客要找的車主姓名
+};
+function updatePairVar(pairData) { 
+    PAIR_IDENTITY.account     = (pairData.account)     ? pairData.account      : PAIR_IDENTITY.account;    
+    PAIR_IDENTITY.name        = (pairData.name)        ? pairData.name         : PAIR_IDENTITY.name;    
+    PAIR_IDENTITY.phone       = (pairData.phone)       ? pairData.phone        : PAIR_IDENTITY.phone;  
+    PAIR_IDENTITY.email       = (pairData.email)       ? pairData.email        : PAIR_IDENTITY.email;  
+    PAIR_IDENTITY.gender      = (pairData.gender)      ? pairData.gender       : PAIR_IDENTITY.gender;   
+    PAIR_IDENTITY.license     = (pairData.license)     ? pairData.license      : PAIR_IDENTITY.license;
+    PAIR_IDENTITY.helmet      = (pairData.helmet)      ? pairData.helmet       : PAIR_IDENTITY.helmet;
+    PAIR_IDENTITY.area        = (pairData.area)        ? pairData.area         : PAIR_IDENTITY.area;
+    PAIR_IDENTITY.workingTime = (pairData.workingTime) ? pairData.workingTime  : PAIR_IDENTITY.workingTime;
+    PAIR_IDENTITY.other       = (pairData.other)       ? pairData.other        : PAIR_IDENTITY.other;
+    PAIR_IDENTITY.identity    = (pairData.identity)    ? pairData.identity     : PAIR_IDENTITY.identity;
+    PAIR_IDENTITY.status      = (pairData.status)      ? pairData.status       : PAIR_IDENTITY.status;
+    PAIR_IDENTITY.findPair    = (pairData.findPair)    ? pairData.findPair     : PAIR_IDENTITY.findPair;
+    console.log("[succ] update pair infomation successfully." );
+};
+
+
+
 
 module.exports = class member{
 
@@ -105,7 +143,7 @@ module.exports = class member{
                     }            
                 }
             });
-        })
+        });
     }
 
     postMatchOwner(req, res, next){
@@ -182,5 +220,95 @@ module.exports = class member{
                 result: err
             })
         });
+    }
+
+    postFindPassenger(req, res, next){   //列出車主 mainPage 的乘客資料
+        
+        MongoClient.connect(connectAddr, function(err,db){
+            if(err){
+                console.log("資料庫連線失敗");
+
+                res.json({
+                    status : "連線失敗",
+                    result : "伺服器錯誤!"
+                });
+            }
+            var dbo = db.db('mydb');
+            console.log("[succ] connect to mongodb." );
+
+            dbo.collection('test').find({pairData: LOCAL_IDENTITY.name}).toArray((err, res) => {
+
+                if(err){
+                    console.log("[err] fail to connect collection." );
+                    console.log(err);
+                    res.json({
+                        status : "連線失敗",
+                        result : "伺服器錯誤!"
+                    });
+                }else{
+                    console.log("[succ] succ to connect collection." );
+                    if(res == []){
+                        console.log("[warn] no found passenger)." );
+                        res.json({
+                            status : "無訂單",
+                            result : []
+                        });
+                    }
+                    else{
+                        console.log("[succ] succ to find passenger." );
+                        res.json({
+                            status : "有訂單",
+                            result : res
+                        });
+                    }            
+                }
+            });
+        })
+    }
+
+    postFindOwner(req, res, next){   //列出車主 mainPage 的乘客資料
+        
+        updateLocalVar({pairData : req.body.ownerName});
+        MongoClient.connect(connectAddr, function(err,db){
+            if(err){
+                console.log("資料庫連線失敗");
+
+                res.json({
+                    status : "連線失敗",
+                    result : "伺服器錯誤!"
+                });
+            }
+            var dbo = db.db('mydb');
+            console.log("[succ] connect to mongodb." );
+
+            dbo.collection('test').find({name: LOCAL_IDENTITY.pairData}).toArray((err, res) => {
+
+                if(err){
+                    console.log("[err] fail to connect collection." );
+                    console.log(err);
+                    res.json({
+                        status : "連線失敗",
+                        result : "伺服器錯誤!"
+                    });
+                }else{
+                    console.log("[succ] succ to connect collection." );
+                    if(res[0] == null){
+                        console.log("[err] cannot find this owner." );
+                        res.json({
+                            status : "尋找失敗",
+                            result : res
+                        });
+                    }
+                    else{
+                        console.log("[succ] succ to find the owner." );
+                        updatePairVar(res[0]);
+                        res.json({
+                            status : "尋找成功",
+                            result : res
+                        });
+                    }            
+                }
+            });
+        })
     }
 }

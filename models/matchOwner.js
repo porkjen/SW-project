@@ -11,8 +11,7 @@ module.exports = async function matchOwner(matchData){
       const connect = client.db("signData");
     
       // Connect to collection
-      const collection = connect
-              .collection("userList");
+      const collection = connect.collection("userList");
     
       // Fetching the records having 
       // name as saini

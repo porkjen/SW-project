@@ -3,6 +3,7 @@ var connectAddr = "mongodb+srv://victoria:cody97028@cluster17.mrmgdrw.mongodb.ne
 
 module.exports = async function listPassengers(matchedPassengerData){
 
+    console.log(">>>>matchedPassengerData = " + JSON.stringify(matchedPassengerData));
     let res = {};
     
     return new Promise (resolve => {
@@ -36,7 +37,9 @@ module.exports = async function listPassengers(matchedPassengerData){
                 }
                 else {
                     console.log("[succ] succ to find passenger." );
-                    res.status = "有訂單"
+                    console.log(">>>>> order res = "+ JSON.stringify(res));
+                    console.log(">>>>> order res[0] = "+ JSON.stringify(res[0]));
+                    res.status = "有訂單";
                 }
                 console.log(res);
                 resolve(res);

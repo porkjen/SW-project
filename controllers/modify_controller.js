@@ -221,7 +221,7 @@ module.exports = class member{
     }
 
     postFindPassenger(req, res, next){   //列出車主 mainPage 的乘客資料
-        var passengerDataQuery = {pairData: LOCAL_IDENTITY.name};
+        var passengerDataQuery = {findPair: LOCAL_IDENTITY.name};
         listPassengers(passengerDataQuery).then(result =>{
             res.json({
                 status: result.status,

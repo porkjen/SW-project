@@ -15,7 +15,7 @@ router.post('/changePassengerInfo', MemberModifyMethod.postChangeInfo); //更改
 router.post('/identityInfo', MemberModifyMethod.postChangeInfo);        //更改身分
 router.post('/riderFilter', MemberModifyMethod.postRiderFilter);        //乘客篩選車主條件
 router.post('/sendOrderToOwner', MemberModifyMethod.postFindOwner);     //乘客送訂單給車主
-router.post('/listPassenger', MemberModifyMethod.postFindPassenger);    //車主列出所有訂單
+router.get('/listPassenger', MemberModifyMethod.postFindPassenger);    //車主列出所有訂單
 router.get('/matchOwner', MemberModifyMethod.postMatchOwner);           //乘客頁面列出車主
 
 module.exports = router;

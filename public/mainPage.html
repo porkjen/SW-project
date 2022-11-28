@@ -52,6 +52,7 @@
                                 </select>
                             </div>
                             <div class="change_info">
+<<<<<<< HEAD
                                 <label for="telephone">手機號碼:</label>
                                 <input type="tel"name="telephone" id="telephone" pattern="[0-9]{10}" >
                               </div>
@@ -64,6 +65,28 @@
                                 <input type="radio" value="yes" name="choice">是
                                 <input type="radio" value="no" name="choice">否</p>
                               </div>
+=======
+                              <label for="phone">手機號碼:</label>
+                              <input type="tel"name="phone" id="phone" pattern="[0-9]{10}" >
+                            </div>
+                            <div class="change_info">
+                              <label for="license">車牌:</label>
+                              <input type="text" name="license" id="license" >
+                            </div>
+                            <div class="change_info">
+                              <p><label for="helmet">是否提供安全帽:</label>
+                              <label>
+                                <input type="radio" value="yes" name="helmet" id="helmet">是
+                              </label>
+                              <label>
+                                <input type="radio" value="no" name="helmet" id="helmet" checked>否</p>
+                              </label>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-outline-success" data-bs-dismiss="modal" onClick="window.location.reload();">確認</button>
+                            </div>
+>>>>>>> e6c18075784092c912c35845ff8402715ff29f5e
                           </form>
                         </div>
                         <div class="modal-footer">
@@ -137,6 +160,7 @@
                         </div>
                         <div class="modal-body">
                           <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+<<<<<<< HEAD
                           <form method="post" action="http://127.0.0.1:3000/ownerInfo" target="dummyframe">
                             <h4>可接受接送的區域</h4>
                             <div class="change_location">
@@ -148,6 +172,19 @@
                               <p><input type="checkbox" value="Nuannuan" name="location" id="Nuannuan">暖暖區<br></p>
                               <p><input type="checkbox" value="Qidu" name="location" id="Qidu">七堵區<br></p>
                             </div>
+=======
+                          <form method="post" action="http://127.0.0.1:3000/changeOwnerLoc" target="dummyframe">
+                            <h4 class="area-title">可接受接送的區域</h4>
+                              <div class="change_area">
+                                <p><input type="checkbox" value="Zhongzheng" name="area" id="Zhongzheng" style="vertical-align:middle;">中正區<br></p>
+                                <p><input type="checkbox" value="Sinyi" name="area" id="Sinyi">信義區<br></p>
+                                <p><input type="checkbox" value="Ren-ai" name="area" id="Ren-ai">仁愛區<br></p>
+                                <p><input type="checkbox" value="Zhongshan" name="area" id="Zhongshan">中山區<br></p>
+                                <p><input type="checkbox" value="Anle" name="area" id="Anle">安樂區<br></p>
+                                <p><input type="checkbox" value="Nuannuan" name="area" id="Nuannuan">暖暖區<br></p>
+                                <p><input type="checkbox" value="Qidu" name="area" id="Qidu">七堵區<br></p>
+                              </div>
+>>>>>>> e6c18075784092c912c35845ff8402715ff29f5e
                             <div class="modal-footer">
                               <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">close</button>
                               <button type="submit" class="btn btn-outline-success" data-bs-dismiss="modal" onClick="window.location.reload()";>確認</button>

@@ -193,8 +193,8 @@
                 '</div>'+
               '<div>'             
             )
-            count=i;
           }
+          count=data.result.length;
         }
       })  
     });
@@ -209,13 +209,13 @@
       }
       function sendRequest(c){
         //alert(count);
-        for(var j=1;j<=count-1;j++){
+        for(var j=0;j<=count;j++){
           document.getElementById(j).disabled=true;
         }     
         pressedBtn=c;
       }
       function setDisabled() {
-        for(var k=1;k<=count-1;k++){
+        for(var k=0;k<=count;k++){
           document.getElementById(k).disabled = false;
         }
       }

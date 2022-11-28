@@ -38,43 +38,9 @@
       <br>
         <h2>海大共乘系統</h2>
         <div style="text-align: right;">
-          <a href="#" type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#infomodal">修改個人資料</a>
+          <a href="chooseIdentity.html" type="button" class="btn btn-dark btn-sm">切換身分</a>
         </div>
         
-        <div class="modal fade" id="infomodal">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5>修改資料</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-              </div>
-              <div class="modal-body">
-                <form action="http://127.0.0.1:3000/changePassengerInfo" method="post">
-                  <div class="input-group">
-                  <span class="input-group-text" id="newName" style="width:112px;">姓名</span>
-                  <input type="text" class="form-control" placeholder="新姓名" aria-label="Username" aria-describedby="newName" id="nN">
-                </div>     
-                <div class="input-group">
-                  <span class="input-group-text" id="newPhonenumber" style="width:112px;">手機號碼</span>
-                  <input type="text" class="form-control" aria-label="Username" aria-describedby="newPhonenumber" id="nP" pattern="[0-9]{10}">
-                </div>              
-                <div class="form-group">
-                  性別
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="newSex" id="newsexM" value="boy">
-                    <label class="form-check-label" for="newsexM">男</label>
-                    <br>
-                    <input class="form-check-input" type="radio" name="newSex" id="newsexF" value="girl">
-                    <label class="form-check-label" for="newsexF">女</label>                   
-                  </div>                  
-                </div>
-                <button type="submit" class="btn btn-primary">確認</button>
-                </form>
-                
-              </div>
-            </div>
-          </div>
-        </div>
     </header>
     <br>
     <div class="container">
@@ -148,6 +114,43 @@
           </div>
         </div>
       </div>
+      <!--修改個人資料按鈕-->
+      <a href="#" type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#infomodal">修改個人資料</a>
+      <!--跳出視窗-->
+      <div class="modal fade" id="infomodal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5>修改資料</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <form action="http://127.0.0.1:3000/changePassengerInfo" method="post">
+                <div class="input-group">
+                <span class="input-group-text" id="newName" style="width:112px;">姓名</span>
+                <input type="text" class="form-control" placeholder="新姓名" aria-label="Username" aria-describedby="newName" id="nN">
+              </div>     
+              <div class="input-group">
+                <span class="input-group-text" id="newPhonenumber" style="width:112px;">手機號碼</span>
+                <input type="text" class="form-control" aria-label="Username" aria-describedby="newPhonenumber" id="nP" pattern="[0-9]{10}">
+              </div>              
+              <div class="form-group">
+                性別
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="newSex" id="newsexM" value="boy">
+                  <label class="form-check-label" for="newsexM">男</label>
+                  <br>
+                  <input class="form-check-input" type="radio" name="newSex" id="newsexF" value="girl">
+                  <label class="form-check-label" for="newsexF">女</label>                   
+                </div>                  
+              </div>
+              <button type="submit" class="btn btn-primary">確認</button>
+              </form>
+              
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="card-group">
 
       </div>      
@@ -156,38 +159,43 @@
   <script>
     var i;
     var count;
+    var pressedBtn;
     $(document).ready(function () {
-      for(i=1;i<=5;i++){
-        $('.card-group').append(   
-          '<div class="col-md-12">'+
-            '<div class="card border-primary">'+
-              '<div class="card-header" style="background-color: rgb(157, 215, 233)">'+
-                '林大美'+          
-              '</div>'+
-              '<div class="card-body" style="background-color: rgb(205, 238, 248)">'+
-                '可搭乘時間:'+
-                '<br>'+
-                '預定搭乘地點:'+
-                '<br>'+
-                '預定目的地:'+
-                '<br>'+
-                '聯絡方式:'+
-                '<br>'+
-                '是否備有安全帽:'+
-              '</div>'+
-              '<div class="card-footer" style="background-color: rgb(157, 215, 233)">'+
-                '<div style="text-align: center;">'+
-                  '評分: 星<br>'+
-                  '<button id="'+i+'" class="btn btn-primary btn-sm" onclick="sendRequest()" style="background-color: rgb(0, 0, 0); text-align: center;">發送請求</button>'+
-                '</div> '+         
-              '</div>'+
-            '</div>'+
-          '<div>'             
-        )
-      }
-      count=i;
-      });
-
+      $.ajax({
+        url : 'http://127.0.0.1:3000/matchOwner',
+        type : 'GET',
+        success:function(data){
+          $.each(data, function(index, item){
+            $('.card-group').append(   
+              '<div class="col-md-12">'+
+                '<div class="card border-primary">'+
+                  '<div class="card-header" style="background-color: rgb(157, 215, 233)">'+
+                    item.name+          
+                  '</div>'+
+                  '<div class="card-body" style="background-color: rgb(205, 238, 248)">'+
+                    '可搭乘時間:'+item.workingTime+
+                    '<br>'+
+                    '可接送地點:'+item.area+
+                    '<br>'+
+                    '聯絡方式:'+item.phone+
+                    '<br>'+
+                    '是否備有安全帽:'+item.helmet+
+                  '</div>'+
+                '<div class="card-footer" style="background-color: rgb(157, 215, 233)">'+
+                    '<div style="text-align: center;">'+
+                      '評分: 星<br>'+
+                      '<button id="'+index+'" name="sendButton" class="btn btn-primary btn-sm" onclick="sendRequest('+index+');window.setTimeout(setDisabled, 200000);setstr(180);" style="background-color: rgb(0, 0, 0); text-align: center;">發送請求</button>'+
+                    '</div> '+         
+                  '</div>'+
+                '</div>'+
+              '<div>'             
+            )
+            count=index;
+            alert(item.name);
+          })
+        }
+      })  
+    });
       function selectAnswer(){
         var s = $("[name='Sex']:checked").val();
         var h = $("[name='Helmet']:checked").val();
@@ -197,12 +205,25 @@
         alert(g);
         //var z = $('select').val();
       }
-      function sendRequest(){
+      function sendRequest(c){
         //alert(count);
         for(var j=1;j<=count-1;j++){
           document.getElementById(j).disabled=true;
+        }     
+        pressedBtn=c;
+      }
+      function setDisabled() {
+        for(var k=1;k<=count-1;k++){
+          document.getElementById(k).disabled = false;
         }
-        
+      }
+      function setstr(s) {
+          document.getElementById(pressedBtn).innerHTML=s; 
+          s -= 1;
+          if(s>=0){
+            setTimeout(setstr,1000,s);
+          }
+          else{document.getElementById(pressedBtn).innerHTML='發送請求';}
       }
   </script>
 </html>

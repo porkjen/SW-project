@@ -150,11 +150,11 @@ module.exports = class member{
 
     postMatchOwner(req, res, next){
     
-        LOCAL_IDENTITY.account = req.body.account;
+        //LOCAL_IDENTITY.account = req.body.account;
         var matchData = {
-            identity: req.body.identity,
-            status: req.body.status,
-            area: req.body.area
+            identity: LOCAL_IDENTITY.identity,
+            status: LOCAL_IDENTITY.status,
+            area: LOCAL_IDENTITY.area
         };
         
         matchOwner(matchData).then(result =>{

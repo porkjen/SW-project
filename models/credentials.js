@@ -3,5 +3,5 @@ module.exports = {
   gmail: {
     user: 'motorcyclesoftware@gmail.com',
     pass: 'lrgztclynjaoodva'
-  },
+  }
 };

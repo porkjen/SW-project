@@ -2,6 +2,7 @@ const insertNewData = require('../models/insertData_model');
 const inputDataByAcc = require('../models/updateData_model');
 const matchOwner = require('../models/matchOwner');
 const riderFilter = require('../models/riderFilter_model');
+const listPassengers = require('../models/listPassengers_model');
 
 var MongoClient = require('mongodb').MongoClient;
 var connectAddr = "mongodb+srv://victoria:cody97028@cluster17.mrmgdrw.mongodb.net/mydb?retryWrites=true&w=majority";
@@ -114,11 +115,7 @@ module.exports = class member{
 
         MongoClient.connect(connectAddr, function(err,db){
             if(err){
-                // res.json({
-                //     status: "連線失敗",
-                //     result: "fail to connect collection."
-                // });
-                return;
+                throw err;
             }
 
             var dbo = db.db('mydb');
@@ -129,19 +126,11 @@ module.exports = class member{
                 if(err){
                     console.log("[err] fail to connect collection." );
                     console.log(err);
-                    // res.json({
-                    //     status: "連線失敗",
-                    //     result: "fail to connect collection."
-                    // });
-                    return;
+                    throw err;
                 }else{
                     console.log("[succ] succ to connect collection." );
                     if(res[0] == null){
                         console.log("[err] fail to login (no found data)." );
-                        // res.json({
-                        //     status: "no found data",
-                        //     result: res[0]
-                        // });
                         return;
                     }
                     else{
@@ -149,10 +138,6 @@ module.exports = class member{
                         updateLocalVar(res[0]);
                         LOCAL_IDENTITY.status = "online";
                         inputDataByAcc(LOCAL_IDENTITY);
-                        // res.json({
-                        //     status: "succ to login",
-                        //     result: res[0]
-                        // });
                     }            
                 }
             });
@@ -236,47 +221,17 @@ module.exports = class member{
     }
 
     postFindPassenger(req, res, next){   //列出車主 mainPage 的乘客資料
-        
-        MongoClient.connect(connectAddr, function(err,db){
-            if(err){
-                console.log("資料庫連線失敗");
-
-                res.json({
-                    status : "連線失敗",
-                    result : "伺服器錯誤!"
-                });
-            }
-            var dbo = db.db('mydb');
-            console.log("[succ] connect to mongodb." );
-
-            dbo.collection('test').find({pairData: LOCAL_IDENTITY.name}).toArray((err, res) => {
-
-                if(err){
-                    console.log("[err] fail to connect collection." );
-                    console.log(err);
-                    res.json({
-                        status : "連線失敗",
-                        result : "伺服器錯誤!"
-                    });
-                }else{
-                    console.log("[succ] succ to connect collection." );
-                    if(res == []){
-                        console.log("[warn] no found passenger)." );
-                        res.json({
-                            status : "無訂單",
-                            result : []
-                        });
-                    }
-                    else{
-                        console.log("[succ] succ to find passenger." );
-                        res.json({
-                            status : "有訂單",
-                            result : res
-                        });
-                    }            
-                }
-            });
-        })
+        var passengerDataQuery = {pairData: LOCAL_IDENTITY.name};
+        listPassengers(passengerDataQuery).then(result =>{
+            res.json({
+                status: result.status,
+                result: result
+            })
+        },(err) => {
+            res.json({
+                result: err
+            })
+        });
     }
 
     postFindOwner(req, res, next){   //乘客送出訂單給車主

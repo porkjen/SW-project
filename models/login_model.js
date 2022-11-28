@@ -22,14 +22,16 @@ module.exports = async function memberLogin(memberData){
                 console.log(err);
                 result.status = "連線失敗"
                 result.err = "伺服器錯誤!"
-                reject(result);
+                reject(err);
                 return;
             }else{
                 if(res==null){
-                    reject(result);
+                    result.err = "沒有該帳號"
+                    resolve(result);
                 }
                 else{
                     result.loginMember = memberData;
+                    result.status = "登入成功"
                     resolve(result);
                 }            
             }

@@ -63,6 +63,7 @@ var PAIR_IDENTITY = {
     identity    : "unknown",                                //身分 (owner / passenger)
     findPair    : null                                      //乘客要找的車主姓名
 };
+
 function updatePairVar(pairData) { 
     PAIR_IDENTITY.account     = (pairData.account)     ? pairData.account      : PAIR_IDENTITY.account;    
     PAIR_IDENTITY.name        = (pairData.name)        ? pairData.name         : PAIR_IDENTITY.name;    
@@ -267,7 +268,7 @@ module.exports = class member{
         })
     }
 
-    postFindOwner(req, res, next){   //乘客被接單的車主資料
+    postFindOwner(req, res, next){   //乘客送出訂單給車主
         
         updateLocalVar({pairData : req.body.ownerName});
         MongoClient.connect(connectAddr, function(err,db){

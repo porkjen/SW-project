@@ -6,6 +6,9 @@ const riderFilter = require('../models/riderFilter_model');
 var MongoClient = require('mongodb').MongoClient;
 var connectAddr = "mongodb+srv://victoria:cody97028@cluster17.mrmgdrw.mongodb.net/mydb?retryWrites=true&w=majority";
 
+// sending email
+const emailService = require('../models/email_model');
+
 /*  global variables, for using the information conviniently.   
     password cannot be recorded in global variables for security. */
 var LOCAL_IDENTITY = {  
@@ -76,8 +79,6 @@ function updatePairVar(pairData) {
     PAIR_IDENTITY.findPair    = (pairData.findPair)    ? pairData.findPair     : PAIR_IDENTITY.findPair;
     console.log("[succ] update pair infomation successfully." );
 };
-
-
 
 
 module.exports = class member{
@@ -296,15 +297,22 @@ module.exports = class member{
                         console.log("[err] cannot find this owner." );
                         res.json({
                             status : "尋找失敗",
-                            result : res
+                            result : res[0]
                         });
                     }
                     else{
                         console.log("[succ] succ to find the owner." );
                         updatePairVar(res[0]);
+
+                        emailService.send(
+                            PAIR_IDENTITY.email,
+                            '海大共乘網 有新消息',
+                            '好像有訂單喔'
+                        );
+                        
                         res.json({
-                            status : "尋找成功",
-                            result : res
+                            status : "尋找成功, 送出 mail 成功",
+                            result : res[0]
                         });
                     }            
                 }

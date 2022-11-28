@@ -14,5 +14,6 @@ router.post('/changeOwnerLoc', MemberModifyMethod.postChangeInfo);
 router.post('/changePassengerInfo', MemberModifyMethod.postChangeInfo);
 router.post('/identityInfo', MemberModifyMethod.postChangeInfo);
 router.post('/riderFilter', MemberModifyMethod.postRiderFilter);
+router.post('/sendOrderToOwner', MemberModifyMethod.postFindOwner);
 
 module.exports = router;

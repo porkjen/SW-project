@@ -114,10 +114,10 @@ module.exports = class member{
 
         MongoClient.connect(connectAddr, function(err,db){
             if(err){
-                console.log("資料庫連線失敗");
-                result.status = "連線失敗"
-                result.err = "伺服器錯誤!"
-                reject(result);
+                // res.json({
+                //     status: "連線失敗",
+                //     result: "fail to connect collection."
+                // });
                 return;
             }
 
@@ -129,19 +129,30 @@ module.exports = class member{
                 if(err){
                     console.log("[err] fail to connect collection." );
                     console.log(err);
-                    result.status = "連線失敗";
-                    result.err = "伺服器錯誤!";
-                    throw err;
+                    // res.json({
+                    //     status: "連線失敗",
+                    //     result: "fail to connect collection."
+                    // });
+                    return;
                 }else{
                     console.log("[succ] succ to connect collection." );
                     if(res[0] == null){
                         console.log("[err] fail to login (no found data)." );
+                        // res.json({
+                        //     status: "no found data",
+                        //     result: res[0]
+                        // });
+                        return;
                     }
                     else{
                         console.log("[succ] succ to login." );
                         updateLocalVar(res[0]);
                         LOCAL_IDENTITY.status = "online";
                         inputDataByAcc(LOCAL_IDENTITY);
+                        // res.json({
+                        //     status: "succ to login",
+                        //     result: res[0]
+                        // });
                     }            
                 }
             });

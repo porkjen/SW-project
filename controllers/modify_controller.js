@@ -18,13 +18,8 @@ var LOCAL_IDENTITY = {
     email       : null,                                     //email
     gender      : "secret",                                 //性別 (male / female)
     license     : null,                                     //車牌號碼
-<<<<<<< HEAD
-    helmet      : "no",                                     //是否有安全帽 (yes / no)
-    area        : null,                                     //可接送地點 <Array> 
-=======
     helmet      : null,                                     //是否有安全帽 (yes / no)
     area        : null,                                     //可接送地點 <Array>
->>>>>>> e6c18075784092c912c35845ff8402715ff29f5e
     workingTime : null,                                     //可載客時間 <Array>
     other       : "No other condition or comment.",         //其他說明
     status      : "offline",                                //上線狀態 (online / busy / offline)
@@ -34,20 +29,6 @@ var LOCAL_IDENTITY = {
 /*  To avoid the data not changed to cover old data.  
     Must be called before call inputDataByAcc !!      */
 function updateLocalVar(identityData) { 
-<<<<<<< HEAD
-    LOCAL_IDENTITY.account     = (identityData.account)     ? identityData.account : LOCAL_IDENTITY.account;    
-    LOCAL_IDENTITY.name        = (identityData.name)        ? identityData.name : LOCAL_IDENTITY.name;    
-    LOCAL_IDENTITY.phone       = (identityData.phone)       ? identityData.phone : LOCAL_IDENTITY.phone;  
-    LOCAL_IDENTITY.email       = (identityData.email)       ? identityData.email : LOCAL_IDENTITY.email;  
-    LOCAL_IDENTITY.gender      = (identityData.gender)      ? identityData.gender : LOCAL_IDENTITY.gender;   
-    LOCAL_IDENTITY.license     = (identityData.license)     ? identityData.license : LOCAL_IDENTITY.license;
-    LOCAL_IDENTITY.helmet      = (identityData.helmet)      ? identityData.helmet : LOCAL_IDENTITY.helmet;
-    LOCAL_IDENTITY.area        = (identityData.area)    ? identityData.area : LOCAL_IDENTITY.area;
-    LOCAL_IDENTITY.workingTime = (identityData.workingTime) ? identityData.workingTime : LOCAL_IDENTITY.workingTime;
-    LOCAL_IDENTITY.other       = (identityData.other)       ? identityData.other : LOCAL_IDENTITY.other;
-    LOCAL_IDENTITY.status      = (identityData.status)      ? identityData.status : LOCAL_IDENTITY.status;
-    LOCAL_IDENTITY.identity    = (identityData.identity)    ? identityData.identity : LOCAL_IDENTITY.identity;;
-=======
     LOCAL_IDENTITY.account     = (identityData.account)     ? identityData.account      : LOCAL_IDENTITY.account;    
     LOCAL_IDENTITY.name        = (identityData.name)        ? identityData.name         : LOCAL_IDENTITY.name;    
     LOCAL_IDENTITY.phone       = (identityData.phone)       ? identityData.phone        : LOCAL_IDENTITY.phone;  
@@ -62,7 +43,6 @@ function updateLocalVar(identityData) {
     LOCAL_IDENTITY.status      = (identityData.status)      ? identityData.status       : LOCAL_IDENTITY.status;
     LOCAL_IDENTITY.findPair    = (identityData.findPair)    ? identityData.findPair     : LOCAL_IDENTITY.findPair;
     console.log("[succ] update local variable successfully." );
->>>>>>> e6c18075784092c912c35845ff8402715ff29f5e
 };
 
 
@@ -183,15 +163,9 @@ module.exports = class member{
     
         //LOCAL_IDENTITY.account = req.body.account;
         var matchData = {
-<<<<<<< HEAD
-            identity: req.body.identity,
-            status: req.body.status,
-            area: req.body.area
-=======
             identity: LOCAL_IDENTITY.identity,
             status: LOCAL_IDENTITY.status,
             area: LOCAL_IDENTITY.area
->>>>>>> e6c18075784092c912c35845ff8402715ff29f5e
         };
         
         matchOwner(matchData).then(result =>{
@@ -214,11 +188,7 @@ module.exports = class member{
             phone:              req.body.phone,             //電話
             email:              req.body.email,             //email
             gender:             req.body.gender,            //性別
-<<<<<<< HEAD
-            license:            req.body.licensePlateNum,   //車牌號碼
-=======
             license:            req.body.license,           //車牌號碼
->>>>>>> e6c18075784092c912c35845ff8402715ff29f5e
             area:               req.body.area,              //可接送地點
             workingTime:        req.body.workingTime,       //可載客時間
             helmet:             req.body.helmet,            //是否有安全帽

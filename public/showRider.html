@@ -166,12 +166,13 @@
         url : 'http://127.0.0.1:3000/matchOwner',
         type : 'GET',
         success:function(data){
+          count=data.result.length;
           for(var i=0;i<=data.result.length;i++){
             $('.card-group').append(   
               '<div class="col-md-12">'+
                 '<div class="card border-primary">'+
                   '<div class="card-header" style="background-color: rgb(157, 215, 233)">'+
-                    data.result[i].name+          
+                    data.result[i].name+
                   '</div>'+
                   '<div class="card-body" style="background-color: rgb(205, 238, 248)">'+
                     '性別:'+data.result[i].gender+
@@ -194,7 +195,6 @@
               '<div>'             
             )
           }
-          count=data.result.length;
         }
       })  
     });
@@ -208,14 +208,15 @@
         //var z = $('select').val();
       }
       function sendRequest(c){
-        //alert(count);
-        for(var j=0;j<=count;j++){
+        
+        for(var j=0;j<=count-1;j++){
           document.getElementById(j).disabled=true;
         }     
         pressedBtn=c;
+        alert(pressedBtn);
       }
       function setDisabled() {
-        for(var k=0;k<=count;k++){
+        for(var k=0;k<=count-1;k++){
           document.getElementById(k).disabled = false;
         }
       }

@@ -40,7 +40,8 @@
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                          <form method="post" action="http://127.0.0.1:3000/changeOwnerBasic">
+                          <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+                          <form method="post" action="http://127.0.0.1:3000/changeOwnerBasic" target="dummyframe">
                             <div class="change_info">
                               <label for="name">姓名:</label>
                               <input type="text" name="name" id="name">
@@ -48,9 +49,9 @@
                             <div class="change_info">
                               <label for="gender">性別:</label>
                               <select required name="gender" id="gender">
-                                  <option value="male">請選擇你的性別</option>
-                                  <option value="male">男</option>
-                                  <option value="female">女</option>
+                                  <option value="男性">請選擇你的性別</option>
+                                  <option value="男性">男</option>
+                                  <option value="女性">女</option>
                                 </select>
                             </div>
                             <div class="change_info">
@@ -64,10 +65,10 @@
                             <div class="change_info">
                               <p><label for="helmet">是否提供安全帽:</label>
                               <label>
-                                <input type="radio" value="yes" name="helmet" id="helmet">是
+                                <input type="radio" value="是" name="helmet" id="helmet">是
                               </label>
                               <label>
-                                <input type="radio" value="no" name="helmet" id="helmet" checked>否</p>
+                                <input type="radio" value="否" name="helmet" id="helmet" checked>否</p>
                               </label>
                             </div>
                             <div class="modal-footer">
@@ -88,7 +89,8 @@
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                          <form method="post" action="http://127.0.0.1:3000/changeOwnerTime">
+                          <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+                          <form method="post" action="http://127.0.0.1:3000/changeOwnerTime" target="dummyframe">
                             <h3>請選擇可接送的時段</h3>
                               <div class="change_time">
                                 <p><input type="checkbox" value="zero-one" name="workingTime">00:00-01:00&emsp;
@@ -135,16 +137,17 @@
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                          <form method="post" action="http://127.0.0.1:3000/changeOwnerLoc">
-                            <h4 class="location-title">可接受接送的區域</h4>
-                              <div class="change_location">
-                                <p><input type="checkbox" value="Zhongzheng" name="location" id="Zhongzheng" style="vertical-align:middle;">中正區<br></p>
-                                <p><input type="checkbox" value="Sinyi" name="location" id="Sinyi">信義區<br></p>
-                                <p><input type="checkbox" value="Ren-ai" name="location" id="Ren-ai">仁愛區<br></p>
-                                <p><input type="checkbox" value="Zhongshan" name="location" id="Zhongshan">中山區<br></p>
-                                <p><input type="checkbox" value="Anle" name="location" id="Anle">安樂區<br></p>
-                                <p><input type="checkbox" value="Nuannuan" name="location" id="Nuannuan">暖暖區<br></p>
-                                <p><input type="checkbox" value="Qidu" name="location" id="Qidu">七堵區<br></p>
+                          <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+                          <form method="post" action="http://127.0.0.1:3000/changeOwnerLoc" target="dummyframe">
+                            <h4 class="area-title">可接受接送的區域</h4>
+                              <div class="change_area">
+                                <p><input type="checkbox" value="Zhongzheng" name="area" id="Zhongzheng" style="vertical-align:middle;">中正區<br></p>
+                                <p><input type="checkbox" value="Sinyi" name="area" id="Sinyi">信義區<br></p>
+                                <p><input type="checkbox" value="Ren-ai" name="area" id="Ren-ai">仁愛區<br></p>
+                                <p><input type="checkbox" value="Zhongshan" name="area" id="Zhongshan">中山區<br></p>
+                                <p><input type="checkbox" value="Anle" name="area" id="Anle">安樂區<br></p>
+                                <p><input type="checkbox" value="Nuannuan" name="area" id="Nuannuan">暖暖區<br></p>
+                                <p><input type="checkbox" value="Qidu" name="area" id="Qidu">七堵區<br></p>
                               </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Close</button>

@@ -250,7 +250,8 @@ module.exports = class member{
     postRiderFilter(req, res, next){
         var filterData = {
             gender:     req.body.gender,
-            helmet:     req.body.helmet
+            helmet:     req.body.helmet,
+            area:       req.body.area
         }
         
         console.log("[filter] gender: " + filterData.gender);
@@ -273,6 +274,7 @@ module.exports = class member{
     postFindPassenger(req, res, next){   //列出車主 mainPage 的乘客資料
         var passengerDataQuery = {findPair: LOCAL_IDENTITY.name};
         findData(passengerDataQuery).then(result =>{
+            console.log(result);
             res.json({
                 status: result.status,
                 result: result
@@ -282,6 +284,7 @@ module.exports = class member{
                 result: err
             })
         });
+        
     }
 
     postFindOwner(req, res, next){   //乘客送出訂單給車主

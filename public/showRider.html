@@ -7,32 +7,9 @@
     <script src="./javascripts/showRider.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" href="./stylesheets/showRider_style.css">
     <script src="https://code.jquery.com/jquery-3.4.1.js"
             integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-    <style>
-        @import url(https://fonts.googleapis.com/css?family=Noto+Sans+TC);
-        *{
-            font-family: 'Noto Sans TC', sans-serif;
-        }
-        header{
-            text-align: center;
-            height: 130px;
-            background-color:rgb(157, 215, 233);
-            background-image: url("./images/sharing.png");
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
-        }
-        header .modal-body{
-          text-align: left;          
-        }
-        form{
-          margin: 10px;
-        }
-        .modal-body .btn{
-          width: 100%;
-        }
-    </style>
   </head>
   <body>
     <header>
@@ -126,26 +103,27 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-              <form action="http://127.0.0.1:3000/changePassengerInfo" method="post">
+              <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+              <form action="http://127.0.0.1:3000/changePassengerInfo" method="post" target="dummyframe">
                 <div class="input-group">
                 <span class="input-group-text" id="newName" style="width:112px;">姓名</span>
-                <input type="text" class="form-control" placeholder="新姓名" aria-label="Username" aria-describedby="newName" id="nN">
-              </div>     
-              <div class="input-group">
-                <span class="input-group-text" id="newPhonenumber" style="width:112px;">手機號碼</span>
-                <input type="text" class="form-control" aria-label="Username" aria-describedby="newPhonenumber" id="nP" pattern="[0-9]{10}">
-              </div>              
-              <div class="form-group">
-                性別
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="newSex" id="newsexM" value="男性">
-                  <label class="form-check-label" for="newsexM">男</label>
-                  <br>
-                  <input class="form-check-input" type="radio" name="newSex" id="newsexF" value="女性">
-                  <label class="form-check-label" for="newsexF">女</label>                   
-                </div>                  
-              </div>
-              <button type="submit" class="btn btn-primary">確認</button>
+                <input type="text" name="name" class="form-control" placeholder="新姓名" aria-label="Username" aria-describedby="newName" id="nN">
+                </div>     
+                <div class="input-group">
+                  <span class="input-group-text" id="newPhonenumber" style="width:112px;">手機號碼</span>
+                  <input type="text" name="phone" class="form-control" aria-label="Username" aria-describedby="newPhonenumber" id="nP" pattern="[0-9]{10}">
+                </div>              
+                <div class="form-group">
+                  性別
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" id="newsexM" value="男性">
+                    <label class="form-check-label" for="newsexM">男</label>
+                    <br>
+                    <input class="form-check-input" type="radio" name="gender" id="newsexF" value="女性">
+                    <label class="form-check-label" for="newsexF">女</label>                   
+                  </div>                  
+                </div>
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" onClick="window.location.reload();">確認</button>
               </form>
               
             </div>

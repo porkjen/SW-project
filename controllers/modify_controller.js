@@ -24,7 +24,7 @@ var LOCAL_IDENTITY = {
     workingTime : null,                                     //可載客時間 <Array>
     other       : "No other condition or comment.",         //其他說明
     status      : "offline",                                //上線狀態 (online / busy / offline)
-    identity    : "unknown",                                //身分 (owner / passenger)
+    identity    : null,                                     //身分 (owner / passenger)
     findPair    : null                                      //乘客要找的車主姓名 or 車主要找的乘客姓名
 };
 /*  To avoid the data not changed to cover old data.  
@@ -44,6 +44,23 @@ function updateLocalVar(identityData) {
     LOCAL_IDENTITY.status      = (identityData.status)      ? identityData.status       : LOCAL_IDENTITY.status;
     LOCAL_IDENTITY.findPair    = (identityData.findPair)    ? identityData.findPair     : LOCAL_IDENTITY.findPair;
     console.log("[succ] update local variable successfully." );
+};
+//clear all lacal identity info (use in log out or no found data)
+function clearLocalVar() { 
+    LOCAL_IDENTITY.account     = null,                            
+    LOCAL_IDENTITY.name        = null,                            
+    LOCAL_IDENTITY.phone       = null,                            
+    LOCAL_IDENTITY.email       = null,                            
+    LOCAL_IDENTITY.gender      = "secret",                        
+    LOCAL_IDENTITY.license     = null,                            
+    LOCAL_IDENTITY.helmet      = null,                            
+    LOCAL_IDENTITY.area        = null,                            
+    LOCAL_IDENTITY.workingTime = null,                            
+    LOCAL_IDENTITY.other       = "No other condition or comment.",
+    LOCAL_IDENTITY.identity    = "offline",                       
+    LOCAL_IDENTITY.status      = null,                            
+    LOCAL_IDENTITY.findPair    = null                             
+    console.log("[succ] clear local variable successfully." );
 };
 
 
@@ -81,6 +98,23 @@ function updatePairVar(pairData) {
     PAIR_IDENTITY.findPair    = (pairData.findPair)    ? pairData.findPair     : PAIR_IDENTITY.findPair;
     console.log("[succ] update pair infomation successfully." );
 };
+//clear all lacal identity info (use in log out or no found data)
+function clearPairVar() { 
+    LOCAL_IDENTITY.account     = null,                            
+    LOCAL_IDENTITY.name        = null,                            
+    LOCAL_IDENTITY.phone       = null,                            
+    LOCAL_IDENTITY.email       = null,                            
+    LOCAL_IDENTITY.gender      = "secret",                        
+    LOCAL_IDENTITY.license     = null,                            
+    LOCAL_IDENTITY.helmet      = null,                            
+    LOCAL_IDENTITY.area        = null,                            
+    LOCAL_IDENTITY.workingTime = null,                            
+    LOCAL_IDENTITY.other       = "No other condition or comment.",
+    LOCAL_IDENTITY.identity    = "offline",                       
+    LOCAL_IDENTITY.status      = null,                            
+    LOCAL_IDENTITY.findPair    = null                             
+    console.log("[succ] clear pair infomation successfully." );
+};
 
 
 module.exports = class member{
@@ -112,36 +146,51 @@ module.exports = class member{
             account:    req.body.account,
             password:   req.body.password
         };
-        console.log("singInData = " + JSON.stringify(signInData));
+        
+        findData(signInData).then(result => {
 
-        MongoClient.connect(connectAddr, function(err,db){
-            if(err){
-                throw err;
+            if(result.status == "succ"){
+                console.log("[succ] succ to login." );
+                updateLocalVar(result[0]);
+
+                LOCAL_IDENTITY.status = "online";
+                inputDataByAcc(LOCAL_IDENTITY);
+            }
+            else if(result.status == "no found"){
+                console.log("[err] fail to login (no found data)." );
+                clearLocalVar();
             }
 
-            var dbo = db.db('mydb');
+        },(err) => {
+            console.log("[err] login err." );
+            console.log(err);
+        });
+    }
 
-            console.log("[succ] connect to mongodb." );
+    getLogin(req, res, next){
+    
+        var signInData = {
+            account:    LOCAL_IDENTITY.account
+        };
+        findData(signInData).then(result => {
 
-            dbo.collection('test').find(signInData).toArray((err, res) => {
-                if(err){
-                    console.log("[err] fail to connect collection." );
-                    console.log(err);
-                    throw err;
-                }else{
-                    console.log("[succ] succ to connect collection." );
-                    if(res[0] == null){
-                        console.log("[err] fail to login (no found data)." );
-                        return;
-                    }
-                    else{
-                        console.log("[succ] succ to login." );
-                        updateLocalVar(res[0]);
-                        LOCAL_IDENTITY.status = "online";
-                        inputDataByAcc(LOCAL_IDENTITY);
-                    }            
-                }
-            });
+            if(result.status == "succ"){
+                console.log("[succ] succ to response login info." );
+            }
+            else if(result.status == "no found"){
+                console.log("[err] fail to response login info (no found data)." );
+            }
+            res.json({
+                status: result.status,
+                result: result
+            })
+
+        },(err) => {
+            console.log("[err] login err." );
+            res.json({
+                status: result.status,
+                result: err
+            })
         });
     }
 

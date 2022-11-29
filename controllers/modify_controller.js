@@ -273,6 +273,7 @@ module.exports = class member{
     postFindPassenger(req, res, next){   //列出車主 mainPage 的乘客資料
         var passengerDataQuery = {findPair: LOCAL_IDENTITY.name};
         findData(passengerDataQuery).then(result =>{
+            console.log(result);
             res.json({
                 status: result.status,
                 result: result
@@ -282,6 +283,7 @@ module.exports = class member{
                 result: err
             })
         });
+        
     }
 
     postFindOwner(req, res, next){   //乘客送出訂單給車主

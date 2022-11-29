@@ -286,7 +286,8 @@ module.exports = class member{
 
     postFindOwner(req, res, next){   //乘客送出訂單給車主
         
-        updateLocalVar({pairData : req.body.ownerName});
+        updateLocalVar({pairData : req.body.name});
+        console.log("pairData = " + req.body.name);
         MongoClient.connect(connectAddr, function(err,db){
             if(err){
                 console.log("資料庫連線失敗");

@@ -250,7 +250,8 @@ module.exports = class member{
     postRiderFilter(req, res, next){
         var filterData = {
             gender:     req.body.gender,
-            helmet:     req.body.helmet
+            helmet:     req.body.helmet,
+            area:       req.body.area
         }
         
         console.log("[filter] gender: " + filterData.gender);

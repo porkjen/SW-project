@@ -25,20 +25,19 @@ module.exports = async function findData(dataToFind){
                 if(err){
                     console.log("[err] fail to connect collection.");
                     res.json({
-                        status : "連線失敗",
+                        status : "err",
                         result : "伺服器錯誤!"
                     });
                     reject(err);
                 }
-                if(res == []) {
-                    console.log("[warn] no found data)." );
+                if(res.length == 0) {
+                    console.log("[err] no found data." );
                     res.status = "no found"
                 }
                 else {
                     console.log("[succ] succ to find data." );
                     res.status = "succ";
                 }
-                console.log(res);
                 resolve(res);
             });
             

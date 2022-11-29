@@ -2,7 +2,7 @@ const insertNewData = require('../models/insertData_model');
 const inputDataByAcc = require('../models/updateData_model');
 const matchOwner = require('../models/matchOwner');
 const riderFilter = require('../models/riderFilter_model');
-const listPassengers = require('../models/listPassengers_model');
+const findData = require('../models/findData_model');
 
 var MongoClient = require('mongodb').MongoClient;
 var connectAddr = "mongodb+srv://victoria:cody97028@cluster17.mrmgdrw.mongodb.net/mydb?retryWrites=true&w=majority";
@@ -112,6 +112,7 @@ module.exports = class member{
             account:    req.body.account,
             password:   req.body.password
         };
+        console.log("singInData = " + JSON.stringify(signInData));
 
         MongoClient.connect(connectAddr, function(err,db){
             if(err){
@@ -222,7 +223,7 @@ module.exports = class member{
 
     postFindPassenger(req, res, next){   //列出車主 mainPage 的乘客資料
         var passengerDataQuery = {findPair: LOCAL_IDENTITY.name};
-        listPassengers(passengerDataQuery).then(result =>{
+        findData(passengerDataQuery).then(result =>{
             res.json({
                 status: result.status,
                 result: result

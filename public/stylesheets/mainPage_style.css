@@ -18,6 +18,7 @@
         height: 100%;
         font-size: 1px;
     }
+
     .header-nav{
         width: 15vw;
         justify-content: right;
@@ -139,6 +140,10 @@ header{
     min-height: 80vh;
 }
 
+.reLoad{
+    float: right;
+    padding-right:5%;
+}
 
 .card{
     width: 25rem;
@@ -146,10 +151,6 @@ header{
 }
 
 
-
-button{
-    padding-right: 10px;
-}
 
 button:hover{
     cursor: pointer;

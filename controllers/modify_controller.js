@@ -275,8 +275,7 @@ module.exports = class member{
                 from:       from,
                 to:         result[0].email,
                 subject:    '海大共乘網 有您的新消息',
-                text:       '叮咚! 有新的訂單囉!',
-                html:       "<a href='http://127.0.0.1:3000/mainPage.html'>來去海大共乘網看看~</a>"
+                html:       "<p>叮咚! 有新的訂單囉!</p><br><a href='http://127.0.0.1:3000/mainPage.html'>來去海大共乘網看看~</a>"
             };
             transporter.sendMail(sendData).then(info => {
                 console.log("[succ] send mail.");

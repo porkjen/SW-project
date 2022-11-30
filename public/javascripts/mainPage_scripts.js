@@ -6,26 +6,13 @@ $(document).ready(function(){
       success: function(data){
           for(i = 0;i<5;i++){
             if(data.result[i]){
-<<<<<<< HEAD
-              console.log(data);
-              console.log(data.result[i].name);
-=======
               console.log(i);
->>>>>>> 5a4e47920afaf4a19dee945163bc05eaa5555102
                   $('.container').append(
                       '<div class="card" id="'+i+'">'+
                               '<div class="card-body">'+
                               '<h5 class="card-title">'+data.result[i].name+'</h5>'+
                               '<h6 class="card-subtitle mb-2 text-muted">'+data.result[i].gender+'</h6>'+
-<<<<<<< HEAD
-<<<<<<< HEAD
                               '<p class="card-text">'+'搭乘地點:'+'<br>'+'目的地:'+'<br>'+'其他資訊:'+'<br>'+data.result[i].other+'</p>'+
-=======
-                              '<p class="card-text">'+'搭乘地點:'+'<br>'+'目的地:'+'<br>'+'安全帽:'+data.result[i].helmet+'<br>'+'其他資訊:'+'<br>'+data.result[i].other+'</p>'+
->>>>>>> 5a4e47920afaf4a19dee945163bc05eaa5555102
-=======
-                              '<p class="card-text">'+'搭乘地點:'+'<br>'+'目的地:'+'<br>'+'其他資訊:'+'<br>'+data.result[i].other+'</p>'+
->>>>>>> 2c4aa1c41d39634e7ef5e636b19506b27fe9960e
                               '<button type="button" class="btn btn-outline-success" id="accept" onclick="getInfo('+i+')">接受</button>'+
                               '<button type="button" class="btn btn-outline-success" id="reject" onclick="removeCard('+i+')">拒絕</button>'+
                             '</div>'+

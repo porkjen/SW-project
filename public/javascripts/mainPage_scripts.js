@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  //$(".card-group").empty();
+  $(".container").empty();
   $.ajax({
       url: 'http://127.0.0.1:3000/listPassenger',
       type: 'get',
@@ -12,7 +12,7 @@ $(document).ready(function(){
                               '<div class="card-body">'+
                               '<h5 class="card-title">'+data.result[i].name+'</h5>'+
                               '<h6 class="card-subtitle mb-2 text-muted">'+data.result[i].gender+'</h6>'+
-                              '<p class="card-text">'+'搭乘地點:'+'<br>'+'目的地:'+'<br>'+'安全帽:'+data.result[i].helmet+'<br>'+'其他資訊:'+'<br>'+data.result[i].other+'</p>'+
+                              '<p class="card-text">'+'搭乘地點:'+'<br>'+'目的地:'+'<br>'+'其他資訊:'+'<br>'+data.result[i].other+'</p>'+
                               '<button type="button" class="btn btn-outline-success" id="accept" onclick="getInfo('+i+')">接受</button>'+
                               '<button type="button" class="btn btn-outline-success" id="reject" onclick="removeCard('+i+')">拒絕</button>'+
                             '</div>'+

@@ -5,14 +5,14 @@ $(document).ready(function(){
       type: 'get',
       success: function(data){
           for(i = 0;i<5;i++){
-            if(data.data[i]){
+            if(data.result[i]){
               console.log(i);
                   $('.container').append(
                       '<div class="card" id="'+i+'">'+
                               '<div class="card-body">'+
-                              '<h5 class="card-title">'+data.data[i].name+'</h5>'+
-                              '<h6 class="card-subtitle mb-2 text-muted">'+data.data[i].gender+'</h6>'+
-                              '<p class="card-text">'+'搭乘地點:'+'<br>'+'目的地:'+'<br>'+'安全帽:'+data.data[i].helmet+'<br>'+'其他資訊:'+'<br>'+data.data[i].other+'</p>'+
+                              '<h5 class="card-title">'+data.result[i].name+'</h5>'+
+                              '<h6 class="card-subtitle mb-2 text-muted">'+data.result[i].gender+'</h6>'+
+                              '<p class="card-text">'+'搭乘地點:'+'<br>'+'目的地:'+'<br>'+'安全帽:'+data.result[i].helmet+'<br>'+'其他資訊:'+'<br>'+data.result[i].other+'</p>'+
                               '<button type="button" class="btn btn-outline-success" id="accept" onclick="getInfo('+i+')">接受</button>'+
                               '<button type="button" class="btn btn-outline-success" id="reject" onclick="removeCard('+i+')">拒絕</button>'+
                             '</div>'+
@@ -77,7 +77,7 @@ function getInfo(num){
 
 
 
-function sendMail(n) {
+/*function sendMail(n) {
     fetch('', {
           body: n, // must match 'Content-Type' header
           cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached         
@@ -93,7 +93,7 @@ function sendMail(n) {
           console.log(n);
         });
 
-}
+}*/
 
 $('.close').click(function(){
     var $target = $(this).parent('div');

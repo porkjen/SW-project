@@ -6,14 +6,22 @@ $(document).ready(function(){
       success: function(data){
           for(i = 0;i<5;i++){
             if(data.result[i]){
+<<<<<<< HEAD
               console.log(data);
               console.log(data.result[i].name);
+=======
+              console.log(i);
+>>>>>>> 5a4e47920afaf4a19dee945163bc05eaa5555102
                   $('.container').append(
                       '<div class="card" id="'+i+'">'+
                               '<div class="card-body">'+
                               '<h5 class="card-title">'+data.result[i].name+'</h5>'+
                               '<h6 class="card-subtitle mb-2 text-muted">'+data.result[i].gender+'</h6>'+
+<<<<<<< HEAD
                               '<p class="card-text">'+'搭乘地點:'+'<br>'+'目的地:'+'<br>'+'其他資訊:'+'<br>'+data.result[i].other+'</p>'+
+=======
+                              '<p class="card-text">'+'搭乘地點:'+'<br>'+'目的地:'+'<br>'+'安全帽:'+data.result[i].helmet+'<br>'+'其他資訊:'+'<br>'+data.result[i].other+'</p>'+
+>>>>>>> 5a4e47920afaf4a19dee945163bc05eaa5555102
                               '<button type="button" class="btn btn-outline-success" id="accept" onclick="getInfo('+i+')">接受</button>'+
                               '<button type="button" class="btn btn-outline-success" id="reject" onclick="removeCard('+i+')">拒絕</button>'+
                             '</div>'+
@@ -78,23 +86,23 @@ function getInfo(num){
 
 
 
-function sendMail(n) {
-    fetch('', {
-          body: n, // must match 'Content-Type' header
-          cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached         
-          headers: {
-            'content-type': 'application/json'
-          },
-          method: 'POST', // *GET, POST, PUT, DELETE, etc.
-          mode: 'cors'
-        })
-        .then(response => console.log(n))
-        .then(response => response.json()) 
-        .catch(function() {
-          console.log(n);
-        });
+// function sendMail(n) {
+//     fetch('', {
+//           body: n, // must match 'Content-Type' header
+//           cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached         
+//           headers: {
+//             'content-type': 'application/json'
+//           },
+//           method: 'POST', // *GET, POST, PUT, DELETE, etc.
+//           mode: 'cors'
+//         })
+//         .then(response => console.log(n))
+//         .then(response => response.json()) 
+//         .catch(function() {
+//           console.log(n);
+//         });
 
-}
+// }
 
 $('.close').click(function(){
     var $target = $(this).parent('div');

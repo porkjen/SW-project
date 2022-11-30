@@ -22,7 +22,10 @@ module.exports = async function riderFilter(filterData){
             status:     "online",
             gender:     filterData.gender,
             helmet:     filterData.helmet
-          }).toArray((err, res) => {
+          },{$or: [
+            {area:       filterData.area},
+            {area:       [filterData.area]}
+          ]}).toArray((err, res) => {
               if(err){
                 console.log(err);
                 result.status = "連線失敗"

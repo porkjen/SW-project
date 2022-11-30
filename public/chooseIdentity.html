@@ -9,17 +9,20 @@
 </head>
 <body>
     <div class="container">
-      <div class="choice">
-        <h1>選擇你的身分</h1>
-        <div class="btn">
-          <a href="mainPage.html">
-            <button class="owner" id="owner" name="identity" value="owner">車主</button>
-          </a>
-          <a href="showRider.html">
-            <button class="passager" id="passager" name="identity" value="passenger">乘客</button>
-          </a>
+      <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+      <form method="post" action="http://127.0.0.1:3000/identityInfo" target="dummyframe">
+        <div class="choice">
+          <h1>選擇你的身分</h1>
+          <div class="btn">
+            <a href="mainPage.html">
+              <button class="owner" id="owner" name="identity" value="owner" type="submit" onclick="window.location.href = 'mainPage.html';">車主</button>
+            </a>
+            <a href="showRider.html">
+              <button class="passager" id="passager" name="identity" value="passenger" type="submit" onclick="window.location.href = 'showRider.html';">乘客</button>
+            </a>
+          </div>
         </div>
-      </div>
+      </form>
       <img class="arrow" src="./images/doodle-green-spiral-arrow.png">
       <img class="star" src="./images/doodle-orange-texture-star.png">
       <img class="pointed-star" src="./images/doodle-red-seven-pointed-star.png">

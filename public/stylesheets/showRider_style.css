@@ -1,0 +1,22 @@
+@import url(https://fonts.googleapis.com/css?family=Noto+Sans+TC);
+*{
+    font-family: 'Noto Sans TC', sans-serif;
+}
+header{
+    text-align: center;
+    height: 130px;
+    background-color:rgb(157, 215, 233);
+    background-image: url("../images/sharing.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+header .modal-body{
+    text-align: left;          
+}
+form{
+    margin: 10px;
+}
+.modal-body .btn{
+    width: 100%;
+}

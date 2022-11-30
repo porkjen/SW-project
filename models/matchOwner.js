@@ -8,19 +8,6 @@ module.exports = async function matchOwner(matchData){
     
     return new Promise (resolve=>{MongoClient.connect(url).then((client) => {
 
-<<<<<<< HEAD
-      const connect = client.db("mydb");
-    
-      // Connect to collection
-      const collection = connect.collection("test");
-    
-      // Fetching the records having //"area":matchData.area if needed
-      collection.find({ identity: "owner", status: "online"})
-          .toArray().then((ans) => {
-              console.log(ans);
-              resolve(ans);
-          });
-=======
         const connect = client.db("mydb");
 
         // Connect to collection
@@ -32,7 +19,6 @@ module.exports = async function matchOwner(matchData){
             console.log("[succ] succ to find owners online.");
             resolve(result);
         });
->>>>>>> 081cd708c9d0f535318c9e7b8cf874dfd08fb3c3
           
     }).catch((err) => {
             console.log(err.Message);

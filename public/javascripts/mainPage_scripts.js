@@ -77,23 +77,23 @@ function getInfo(num){
 
 
 
-/*function sendMail(n) {
-    fetch('', {
-          body: n, // must match 'Content-Type' header
-          cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached         
-          headers: {
-            'content-type': 'application/json'
-          },
-          method: 'POST', // *GET, POST, PUT, DELETE, etc.
-          mode: 'cors'
-        })
-        .then(response => console.log(n))
-        .then(response => response.json()) 
-        .catch(function() {
-          console.log(n);
-        });
+// function sendMail(n) {
+//     fetch('', {
+//           body: n, // must match 'Content-Type' header
+//           cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached         
+//           headers: {
+//             'content-type': 'application/json'
+//           },
+//           method: 'POST', // *GET, POST, PUT, DELETE, etc.
+//           mode: 'cors'
+//         })
+//         .then(response => console.log(n))
+//         .then(response => response.json()) 
+//         .catch(function() {
+//           console.log(n);
+//         });
 
-}*/
+// }
 
 $('.close').click(function(){
     var $target = $(this).parent('div');

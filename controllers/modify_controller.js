@@ -4,11 +4,21 @@ const matchOwner = require('../models/matchOwner');
 const riderFilter = require('../models/riderFilter_model');
 const findData = require('../models/findData_model');
 
-var MongoClient = require('mongodb').MongoClient;
-var connectAddr = "mongodb+srv://victoria:cody97028@cluster17.mrmgdrw.mongodb.net/mydb?retryWrites=true&w=majority";
-
 // sending email
-const emailService = require('../models/email_model');
+const credentials = require('../models/credentials')
+const from = credentials.gmail.user;
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    auth: {
+        user: from,
+        pass: credentials.gmail.pass,
+    },
+    tls: {
+        rejectUnauthorized: false
+    }
+});
 
 /*  global variables, for using the information conviniently.   
     password cannot be recorded in global variables for security. */
@@ -61,59 +71,6 @@ function clearLocalVar() {
     LOCAL_IDENTITY.status      = null,                            
     LOCAL_IDENTITY.findPair    = null                             
     console.log("[succ] clear local variable successfully." );
-};
-
-
-/*  global variables, for using the information conviniently.   
-    password cannot be recorded in global variables for security. */
-var PAIR_IDENTITY = {  
-    account     : null,                                     //帳號
-    name        : null,                                     //姓名
-    phone       : null,                                     //電話
-    email       : null,                                     //email
-    gender      : "secret",                                 //性別 (male / female)
-    license     : null,                                     //車牌號碼
-    helmet      : null,                                     //是否有安全帽 (yes / no)
-    area        : null,                                     //可接送地點 <Array>
-    workingTime : null,                                     //可載客時間 <Array>
-    other       : "No other condition or comment.",         //其他說明
-    status      : "offline",                                //上線狀態 (online / busy / offline)
-    identity    : "unknown",                                //身分 (owner / passenger)
-    findPair    : null                                      //乘客要找的車主姓名
-};
-
-function updatePairVar(pairData) { 
-    PAIR_IDENTITY.account     = (pairData.account)     ? pairData.account      : PAIR_IDENTITY.account;    
-    PAIR_IDENTITY.name        = (pairData.name)        ? pairData.name         : PAIR_IDENTITY.name;    
-    PAIR_IDENTITY.phone       = (pairData.phone)       ? pairData.phone        : PAIR_IDENTITY.phone;  
-    PAIR_IDENTITY.email       = (pairData.email)       ? pairData.email        : PAIR_IDENTITY.email;  
-    PAIR_IDENTITY.gender      = (pairData.gender)      ? pairData.gender       : PAIR_IDENTITY.gender;   
-    PAIR_IDENTITY.license     = (pairData.license)     ? pairData.license      : PAIR_IDENTITY.license;
-    PAIR_IDENTITY.helmet      = (pairData.helmet)      ? pairData.helmet       : PAIR_IDENTITY.helmet;
-    PAIR_IDENTITY.area        = (pairData.area)        ? pairData.area         : PAIR_IDENTITY.area;
-    PAIR_IDENTITY.workingTime = (pairData.workingTime) ? pairData.workingTime  : PAIR_IDENTITY.workingTime;
-    PAIR_IDENTITY.other       = (pairData.other)       ? pairData.other        : PAIR_IDENTITY.other;
-    PAIR_IDENTITY.identity    = (pairData.identity)    ? pairData.identity     : PAIR_IDENTITY.identity;
-    PAIR_IDENTITY.status      = (pairData.status)      ? pairData.status       : PAIR_IDENTITY.status;
-    PAIR_IDENTITY.findPair    = (pairData.findPair)    ? pairData.findPair     : PAIR_IDENTITY.findPair;
-    console.log("[succ] update pair infomation successfully." );
-};
-//clear all lacal identity info (use in log out or no found data)
-function clearPairVar() { 
-    LOCAL_IDENTITY.account     = null,                            
-    LOCAL_IDENTITY.name        = null,                            
-    LOCAL_IDENTITY.phone       = null,                            
-    LOCAL_IDENTITY.email       = null,                            
-    LOCAL_IDENTITY.gender      = "secret",                        
-    LOCAL_IDENTITY.license     = null,                            
-    LOCAL_IDENTITY.helmet      = null,                            
-    LOCAL_IDENTITY.area        = null,                            
-    LOCAL_IDENTITY.workingTime = null,                            
-    LOCAL_IDENTITY.other       = "No other condition or comment.",
-    LOCAL_IDENTITY.identity    = "offline",                       
-    LOCAL_IDENTITY.status      = null,                            
-    LOCAL_IDENTITY.findPair    = null                             
-    console.log("[succ] clear pair infomation successfully." );
 };
 
 
@@ -272,9 +229,12 @@ module.exports = class member{
     }
 
     postFindPassenger(req, res, next){   //列出車主 mainPage 的乘客資料
-        var passengerDataQuery = {findPair: LOCAL_IDENTITY.name};
+        var passengerDataQuery = {
+            identity: "passenger",
+            findPair: LOCAL_IDENTITY.name
+        };
         findData(passengerDataQuery).then(result =>{
-            console.log(result);
+            console.log("[succ] succ to list passengers.");
             res.json({
                 status: result.status,
                 result: result
@@ -284,60 +244,46 @@ module.exports = class member{
                 result: err
             })
         });
-        
     }
 
     postFindOwner(req, res, next){   //乘客送出訂單給車主
         
-        updateLocalVar({pairData : req.body.name});
-        console.log("pairData = " + req.body.name);
-        MongoClient.connect(connectAddr, function(err,db){
-            if(err){
-                console.log("資料庫連線失敗");
+        updateLocalVar({findPair : req.body.name});
+        inputDataByAcc(LOCAL_IDENTITY).then(result => {
+            res.json({
+                status: "findPair 成功",
+                result: result
+            })
+        },(err) => {
+            res.json({
+                status: "findPair 失敗",
+                result: err
+            })
+        });
 
-                res.json({
-                    status : "連線失敗",
-                    result : "伺服器錯誤!"
-                });
-            }
-            var dbo = db.db('mydb');
-            console.log("[succ] connect to mongodb." );
+        var myOwner = {
+            identity:   "owner", 
+            status:     "online",
+            name:       LOCAL_IDENTITY.findPair
+        }
 
-            dbo.collection('test').find({name: LOCAL_IDENTITY.pairData}).toArray((err, res) => {
+        findData(myOwner).then(result =>{
 
-                if(err){
-                    console.log("[err] fail to connect collection." );
-                    console.log(err);
-                    res.json({
-                        status : "連線失敗",
-                        result : "伺服器錯誤!"
-                    });
-                }else{
-                    console.log("[succ] succ to connect collection." );
-                    if(res[0] == null){
-                        console.log("[err] cannot find this owner." );
-                        res.json({
-                            status : "尋找失敗",
-                            result : res[0]
-                        });
-                    }
-                    else{
-                        console.log("[succ] succ to find the owner." );
-                        updatePairVar(res[0]);
+            console.log("[succ] succ to find the owner." );
 
-                        emailService.send(
-                            PAIR_IDENTITY.email,
-                            '海大共乘網 有新消息',
-                            '好像有訂單喔'
-                        );
-                        
-                        res.json({
-                            status : "尋找成功, 送出 mail 成功",
-                            result : res[0]
-                        });
-                    }            
-                }
-            });
-        })
+            var sendData = {
+                from:       from,
+                to:         result[0].email,
+                subject:    '海大共乘網 有您的新消息',
+                text:       '叮咚! 有新的訂單囉!',
+                html:       "<a href='http://127.0.0.1:3000/mainPage.html'>來去海大共乘網看看~</a>"
+            };
+            transporter.sendMail(sendData).then(info => {
+                console.log("[succ] send mail.");
+            }).catch(console.error);
+
+        },(err) => {
+            console.log("err: " + err);
+        });
     }
 }

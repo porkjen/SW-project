@@ -5,20 +5,17 @@ var data={};
 // Example POST method implementation:
 async function loadInfo() {
     // Default options are marked with *
-    const response = await fetch(uri) 
-    fetch(uri, {
+    const response = await fetch(uri, {
         method: "GET"
-    })
-    .then((response) => response.text())
+    }).then((response) => response.text())
     .then(function (responseJSON)  {
-       // do stuff with responseJSON here...
-       alert(responseJSON);
+       //do stuff with responseJSON here...
+       //alert(responseJSON);
     });
 
     if (!response){
-        throw new Error('eeerror');
+        throw new Error('fail to show riders');
     }
-    
     return response; // parses JSON response into native JavaScript objects
   }
 

@@ -10,32 +10,32 @@ module.exports = async function findData(dataToFind){
         MongoClient.connect(connectAddr).then((client, err) => {
 
             if(err){
-                console.log("[err] fail to connect mongodb.");
+                // console.log("[err] fail to connect mongodb.");
                 res.json({
                     status : "連線失敗",
-                    result : "伺服器錯誤!"
+                    result : "[err] fail to connect mongodb."
                 });
                 reject(err);
             }
-            console.log("[succ] succeed to connect mongodb.");
+            // console.log("[succ] succeed to connect mongodb.");
             const dbo = client.db("mydb");
 
             dbo.collection("test").find(dataToFind).toArray()
             .then((res, err) => {
                 if(err){
-                    console.log("[err] fail to connect collection.");
+                    // console.log("[err] fail to connect collection.");
                     res.json({
                         status : "err",
-                        result : "伺服器錯誤!"
+                        result : "[err] fail to connect collection."
                     });
                     reject(err);
                 }
                 if(res.length == 0) {
-                    console.log("[err] no found data." );
+                    console.log("[err] no found." );
                     res.status = "no found"
                 }
                 else {
-                    console.log("[succ] succ to find data." );
+                    console.log("[succ] succ to find." );
                     res.status = "succ";
                 }
                 resolve(res);

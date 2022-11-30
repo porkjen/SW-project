@@ -11,7 +11,7 @@
 <div class="img1"><img src="./images/reading-side.png"></div>
 <div class="container">
   <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
-  <form action="http://127.0.0.1:3000/passengerInfo" target="dummyframe" method="post">
+  <form action="http://127.0.0.1:3000/Passangerinfo" target="dummyframe" method="post">
     <div class="information" >
       <div class="page_title">個人資訊設定</div>
       <div class="info-group">
@@ -29,6 +29,10 @@
       <div class="info-group">
         <label for="phone">手機號碼</label>
         <input type="tel" required name="phone" id="telephone" pattern="[0-9]{10}" >
+      </div>
+      <div class="info-other">
+        <h3 class="area-title">其他需求</h3>
+        <input type="text" class="other_info" name="other" id="other" value="其他資訊...">
       </div>
       <button type="submit" onclick="window.location.href = 'SignIn.html';">Submit</button>
     </div>

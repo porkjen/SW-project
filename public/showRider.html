@@ -23,7 +23,7 @@
     <br>
     <div class="container">
       <!--篩選條件按鈕-->
-      <a href="#" type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#selectmodal" style="align-items: center;">篩選條件</a>
+      <a href="#" type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#selectmodal" style="align-items: center;" >篩選條件</a>
       <!--跳出視窗-->  
       <div class="modal fade" id="selectmodal">
         <div class="modal-dialog">
@@ -34,7 +34,8 @@
             </div>
             
             <div class="modal-body">
-              <form action="http://127.0.0.1:3000/riderFilter" method="post">
+              <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+              <form action="http://127.0.0.1:3000/riderFilter" method="post" target="dummyframe">
                 <div class="form-group1">
                   偏好車主性別
                   <div class="form-check">
@@ -86,7 +87,7 @@
                   <input type="text" class="form-control" placeholder="完整地址" aria-label="Username" aria-describedby="getOn" id="g">
                 </div>
                 <br>
-                <button type="submit" class="btn btn-primary">確認</button>
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" onclick="pickOwner();">確認</button>
               </form>      
             </div>
           </div>
@@ -199,7 +200,7 @@
           type : 'GET',
           success:function(data){
             name=JSON.stringify(data.result[c]);
-            alert(name);  
+            //alert(name);  
             post(name);       
           }       
         })
@@ -232,6 +233,46 @@
             setTimeout(setstr,1000,s);
           }
           else{document.getElementById(pressedBtn).innerHTML='發送請求';}
+      }
+      function pickOwner(){
+        $('.card-group').empty();
+        $.ajax({
+        url : 'http://127.0.0.1:3000/riderFilter',
+        type : 'GET',
+        success:function(data){ 
+          console.log("ooooooooooooo");      
+          count=data.result.length;
+          console.log(data);  
+          for(var i=0;i<data.result.length;i++){
+            $('.card-group').append(   
+              '<div class="col-md-12">'+
+                '<div class="card border-primary">'+
+                  '<div class="card-header" style="background-color: rgb(157, 215, 233)">'+
+                    data.result[i].name+
+                  '</div>'+
+                  '<div class="card-body" style="background-color: rgb(205, 238, 248)">'+
+                    '性別:'+data.result[i].gender+
+                    '<br>'+
+                    '可搭乘時間:'+data.result[i].workingTime+
+                    '<br>'+
+                    '可接送地點:'+data.result[i].area+
+                    '<br>'+
+                    '聯絡方式:'+data.result[i].phone+
+                    '<br>'+
+                    '是否備有安全帽:'+data.result[i].helmet+
+                  '</div>'+
+                '<div class="card-footer" style="background-color: rgb(157, 215, 233)">'+
+                    '<div style="text-align: center;">'+
+                      '評分: 星<br>'+
+                      '<button id="'+i+'" name="sendButton" class="btn btn-primary btn-sm" onclick="sendRequest('+i+');window.setTimeout(setDisabled, 208000);setstr(180);" style="background-color: rgb(0, 0, 0); text-align: center;">發送請求</button>'+
+                    '</div> '+         
+                  '</div>'+
+                '</div>'+
+              '<div>'             
+            )
+          }
+        }
+      })  
       }
   </script>
 </html>

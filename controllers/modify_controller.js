@@ -253,15 +253,17 @@ module.exports = class member{
             helmet:     req.body.helmet,
             area:       req.body.area
         }
-        
+       
         console.log("[filter] gender: " + filterData.gender);
 
         riderFilter(filterData).then(result => {
-            console.log("[note] this is filter")
+            console.log("[note] this is filter");
+            console.log(result);
             res.json({
                 status: "filt data 成功",
                 result: result
             })
+            
         },(err) => {
             console.log("[fail] fail to filt");
             res.json({

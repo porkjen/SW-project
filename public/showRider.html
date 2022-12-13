@@ -169,9 +169,9 @@
               '<div style="text-align: center;">'+
                 '評分: 星<br>'+
                 //'<button id="'+i+'" name="sendButton" class="btn btn-primary btn-sm" onclick="sendRequest('+i+');window.setTimeout(setDisabled, 208000);setstr(180);" style="background-color: rgb(0, 0, 0); text-align: center;">發送請求</button>'+
-                '<button id="'+i+'" name="sendButton" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#sendmodal" style="background-color: rgb(0, 0, 0); text-align: center;">發送請求</button>'+
+                '<button id="'+i+'" name="sendButton" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#sendmodal'+i+'" style="background-color: rgb(0, 0, 0); text-align: center;">發送請求</button>'+
                 '<!--發送請求彈出視窗-->'+
-                '<div class="modal fade" id="sendmodal">'+
+                '<div class="modal fade" id="sendmodal'+i+'">'+
                   '<div class="modal-dialog">'+
                     '<div class="modal-content">'+
                       '<div class="modal-header">'+
@@ -195,7 +195,7 @@
                           '</div>'+
                           '<br>'+
                           '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>'+
-                          '<button type="submit" onclick="sendRequest('+i+');window.setTimeout(setDisabled, 208000);setstr(180);" data-bs-dismiss="modal" class="btn btn-primary">確認發送</button>'+
+                          '<button type="submit" onclick="sendRequest('+i+');window.setTimeout(setDisabled, 208000);" data-bs-dismiss="modal" class="btn btn-primary">確認發送</button>'+
                         '</form>'+
                       '</div>'+
                     '</div>'+
@@ -221,6 +221,7 @@
 		}
 		function sendRequest(c){
 			pressedBtn = c;
+      alert(pressedBtn);
 			for(var j = 0; j <= count - 1; j++){
 			  document.getElementById(j).disabled = true;
 			}     

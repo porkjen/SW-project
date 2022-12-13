@@ -35,6 +35,7 @@ var LOCAL_IDENTITY = {
     workingTime : null,                                     //可載客時間 <Array>
     takingPlace : null,                                     //乘客上車地點
     takingTime  : null,                                     //搭乘時間
+    destination : null,                                     //目的地
     other       : "No other condition or comment.",         //其他說明
     status      : "offline",                                //上線狀態 (online / busy / offline)
     identityO   : null,                                     //身分 (owner / passenger)
@@ -55,6 +56,7 @@ function updateLocalVar(identityData) {
     LOCAL_IDENTITY.helmet      = (identityData.helmet)      ? identityData.helmet       : LOCAL_IDENTITY.helmet;
     LOCAL_IDENTITY.area        = (identityData.area)        ? identityData.area         : LOCAL_IDENTITY.area;
     LOCAL_IDENTITY.workingTime = (identityData.workingTime) ? identityData.workingTime  : LOCAL_IDENTITY.workingTime;
+    LOCAL_IDENTITY.destination = (identityData.destination) ? identityData.destination  : LOCAL_IDENTITY.destination;
     LOCAL_IDENTITY.takingPlace = (identityData.takingPlace)  ? identityData.takingPlace  : LOCAL_IDENTITY.takingPlace;
     LOCAL_IDENTITY.takingTime  = (identityData.takingTime)  ? identityData.takingTime   : LOCAL_IDENTITY.takingTime;
     LOCAL_IDENTITY.other       = (identityData.other)       ? identityData.other        : LOCAL_IDENTITY.other;
@@ -76,7 +78,8 @@ function clearLocalVar() {
     LOCAL_IDENTITY.license     = null,                            
     LOCAL_IDENTITY.helmet      = null,                            
     LOCAL_IDENTITY.area        = null,                            
-    LOCAL_IDENTITY.workingTime = null,  
+    LOCAL_IDENTITY.workingTime = null, 
+    LOCAL_IDENTITY.destination = null,  
     LOCAL_IDENTITY.takingPlace = null, 
     LOCAL_IDENTITY.takingTime  = null,                         
     LOCAL_IDENTITY.other       = "No other condition or comment.",
@@ -199,6 +202,7 @@ module.exports = class member{
             license:            req.body.license,           //車牌號碼
             area:               req.body.area,              //可接送地點
             workingTime:        req.body.workingTime,       //可載客時間
+            destination:        req.body.destination,       //目的地
             takingPlace:        req.body.takingPlace,       //乘客上車地點
             takingTime:         req.body.takingTime,        //可搭乘時間
             helmet:             req.body.helmet,            //是否有安全帽

@@ -14,7 +14,7 @@ module.exports = async function matchOwner(matchData){
         const collection = connect.collection("test");
 
         // Fetching the records having //"area":matchData.area if needed
-        collection.find({ identity: "owner", status: "online"}).toArray()
+        collection.find({ identityO: "owner", status: "online"}).toArray()
         .then((result) => {
             console.log("[succ] succ to find owners online.");
             resolve(result);

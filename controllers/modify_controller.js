@@ -32,6 +32,7 @@ var LOCAL_IDENTITY = {
     helmet      : null,                                     //是否有安全帽 (yes / no)
     area        : null,                                     //可接送地點 <Array>
     workingTime : null,                                     //可載客時間 <Array>
+    takingTime  : null,                                     //搭乘時間
     other       : "No other condition or comment.",         //其他說明
     status      : "offline",                                //上線狀態 (online / busy / offline)
     identity    : null,                                     //身分 (owner / passenger)
@@ -49,6 +50,7 @@ function updateLocalVar(identityData) {
     LOCAL_IDENTITY.helmet      = (identityData.helmet)      ? identityData.helmet       : LOCAL_IDENTITY.helmet;
     LOCAL_IDENTITY.area        = (identityData.area)        ? identityData.area         : LOCAL_IDENTITY.area;
     LOCAL_IDENTITY.workingTime = (identityData.workingTime) ? identityData.workingTime  : LOCAL_IDENTITY.workingTime;
+    LOCAL_IDENTITY.takingTime  = (identityData.takingTime)  ? identityData.takingTime   : LOCAL_IDENTITY.takingTime;
     LOCAL_IDENTITY.other       = (identityData.other)       ? identityData.other        : LOCAL_IDENTITY.other;
     LOCAL_IDENTITY.identity    = (identityData.identity)    ? identityData.identity     : LOCAL_IDENTITY.identity;
     LOCAL_IDENTITY.status      = (identityData.status)      ? identityData.status       : LOCAL_IDENTITY.status;
@@ -65,7 +67,8 @@ function clearLocalVar() {
     LOCAL_IDENTITY.license     = null,                            
     LOCAL_IDENTITY.helmet      = null,                            
     LOCAL_IDENTITY.area        = null,                            
-    LOCAL_IDENTITY.workingTime = null,                            
+    LOCAL_IDENTITY.workingTime = null,   
+    LOCAL_IDENTITY.takingTime  = null,                         
     LOCAL_IDENTITY.other       = "No other condition or comment.",
     LOCAL_IDENTITY.identity    = "offline",                       
     LOCAL_IDENTITY.status      = null,                            

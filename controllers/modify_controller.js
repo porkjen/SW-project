@@ -3,6 +3,7 @@ const inputDataByAcc = require('../models/updateData_model');
 const matchOwner = require('../models/matchOwner');
 const riderFilter = require('../models/riderFilter_model');
 const findData = require('../models/findData_model');
+const checkIdentify = require('../models/checkIdentify_model');
 
 // sending email
 const credentials = require('../models/credentials')
@@ -34,7 +35,8 @@ var LOCAL_IDENTITY = {
     workingTime : null,                                     //可載客時間 <Array>
     other       : "No other condition or comment.",         //其他說明
     status      : "offline",                                //上線狀態 (online / busy / offline)
-    identity    : null,                                     //身分 (owner / passenger)
+    identityO   : null,                                     //身分 (owner / passenger)
+    identityP : null,                                     //身分 (owner / passenger)
     findPair    : null                                      //乘客要找的車主姓名 or 車主要找的乘客姓名
 };
 /*  To avoid the data not changed to cover old data.  
@@ -50,7 +52,8 @@ function updateLocalVar(identityData) {
     LOCAL_IDENTITY.area        = (identityData.area)        ? identityData.area         : LOCAL_IDENTITY.area;
     LOCAL_IDENTITY.workingTime = (identityData.workingTime) ? identityData.workingTime  : LOCAL_IDENTITY.workingTime;
     LOCAL_IDENTITY.other       = (identityData.other)       ? identityData.other        : LOCAL_IDENTITY.other;
-    LOCAL_IDENTITY.identity    = (identityData.identity)    ? identityData.identity     : LOCAL_IDENTITY.identity;
+    LOCAL_IDENTITY.identityO    = (identityData.identityO)  ? identityData.identityO    : LOCAL_IDENTITY.identityO;
+    LOCAL_IDENTITY.identityP    = (identityData.identityP)  ? identityData.identityP    : LOCAL_IDENTITY.identityP;
     LOCAL_IDENTITY.status      = (identityData.status)      ? identityData.status       : LOCAL_IDENTITY.status;
     LOCAL_IDENTITY.findPair    = (identityData.findPair)    ? identityData.findPair     : LOCAL_IDENTITY.findPair;
     console.log("[succ] update local variable successfully." );
@@ -67,8 +70,9 @@ function clearLocalVar() {
     LOCAL_IDENTITY.area        = null,                            
     LOCAL_IDENTITY.workingTime = null,                            
     LOCAL_IDENTITY.other       = "No other condition or comment.",
-    LOCAL_IDENTITY.identity    = "offline",                       
-    LOCAL_IDENTITY.status      = null,                            
+    LOCAL_IDENTITY.identityO   = null,  
+    LOCAL_IDENTITY.identityP   = null,                       
+    LOCAL_IDENTITY.status      = "offline",                            
     LOCAL_IDENTITY.findPair    = null                             
     console.log("[succ] clear local variable successfully." );
 };
@@ -151,11 +155,11 @@ module.exports = class member{
         });
     }
 
-    postMatchOwner(req, res, next){
+    postMatchOwner(req, res, next){             //乘客頁面列出車主
     
         //LOCAL_IDENTITY.account = req.body.account;
         var matchData = {
-            identity: LOCAL_IDENTITY.identity,
+            identityP: LOCAL_IDENTITY.identityP,
             status: LOCAL_IDENTITY.status,
             area: LOCAL_IDENTITY.area
         };
@@ -186,7 +190,8 @@ module.exports = class member{
             helmet:             req.body.helmet,            //是否有安全帽
             other:              req.body.other,             //其他說明
             status:             req.body.status,            //上線狀態
-            identity:           req.body.identity
+            identityO:          req.body.identityO,
+            identityP:          req.body.identityP
         };
 
         updateLocalVar(changeData);
@@ -230,13 +235,30 @@ module.exports = class member{
 
     postFindPassenger(req, res, next){   //列出車主 mainPage 的乘客資料
         var passengerDataQuery = {
-            identity: "passenger",
+            identityP: "passenger",
             findPair: LOCAL_IDENTITY.name
         };
         findData(passengerDataQuery).then(result =>{
             console.log("[succ] succ to list passengers.");
             res.json({
                 status: result.status,
+                result: result
+            })
+        },(err) => {
+            res.json({
+                result: err
+            })
+        });
+    }
+
+    getCheckIdentify(req, res, next){   //列出車主 mainPage 的乘客資料
+        var findIdentify = {
+            account: LOCAL_IDENTITY.account
+        };
+        checkIdentify(findIdentify).then(result =>{
+            console.log("[succ] succ to check identify.");
+            console.log(result);
+            res.json({
                 result: result
             })
         },(err) => {

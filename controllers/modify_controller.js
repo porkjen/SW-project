@@ -275,7 +275,6 @@ module.exports = class member{
         };
         checkIdentify(findIdentify).then(result =>{
             console.log("[succ] succ to check identify.");
-            console.log(result);
             res.json({
                 result: result
             })

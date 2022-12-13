@@ -13,7 +13,7 @@ module.exports = async function riderFilter(filterData){
               result.err = "伺服器錯誤!"
               reject(result);
               return;
-          }
+            }
 
           var dbo = db.db("mydb");
 
@@ -42,7 +42,6 @@ module.exports = async function riderFilter(filterData){
                 console.log(res);
                 resolve(result);
               }
-              
                 console.log(res);
               }
               db.close();

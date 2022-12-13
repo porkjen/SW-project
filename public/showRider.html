@@ -133,23 +133,23 @@
       </div>
       <div class="card-group">
 
-      </div>      
-    </div>
-  </body>
-  <script>
-    var i;
-    var n ;
-    var count;
-    var pressedBtn;
-    var name;
-    $(document).ready(function () {
-      $.ajax({
-        url : 'http://127.0.0.1:3000/matchOwner',
-        type : 'GET',
-        success:function(data){
-          
-          count=data.result.length;
-          for(var i=0;i<data.result.length;i++){
+			</div>      
+		</div>
+	</body>	
+	<script>
+		var i;
+		var n ;
+		var count;
+		var pressedBtn;
+		var name;
+		$(document).ready(function () {
+		$.ajax({
+			url : 'http://127.0.0.1:3000/matchOwner',
+			type : 'GET',
+			success: function(data){
+			
+			count = data.result.length;
+			for(var i = 0; i < data.result.length; i++){
 
             $('.card-group').append(   
               '<div class="col-md-12">'+

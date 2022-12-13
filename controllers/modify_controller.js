@@ -37,7 +37,9 @@ var LOCAL_IDENTITY = {
     other       : "No other condition or comment.",         //其他說明
     status      : "offline",                                //上線狀態 (online / busy / offline)
     identityO   : null,                                     //身分 (owner / passenger)
-    identityP : null,                                     //身分 (owner / passenger)
+    identityP   : null,                                     //身分 (owner / passenger)
+    denyReason  : null,                                     //拒絕原因
+    remark      : null,                                     //備註
     findPair    : null                                      //乘客要找的車主姓名 or 車主要找的乘客姓名
 };
 /*  To avoid the data not changed to cover old data.  
@@ -54,10 +56,12 @@ function updateLocalVar(identityData) {
     LOCAL_IDENTITY.workingTime = (identityData.workingTime) ? identityData.workingTime  : LOCAL_IDENTITY.workingTime;
     LOCAL_IDENTITY.takingTime  = (identityData.takingTime)  ? identityData.takingTime   : LOCAL_IDENTITY.takingTime;
     LOCAL_IDENTITY.other       = (identityData.other)       ? identityData.other        : LOCAL_IDENTITY.other;
-    LOCAL_IDENTITY.identityO    = (identityData.identityO)  ? identityData.identityO    : LOCAL_IDENTITY.identityO;
-    LOCAL_IDENTITY.identityP    = (identityData.identityP)  ? identityData.identityP    : LOCAL_IDENTITY.identityP;
+    LOCAL_IDENTITY.identityO   = (identityData.identityO)   ? identityData.identityO    : LOCAL_IDENTITY.identityO;
+    LOCAL_IDENTITY.identityP   = (identityData.identityP)   ? identityData.identityP    : LOCAL_IDENTITY.identityP;
     LOCAL_IDENTITY.status      = (identityData.status)      ? identityData.status       : LOCAL_IDENTITY.status;
     LOCAL_IDENTITY.findPair    = (identityData.findPair)    ? identityData.findPair     : LOCAL_IDENTITY.findPair;
+    LOCAL_IDENTITY.denyReason  = (identityData.denyReason)  ? identityData.denyReason   : LOCAL_IDENTITY.denyReason;
+    LOCAL_IDENTITY.remark      = (identityData.remark)      ? identityData.remark       : LOCAL_IDENTITY.remark;
     console.log("[succ] update local variable successfully." );
 };
 //clear all lacal identity info (use in log out or no found data)
@@ -74,7 +78,9 @@ function clearLocalVar() {
     LOCAL_IDENTITY.takingTime  = null,                         
     LOCAL_IDENTITY.other       = "No other condition or comment.",
     LOCAL_IDENTITY.identityO   = null,  
-    LOCAL_IDENTITY.identityP   = null,                       
+    LOCAL_IDENTITY.identityP   = null,   
+    LOCAL_IDENTITY.denyReason  = null,  
+    LOCAL_IDENTITY.remark      = null,                     
     LOCAL_IDENTITY.status      = "offline",                            
     LOCAL_IDENTITY.findPair    = null                             
     console.log("[succ] clear local variable successfully." );
@@ -190,9 +196,12 @@ module.exports = class member{
             license:            req.body.license,           //車牌號碼
             area:               req.body.area,              //可接送地點
             workingTime:        req.body.workingTime,       //可載客時間
+            takingTime:         req.body.takingTime,        //可搭乘時間
             helmet:             req.body.helmet,            //是否有安全帽
             other:              req.body.other,             //其他說明
             status:             req.body.status,            //上線狀態
+            denyReason:         req.body.denyReason,        //拒絕原因
+            remark:             req.body.remark,            //備註
             identityO:          req.body.identityO,
             identityP:          req.body.identityP
         };

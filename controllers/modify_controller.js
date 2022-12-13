@@ -301,7 +301,7 @@ module.exports = class member{
         });
 
         var myOwner = {
-            identity:   "owner", 
+            identityO:   "owner", 
             status:     "online",
             name:       LOCAL_IDENTITY.findPair
         }

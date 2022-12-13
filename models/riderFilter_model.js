@@ -39,6 +39,7 @@ module.exports = async function riderFilter(filterData){
               else{
                 console.log("[filt] ayo");
                 result.filtedData = res;
+                console.log(res);
                 resolve(result);
               }
                 console.log(res);

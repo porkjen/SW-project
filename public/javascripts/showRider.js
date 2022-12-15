@@ -14,7 +14,7 @@ async function loadInfo() {
     });
 
     if (!response){
-        throw new Error('fail to show riders');
+        throw new Error("fail to show riders");
     }
     return response; // parses JSON response into native JavaScript objects
   }

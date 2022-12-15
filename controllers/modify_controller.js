@@ -3,6 +3,7 @@ const inputDataByAcc = require('../models/updateData_model');
 const matchOwner = require('../models/matchOwner');
 const riderFilter = require('../models/riderFilter_model');
 const findData = require('../models/findData_model');
+const checkIdentify = require('../models/checkIdentify_model');
 
 // sending email
 const credentials = require('../models/credentials')
@@ -33,9 +34,15 @@ var LOCAL_IDENTITY = {
     helmet      : null,                                     //是否有安全帽 (yes / no)
     area        : null,                                     //可接送地點 <Array>
     workingTime : null,                                     //可載客時間 <Array>
+    takingPlace : null,                                     //乘客上車地點
+    takingTime  : null,                                     //搭乘時間
+    destination : null,                                     //目的地
     other       : "No other condition or comment.",         //其他說明
     status      : "offline",                                //上線狀態 (online / busy / offline)
-    identity    : null,                                     //身分 (owner / passenger)
+    identityO   : null,                                     //身分 (owner / passenger)
+    identityP   : null,                                     //身分 (owner / passenger)
+    denyReason  : null,                                     //拒絕原因
+    remark      : null,                                     //備註
     findPair    : null                                      //乘客要找的車主姓名 or 車主要找的乘客姓名
 };
 /*  To avoid the data not changed to cover old data.  
@@ -50,10 +57,16 @@ function updateLocalVar(identityData) {
     LOCAL_IDENTITY.helmet      = (identityData.helmet)      ? identityData.helmet       : LOCAL_IDENTITY.helmet;
     LOCAL_IDENTITY.area        = (identityData.area)        ? identityData.area         : LOCAL_IDENTITY.area;
     LOCAL_IDENTITY.workingTime = (identityData.workingTime) ? identityData.workingTime  : LOCAL_IDENTITY.workingTime;
+    LOCAL_IDENTITY.destination = (identityData.destination) ? identityData.destination  : LOCAL_IDENTITY.destination;
+    LOCAL_IDENTITY.takingPlace = (identityData.takingPlace)  ? identityData.takingPlace  : LOCAL_IDENTITY.takingPlace;
+    LOCAL_IDENTITY.takingTime  = (identityData.takingTime)  ? identityData.takingTime   : LOCAL_IDENTITY.takingTime;
     LOCAL_IDENTITY.other       = (identityData.other)       ? identityData.other        : LOCAL_IDENTITY.other;
-    LOCAL_IDENTITY.identity    = (identityData.identity)    ? identityData.identity     : LOCAL_IDENTITY.identity;
+    LOCAL_IDENTITY.identityO   = (identityData.identityO)   ? identityData.identityO    : LOCAL_IDENTITY.identityO;
+    LOCAL_IDENTITY.identityP   = (identityData.identityP)   ? identityData.identityP    : LOCAL_IDENTITY.identityP;
     LOCAL_IDENTITY.status      = (identityData.status)      ? identityData.status       : LOCAL_IDENTITY.status;
     LOCAL_IDENTITY.findPair    = (identityData.findPair)    ? identityData.findPair     : LOCAL_IDENTITY.findPair;
+    LOCAL_IDENTITY.denyReason  = (identityData.denyReason)  ? identityData.denyReason   : LOCAL_IDENTITY.denyReason;
+    LOCAL_IDENTITY.remark      = (identityData.remark)      ? identityData.remark       : LOCAL_IDENTITY.remark;
     console.log("[succ] update local variable successfully." );
 };
 //clear all lacal identity info (use in log out or no found data)
@@ -66,10 +79,16 @@ function clearLocalVar() {
     LOCAL_IDENTITY.license     = null,                            
     LOCAL_IDENTITY.helmet      = null,                            
     LOCAL_IDENTITY.area        = null,                            
-    LOCAL_IDENTITY.workingTime = null,                            
+    LOCAL_IDENTITY.workingTime = null, 
+    LOCAL_IDENTITY.destination = null,  
+    LOCAL_IDENTITY.takingPlace = null, 
+    LOCAL_IDENTITY.takingTime  = null,                         
     LOCAL_IDENTITY.other       = "No other condition or comment.",
-    LOCAL_IDENTITY.identity    = "offline",                       
-    LOCAL_IDENTITY.status      = null,                            
+    LOCAL_IDENTITY.identityO   = null,  
+    LOCAL_IDENTITY.identityP   = null,   
+    LOCAL_IDENTITY.denyReason  = null,  
+    LOCAL_IDENTITY.remark      = null,                     
+    LOCAL_IDENTITY.status      = "offline",                            
     LOCAL_IDENTITY.findPair    = null                             
     console.log("[succ] clear local variable successfully." );
 };
@@ -152,11 +171,11 @@ module.exports = class member{
         });
     }
 
-    postMatchOwner(req, res, next){
+    postMatchOwner(req, res, next){             //乘客頁面列出車主
     
         //LOCAL_IDENTITY.account = req.body.account;
         var matchData = {
-            identity: LOCAL_IDENTITY.identity,
+            identityP: LOCAL_IDENTITY.identityP,
             status: LOCAL_IDENTITY.status,
             area: LOCAL_IDENTITY.area
         };
@@ -184,10 +203,16 @@ module.exports = class member{
             license:            req.body.license,           //車牌號碼
             area:               req.body.area,              //可接送地點
             workingTime:        req.body.workingTime,       //可載客時間
+            destination:        req.body.destination,       //目的地
+            takingPlace:        req.body.takingPlace,       //乘客上車地點
+            takingTime:         req.body.takingTime,        //可搭乘時間
             helmet:             req.body.helmet,            //是否有安全帽
             other:              req.body.other,             //其他說明
             status:             req.body.status,            //上線狀態
-            identity:           req.body.identity
+            denyReason:         req.body.denyReason,        //拒絕原因
+            remark:             req.body.remark,            //備註
+            identityO:          req.body.identityO,
+            identityP:          req.body.identityP
         };
 
         updateLocalVar(changeData);
@@ -211,15 +236,17 @@ module.exports = class member{
             helmet:     req.body.helmet,
             area:       req.body.area
         }
-        
+       
         console.log("[filter] gender: " + filterData.gender);
 
         riderFilter(filterData).then(result => {
-            console.log("[note] this is filter")
+            console.log("[note] this is filter");
+            console.log(result);
             res.json({
                 status: "filt data 成功",
                 result: result
             })
+            
         },(err) => {
             console.log("[fail] fail to filt");
             res.json({
@@ -231,13 +258,29 @@ module.exports = class member{
 
     postFindPassenger(req, res, next){   //列出車主 mainPage 的乘客資料
         var passengerDataQuery = {
-            identity: "passenger",
+            identityP: "passenger",
             findPair: LOCAL_IDENTITY.name
         };
         findData(passengerDataQuery).then(result =>{
             console.log("[succ] succ to list passengers.");
             res.json({
                 status: result.status,
+                result: result
+            })
+        },(err) => {
+            res.json({
+                result: err
+            })
+        });
+    }
+
+    getCheckIdentify(req, res, next){  
+        var findIdentify = {
+            account: LOCAL_IDENTITY.account
+        };
+        checkIdentify(findIdentify).then(result =>{
+            console.log("[succ] succ to check identify.");
+            res.json({
                 result: result
             })
         },(err) => {
@@ -263,7 +306,7 @@ module.exports = class member{
         });
 
         var myOwner = {
-            identity:   "owner", 
+            identityO:   "owner", 
             status:     "online",
             name:       LOCAL_IDENTITY.findPair
         }

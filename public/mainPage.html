@@ -30,6 +30,7 @@
                       <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal_1" data-bs-whatever="@mdo">修改個人資訊</button></li>
                       <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal_2" data-bs-whatever="@mdo">修改可載客時間</button></li>
                       <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal_3" data-bs-whatever="@mdo">修改可載客區域</button></li>
+                      <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal_4" data-bs-whatever="@mdo">上傳照片</button></li>
                     </ul>
                   
 
@@ -153,6 +154,28 @@
                             <div class="modal-footer">
                               <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Close</button>
                               <button type="submit" class="btn btn-outline-success" data-bs-dismiss="modal" onClick="window.location.reload();">確認</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal fade" id="exampleModal_4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">上傳照片</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+                          <form method="post" action="http://127.0.0.1:3000/upload" target="dummyframe">
+                            <div class="mb-3">
+                              <label for="formFileMultiple" class="form-label">放上你的機車照吧!</label>
+                              <input class="form-control" type="file" id="formFileMultiple" multiple>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="submit" class="btn btn-outline-success" data-bs-dismiss="modal">確認</button>
                             </div>
                           </form>
                         </div>

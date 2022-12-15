@@ -18,7 +18,7 @@ module.exports = async function riderFilter(filterData){
           var dbo = db.db("mydb");
 
           dbo.collection("test").find({
-            identity:   "owner",
+            identityO:   "owner",
             status:     "online",
             gender:     filterData.gender,
             helmet:     filterData.helmet
@@ -39,6 +39,7 @@ module.exports = async function riderFilter(filterData){
               else{
                 console.log("[filt] ayo");
                 result.filtedData = res;
+                console.log(res);
                 resolve(result);
               }
                 console.log(res);

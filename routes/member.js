@@ -20,4 +20,5 @@ router.get ('/listPassenger', MemberModifyMethod.postFindPassenger);    //車主
 router.get ('/matchOwner', MemberModifyMethod.postMatchOwner);           //乘客頁面列出車主
 router.get ('/showIdentify', MemberModifyMethod.getCheckIdentify);       //確認使用者的身分
 router.post('/rate', MemberModifyMethod.postRate);                       //新增評分
+
 module.exports = router;

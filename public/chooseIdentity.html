@@ -6,21 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./stylesheets/chooseIdentity_style.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="crossorigin="anonymous"></script>
+    <script src="./javascripts/changeInfo_scripts.js"></script>
     <title>Title</title>
 </head>
 <body>
     <div class="container">
       <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
-      <form method="post" action="http://127.0.0.1:3000/identityInfo" target="dummyframe">
+      <form method="post" action="http://127.0.0.1:3000/showIdentify" target="dummyframe">
         <div class="choice">
           <h1>選擇你的身分</h1>
           <div class="btn">
-            <a href="mainPage.html">
-              <button class="owner" id="owner" name="identity" value="owner" type="submit" onclick="window.location.href = 'mainPage.html';">車主</button>
-            </a>
-            <a href="showRider.html">
-              <button class="passager" id="passager" name="identity" value="passenger" type="submit" onclick="window.location.href = 'showRider.html';">乘客</button>
-            </a>
+              <button class="owner" id="owner" name="identityO" value="owner" type="submit" onclick="checkOwner()">車主</button>
+              <button class="passager" id="passager" name="identityP" value="passenger" type="submit" onclick="checkPassenger()">乘客</button>
           </div>
         </div>
       </form>

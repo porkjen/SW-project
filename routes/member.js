@@ -18,5 +18,6 @@ router.post('/riderFilter', MemberModifyMethod.postRiderFilter);        //乘客
 router.post('/sendOrderToOwner', MemberModifyMethod.postFindOwner);     //乘客送訂單給車主
 router.get ('/listPassenger', MemberModifyMethod.postFindPassenger);    //車主列出所有訂單
 router.get ('/matchOwner', MemberModifyMethod.postMatchOwner);           //乘客頁面列出車主
+router.get ('/showIdentify', MemberModifyMethod.getCheckIdentify);       //確認使用者的身分
 
 module.exports = router;

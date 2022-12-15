@@ -13,7 +13,7 @@
   <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
   <form action="http://127.0.0.1:3000/passengerInfo" target="dummyframe" method="post">
     <div class="information" >
-      <div class="page_title">個人資訊設定</div>
+      <div class="page_title">填寫乘客資訊</div>
       <div class="info-group">
         <label for="name">姓名</label>
         <input type="text" required name="name" id="name">
@@ -34,7 +34,7 @@
         <h3 class="area-title">其他需求</h3>
         <input type="text" class="other_info" name="other" id="other" value="其他資訊...">
       </div>
-      <button type="submit" onclick="window.location.href = 'SignIn.html';">Submit</button>
+      <button type="submit" name="identityP" value="passenger" onclick="window.location.href = 'SignIn.html';">Submit</button>
     </div>
   </form>
 </div>

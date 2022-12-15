@@ -230,17 +230,40 @@ module.exports = class member{
     }
 
     postRiderFilter(req, res, next){
+        var desData = {
+            // account:     "peanut",
+            // password:    "peanutPie",
+            account:     LOCAL_IDENTITY.account,
+            password:    LOCAL_IDENTITY.password,
+            destination: req.body.destination
+        };
+        // updateLocalVar(desData);
+        // inputDataByAcc(LOCAL_IDENTITY);
+        console.log("destination" + req.body.destination);
+
+        findData(desData).then(result => {
+            if(result.status == "succ"){
+                console.log("[account]" + result[0].account);
+                updateLocalVar(result[0]);
+                inputDataByAcc(LOCAL_IDENTITY);
+            }
+            else if(result.status == "no found"){
+                console.log("[err] fail to find." );
+                clearLocalVar();
+            }
+        });
         var filterData = {
+            /*name:       req.body.name,*/
             gender:     req.body.gender,
             helmet:     req.body.helmet,
-            area:       req.body.area
+            area:       req.body.area,
+            takingPlace:req.body.takingPlace
         }
        
         console.log("[filter] gender: " + filterData.gender);
 
         riderFilter(filterData).then(result => {
             console.log("[note] this is filter");
-            console.log(result);
             res.json({
                 status: "filt data 成功",
                 result: result

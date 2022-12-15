@@ -20,11 +20,14 @@ module.exports = async function riderFilter(filterData){
           dbo.collection("test").find({
             identityO:   "owner",
             status:     "online",
+            name:       filterData.name,
             gender:     filterData.gender,
             helmet:     filterData.helmet
           },{$or: [
             {area:       filterData.area},
-            {area:       [filterData.area]}
+            {area:       [filterData.area]},
+            {takingPlace: filterData.takingPlace},
+            {takingPlace:[filterData.takingPlace]}
           ]}).toArray((err, res) => {
               if(err){
                 console.log(err);
@@ -42,7 +45,6 @@ module.exports = async function riderFilter(filterData){
                 console.log(res);
                 resolve(result);
               }
-                console.log(res);
               }
               db.close();
             });

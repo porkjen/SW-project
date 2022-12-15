@@ -61,20 +61,6 @@
                 <br>    
                 <select class="form-select" aria-label="Default select example">
                   <option selected>目的地地區</option>
-                  <option value="仁愛區">仁愛區</option>
-                  <option value="中正區">中正區</option>
-                  <option value="信義區">信義區</option>
-                  <option value="中山區">中山區</option>
-                  <option value="安樂區">安樂區</option>
-                  <option value="七堵區">七堵區</option>
-                  <option value="暖暖區">暖暖區</option>
-                </select>          
-                <div class="input-group">                  
-                  <span class="input-group-text" id="destination">目的地</span>
-                  <input type="text" class="form-control" placeholder="完整地址" aria-label="Username" aria-describedby="destination" id="d">
-                </div>      
-                <select class="form-select" aria-label="Default select example">
-                  <option selected>乘車地區</option>
                   <option value="仁愛區" name="area">仁愛區</option>
                   <option value="中正區" name="area">中正區</option>
                   <option value="信義區" name="area">信義區</option>
@@ -82,13 +68,27 @@
                   <option value="安樂區" name="area">安樂區</option>
                   <option value="七堵區" name="area">七堵區</option>
                   <option value="暖暖區" name="area">暖暖區</option>
+                </select>          
+                <div class="input-group">                  
+                  <span class="input-group-text" id="destination">目的地</span>
+                  <input type="text" class="form-control" placeholder="完整地址" aria-label="Username" aria-describedby="destination" id="d" name="destination">
+                </div>      
+                <select class="form-select" aria-label="Default select example">
+                  <option selected>乘車地區</option>
+                  <option value="仁愛區" name="takingPlace">仁愛區</option>
+                  <option value="中正區" name="takingPlace">中正區</option>
+                  <option value="信義區" name="takingPlace">信義區</option>
+                  <option value="中山區" name="takingPlace">中山區</option>
+                  <option value="安樂區" name="takingPlace">安樂區</option>
+                  <option value="七堵區" name="takingPlace">七堵區</option>
+                  <option value="暖暖區" name="takingPlace">暖暖區</option>
                 </select>              
                 <div class="input-group">                  
                   <span class="input-group-text" id="getOn">乘車地點</span>
                   <input type="text" class="form-control" placeholder="完整地址" aria-label="Username" aria-describedby="getOn" id="g">
                 </div>
                 <br>
-                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" onclick="pickOwner();">確認</button>
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" >確認</button>
               </form>      
             </div>
           </div>

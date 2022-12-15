@@ -42,6 +42,9 @@ var LOCAL_IDENTITY = {
     identityP   : null,                                     //身分 (owner / passenger)
     denyReason  : null,                                     //拒絕原因
     remark      : null,                                     //備註
+    rateTotal   : 0,                                        //總評分
+    rateCount   : 0,                                        //評分數量
+    comment     : null,                                     //評論
     findPair    : null                                      //乘客要找的車主姓名 or 車主要找的乘客姓名
 };
 /*  To avoid the data not changed to cover old data.  
@@ -65,6 +68,9 @@ function updateLocalVar(identityData) {
     LOCAL_IDENTITY.status      = (identityData.status)      ? identityData.status       : LOCAL_IDENTITY.status;
     LOCAL_IDENTITY.findPair    = (identityData.findPair)    ? identityData.findPair     : LOCAL_IDENTITY.findPair;
     LOCAL_IDENTITY.denyReason  = (identityData.denyReason)  ? identityData.denyReason   : LOCAL_IDENTITY.denyReason;
+    LOCAL_IDENTITY.rateTotal   = (identityData.rateTl)      ? identityData.eTotal       : LOCAL_IDENTITY.rateTotal;
+    LOCAL_IDENTITY.rateCount   = (identityData.rateCount)   ? identityData.rateCoun     : LOCAL_IDENTITY.rateount;
+    LOCAL_IDENTITY.comment     = (identityData.comment)     ? identityData.comment      : LOCAL_IDENTITY.commet ;
     LOCAL_IDENTITY.remark      = (identityData.remark)      ? identityData.remark       : LOCAL_IDENTITY.remark;
     console.log("[succ] update local variable successfully." );
 };
@@ -86,7 +92,10 @@ function clearLocalVar() {
     LOCAL_IDENTITY.identityO   = null,  
     LOCAL_IDENTITY.identityP   = null,   
     LOCAL_IDENTITY.denyReason  = null,  
-    LOCAL_IDENTITY.remark      = null,                     
+    LOCAL_IDENTITY.remark      = null,       
+    LOCAL_IDENTITY.rateCount   = 0,   
+    LOCAL_IDENTITY.rateTotal   = 0,  
+    LOCAL_IDENTITY.comment     = null,                 
     LOCAL_IDENTITY.status      = "offline",                            
     LOCAL_IDENTITY.findPair    = null                             
     console.log("[succ] clear local variable successfully." );
@@ -276,6 +285,22 @@ module.exports = class member{
                 result: err
             })
         });
+    }
+
+    postUploadPhoto(req, res, next){        //上傳照片
+        upload(req, res, async () => {
+            const client = new ImgurClient({
+              clientId: process.env.IMGUR_CLIENTID,
+              clientSecret: process.env.IMGUR_CLIENT_SECRET,
+              refreshToken: process.env.IMGUR_REFRESH_TOKEN,
+            });
+            const response = await client.upload({
+                image: req.files[0].buffer.toString('base64'),
+                type: 'base64',
+                album: process.env.IMGUR_ALBUM_ID
+              });
+              res.send({ url: response.data.link });
+            })
     }
 
     postFindPassenger(req, res, next){   //列出車主 mainPage 的乘客資料

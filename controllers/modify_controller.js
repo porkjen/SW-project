@@ -8,6 +8,7 @@ const findData = require('../models/findData_model');
 const credentials = require('../models/credentials')
 const from = credentials.gmail.user;
 const nodemailer = require('nodemailer');
+const rate = require('../models/rate');
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
@@ -285,4 +286,29 @@ module.exports = class member{
             console.log("err: " + err);
         });
     }
+
+    postRate(req, res, next){                               //新增評分
+        
+        var rateData = {
+            account : LOCAL_IDENTITY.account,
+            totalRate : LOCAL_IDENTITY.totalRate,
+            rateCount : LOCAL_IDENTITY.rateCount,
+            comment : LOCAL_IDENTITY.comment,
+            rate : req.body.rate,
+            newComment : req.body.comment
+        };
+
+        rate(rateData).then(result =>{
+            res.json({
+                status: "rating 成功",
+                result: result
+            })
+        },(err) => {
+            res.json({
+                result: err
+            })
+        })
+    }
+
+
 }

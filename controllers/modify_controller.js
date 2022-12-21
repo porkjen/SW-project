@@ -9,6 +9,7 @@ const rate = require('../models/rate');
 const credentials = require('../models/credentials')
 const from = credentials.gmail.user;
 const nodemailer = require('nodemailer');
+const rate = require('../models/rate');
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
@@ -416,6 +417,22 @@ module.exports = class member{
                 returnArray[i] = returnCompenent;
             }
         }
+    }
+
+    postUploadPhoto(req, res, next){        //上傳照片
+        upload(req, res, async () => {
+            const client = new ImgurClient({
+              clientId: process.env.IMGUR_CLIENTID,
+              clientSecret: process.env.IMGUR_CLIENT_SECRET,
+              refreshToken: process.env.IMGUR_REFRESH_TOKEN,
+            });
+            const response = await client.upload({
+                image: req.files[0].buffer.toString('base64'),
+                type: 'base64',
+                album: process.env.IMGUR_ALBUM_ID
+              });
+              res.send({ url: response.data.link });
+            })
     }
 
     postUploadPhoto(req, res, next){        //上傳照片

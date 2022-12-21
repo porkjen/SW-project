@@ -1,7 +1,7 @@
 var MongoClient = require('mongodb').MongoClient;
 var connectAddr = "mongodb+srv://victoria:cody97028@cluster17.mrmgdrw.mongodb.net/mydb?retryWrites=true&w=majority";
 
-module.exports = function inputDataByAcc(inputData){
+module.exports = function inputDataByAcc(inputData, ucollection){
 
     let result = {};
     return new Promise((resolve, reject) =>{
@@ -16,7 +16,7 @@ module.exports = function inputDataByAcc(inputData){
 
             var dbo = db.db('mydb');
             
-            dbo.collection('test').updateOne({account:inputData.account}, {$set:inputData}, {upsert:true});
+            dbo.collection(ucollection).updateOne({account:inputData.account}, {$set:inputData}, {upsert:true});
             resolve(result);
         })
     })

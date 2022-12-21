@@ -3,8 +3,8 @@ const inputDataByAcc = require('../models/updateData_model');
 const matchOwner = require('../models/matchOwner');
 const riderFilter = require('../models/riderFilter_model');
 const findData = require('../models/findData_model');
-const checkIdentify = require('../models/checkIdentify_model');
-
+const findOneData = require('../models/findOneData_model');
+const rate = require('../models/rate');
 // sending email
 const credentials = require('../models/credentials')
 const from = credentials.gmail.user;
@@ -23,69 +23,106 @@ const transporter = nodemailer.createTransport({
 
 /*  global variables, for using the information conviniently.   
     password cannot be recorded in global variables for security. */
-var LOCAL_IDENTITY = {  
+var LOCAL_INFO = {  
     account     : null,                                     //帳號
     name        : null,                                     //姓名
     phone       : null,                                     //電話
     email       : null,                                     //email
+    identity    : null,                                      //上線身分 (owner / passenger)
+    findPair    : null                                      //車主要找的乘客姓名 or 乘客要找的車主姓名
+};
+
+var LOCAL_O_DATA = {  
+    account     : null,                                     //帳號
+    status      : "offline",                                //上線狀態 (online / busy / offline)
     gender      : "secret",                                 //性別 (male / female)
     license     : null,                                     //車牌號碼
     helmet      : null,                                     //是否有安全帽 (yes / no)
     area        : null,                                     //可接送地點 <Array>
     workingTime : null,                                     //可載客時間 <Array>
-    takingPlace : null,                                     //乘客上車地點
-    takingTime  : null,                                     //搭乘時間
     other       : "No other condition or comment.",         //其他說明
-    status      : "offline",                                //上線狀態 (online / busy / offline)
-    identityO   : null,                                     //身分 (owner / passenger)
-    identityP   : null,                                     //身分 (owner / passenger)
     denyReason  : null,                                     //拒絕原因
     remark      : null,                                     //備註
-    findPair    : null                                      //乘客要找的車主姓名 or 車主要找的乘客姓名
+    rateTotal   : 0,                                        //總評分	
+    rateCount   : 0,                                        //評分數量	
+    comment     : null,                                     //評論
 };
+
+var LOCAL_P_DATA = {  
+    account     : null,                                     //帳號
+    gender      : "secret",                                 //性別 (male / female)
+    helmet      : null,                                     //是否有安全帽 (yes / no)
+    takingTime  : null,                                     //搭乘時間
+    takingPlace : null,                                     //乘客上車地點
+    destination : null,                                     //目的地
+    other       : "No other condition or comment.",         //其他說明
+    remark      : null,                                     //備註
+};
+
 /*  To avoid the data not changed to cover old data.  
     Must be called before call inputDataByAcc !!      */
-function updateLocalVar(identityData) { 
-    LOCAL_IDENTITY.account     = (identityData.account)     ? identityData.account      : LOCAL_IDENTITY.account;    
-    LOCAL_IDENTITY.name        = (identityData.name)        ? identityData.name         : LOCAL_IDENTITY.name;    
-    LOCAL_IDENTITY.phone       = (identityData.phone)       ? identityData.phone        : LOCAL_IDENTITY.phone;  
-    LOCAL_IDENTITY.email       = (identityData.email)       ? identityData.email        : LOCAL_IDENTITY.email;  
-    LOCAL_IDENTITY.gender      = (identityData.gender)      ? identityData.gender       : LOCAL_IDENTITY.gender;   
-    LOCAL_IDENTITY.license     = (identityData.license)     ? identityData.license      : LOCAL_IDENTITY.license;
-    LOCAL_IDENTITY.helmet      = (identityData.helmet)      ? identityData.helmet       : LOCAL_IDENTITY.helmet;
-    LOCAL_IDENTITY.area        = (identityData.area)        ? identityData.area         : LOCAL_IDENTITY.area;
-    LOCAL_IDENTITY.workingTime = (identityData.workingTime) ? identityData.workingTime  : LOCAL_IDENTITY.workingTime;
-    LOCAL_IDENTITY.takingPlace = (identityData.takingPlace)  ? identityData.takingPlace  : LOCAL_IDENTITY.takingPlace;
-    LOCAL_IDENTITY.takingTime  = (identityData.takingTime)  ? identityData.takingTime   : LOCAL_IDENTITY.takingTime;
-    LOCAL_IDENTITY.other       = (identityData.other)       ? identityData.other        : LOCAL_IDENTITY.other;
-    LOCAL_IDENTITY.identityO   = (identityData.identityO)   ? identityData.identityO    : LOCAL_IDENTITY.identityO;
-    LOCAL_IDENTITY.identityP   = (identityData.identityP)   ? identityData.identityP    : LOCAL_IDENTITY.identityP;
-    LOCAL_IDENTITY.status      = (identityData.status)      ? identityData.status       : LOCAL_IDENTITY.status;
-    LOCAL_IDENTITY.findPair    = (identityData.findPair)    ? identityData.findPair     : LOCAL_IDENTITY.findPair;
-    LOCAL_IDENTITY.denyReason  = (identityData.denyReason)  ? identityData.denyReason   : LOCAL_IDENTITY.denyReason;
-    LOCAL_IDENTITY.remark      = (identityData.remark)      ? identityData.remark       : LOCAL_IDENTITY.remark;
-    console.log("[succ] update local variable successfully." );
+function updateLocalInfo(identityData) { 
+    LOCAL_INFO.account  = (identityData.account)  ? identityData.account  : LOCAL_INFO.account;    
+    LOCAL_INFO.name     = (identityData.name)     ? identityData.name     : LOCAL_INFO.name;    
+    LOCAL_INFO.phone    = (identityData.phone)    ? identityData.phone    : LOCAL_INFO.phone;  
+    LOCAL_INFO.email    = (identityData.email)    ? identityData.email    : LOCAL_INFO.email;  
+    LOCAL_INFO.identity = (identityData.identity) ? identityData.identity : LOCAL_INFO.identity;   
+    LOCAL_INFO.findPair = (identityData.findPair) ? identityData.findPair : LOCAL_INFO.findPair;   
+    
+    console.log("[succ] update local info successfully." );
 };
+function updateLocalOData(ownerData) { 
+    LOCAL_O_DATA.account     = (ownerData.account)     ? ownerData.account      : LOCAL_O_DATA.account;
+    LOCAL_O_DATA.status      = (ownerData.status)      ? ownerData.status       : LOCAL_O_DATA.status;       
+    LOCAL_O_DATA.gender      = (ownerData.gender && ownerData.gender != "null")      ? ownerData.gender       : LOCAL_O_DATA.gender;   
+    LOCAL_O_DATA.license     = (ownerData.license)     ? ownerData.license      : LOCAL_O_DATA.license;
+    LOCAL_O_DATA.helmet      = (ownerData.helmet)      ? ownerData.helmet       : LOCAL_O_DATA.helmet;
+    LOCAL_O_DATA.area        = (ownerData.area)        ? ownerData.area         : LOCAL_O_DATA.area;
+    LOCAL_O_DATA.workingTime = (ownerData.workingTime) ? ownerData.workingTime  : LOCAL_O_DATA.workingTime;
+    LOCAL_O_DATA.other       = (ownerData.other)       ? ownerData.other        : LOCAL_O_DATA.other;
+    LOCAL_O_DATA.denyReason  = (ownerData.denyReason)  ? ownerData.denyReason   : LOCAL_O_DATA.denyReason;
+    LOCAL_O_DATA.rateTotal    = (ownerData.rateTotal ) ? ownerData.rateTotal    : LOCAL_O_DATA.rateTotal   ;
+    LOCAL_O_DATA.rateCount    = (ownerData.rateCount ) ? ownerData.rateCount    : LOCAL_O_DATA.rateCount   ;
+    LOCAL_O_DATA.comment      = (ownerData.comment   ) ? ownerData.comment      : LOCAL_O_DATA.comment     ;
+    console.log("[succ] update local owner data successfully." );
+};
+function updateLocalPData(passengerData) { 
+    LOCAL_P_DATA.account      = (passengerData.account     ) ? passengerData.account     : LOCAL_P_DATA.account     ;
+    LOCAL_P_DATA.gender       = (passengerData.gender && passengerData.gender != "null") ? passengerData.gender    : LOCAL_P_DATA.gender        ;   
+    LOCAL_P_DATA.helmet       = (passengerData.helmet      ) ? passengerData.helmet      : LOCAL_P_DATA.helmet      ;
+    LOCAL_P_DATA.takingTime   = (passengerData.takingTime  ) ? passengerData.takingTime  : LOCAL_P_DATA.takingTime  ;
+    LOCAL_P_DATA.takingPlace  = (passengerData.takingPlace ) ? passengerData.takingPlace : LOCAL_P_DATA.takingPlace ;
+    LOCAL_P_DATA.destination  = (passengerData.destination ) ? passengerData.destination : LOCAL_P_DATA.destination ;
+    LOCAL_P_DATA.other        = (passengerData.other       ) ? passengerData.other       : LOCAL_P_DATA.other       ;
+    LOCAL_P_DATA.remark       = (passengerData.remark      ) ? passengerData.remark      : LOCAL_P_DATA.remark      ;
+    console.log("[succ] update local passenger data successfully." );
+};
+
 //clear all lacal identity info (use in log out or no found data)
 function clearLocalVar() { 
-    LOCAL_IDENTITY.account     = null,                            
-    LOCAL_IDENTITY.name        = null,                            
-    LOCAL_IDENTITY.phone       = null,                            
-    LOCAL_IDENTITY.email       = null,                            
-    LOCAL_IDENTITY.gender      = "secret",                        
-    LOCAL_IDENTITY.license     = null,                            
-    LOCAL_IDENTITY.helmet      = null,                            
-    LOCAL_IDENTITY.area        = null,                            
-    LOCAL_IDENTITY.workingTime = null,  
-    LOCAL_IDENTITY.takingPlace = null, 
-    LOCAL_IDENTITY.takingTime  = null,                         
-    LOCAL_IDENTITY.other       = "No other condition or comment.",
-    LOCAL_IDENTITY.identityO   = null,  
-    LOCAL_IDENTITY.identityP   = null,   
-    LOCAL_IDENTITY.denyReason  = null,  
-    LOCAL_IDENTITY.remark      = null,                     
-    LOCAL_IDENTITY.status      = "offline",                            
-    LOCAL_IDENTITY.findPair    = null                             
+    LOCAL_INFO.account       = null;                            
+    LOCAL_O_DATA.account     = null;                            
+    LOCAL_P_DATA.account     = null;                            
+    LOCAL_INFO.name          = null;                            
+    LOCAL_INFO.phone         = null;                            
+    LOCAL_INFO.email         = null;                            
+    LOCAL_O_DATA.gender      = "secret";                        
+    LOCAL_P_DATA.gender      = "secret";                        
+    LOCAL_O_DATA.status      = "offline";                            
+    LOCAL_O_DATA.license     = null;                            
+    LOCAL_O_DATA.helmet      = null;                            
+    LOCAL_O_DATA.area        = null;                            
+    LOCAL_O_DATA.workingTime = null; 
+    LOCAL_P_DATA.destination = null;  
+    LOCAL_P_DATA.takingPlace = null; 
+    LOCAL_P_DATA.takingTime  = null;                         
+    LOCAL_O_DATA.other       = "No other condition or comment.";
+    LOCAL_O_DATA.denyReason  = null;  
+    LOCAL_P_DATA.remark      = null;                     
+    LOCAL_INFO.findPair      = null; 
+    LOCAL_O_DATA.rateTotal   = 0;
+    LOCAL_O_DATA.rateCount   = 0;
+    LOCAL_O_DATA.comment     = null;                               
     console.log("[succ] clear local variable successfully." );
 };
 
@@ -94,23 +131,28 @@ module.exports = class member{
 
     postRegister(req, res, next){
     
-        LOCAL_IDENTITY.account = req.body.account;
         var registerData = {
             account: req.body.account,
             password: req.body.password,
             email: req.body.email
         };
-        insertNewData(registerData).then(result =>{
-            res.json({
-                status: "insert 成功",
-                result: result
-            })
-        },(err) => {
-            res.json({
-                result: err
-            })
-        })
-        updateLocalVar(registerData);
+        findOneData({account: registerData.account}, 'basicCollection')
+        .then(result => {
+            if(result) {
+                console.log("[warn] This account had been registered.");
+                res.json({
+                    result: "had account"
+                });
+            }
+            else {
+                insertNewData(registerData, 'basicCollection');
+                LOCAL_INFO.account = req.body.account;
+                updateLocalInfo(registerData);
+                res.json({
+                    result: "register succ"
+                });
+            }
+        });
     }
 
     postLogin(req, res, next){
@@ -119,127 +161,210 @@ module.exports = class member{
             account:    req.body.account,
             password:   req.body.password
         };
+        console.log("signInData = " + JSON.stringify(signInData));
         
-        findData(signInData).then(result => {
+        findOneData({account: signInData.account}, 'ownerCollection')
+        .then(result => {
+            if(result)
+                updateLocalOData(result);
+        });
+        
+        findOneData({account: signInData.account}, 'passengerCollection')
+        .then(result => {
+            if(result)
+                updateLocalPData(result);
+        });
 
-            if(result.status == "succ"){
+        findOneData(signInData, 'basicCollection')
+        .then(result => {
+            if(result){
                 console.log("[succ] succ to login." );
-                updateLocalVar(result[0]);
-
-                LOCAL_IDENTITY.status = "online";
-                inputDataByAcc(LOCAL_IDENTITY);
+                updateLocalInfo(result);
+                res.json({
+                    result: "find user"
+                });
             }
-            else if(result.status == "no found"){
+            else {
                 console.log("[err] fail to login (no found data)." );
                 clearLocalVar();
+                res.json({
+                    result: "no user"
+                });
             }
 
         },(err) => {
             console.log("[err] login err." );
             console.log(err);
-        });
-    }
-
-    getLogin(req, res, next){
-    
-        var signInData = {
-            account:    LOCAL_IDENTITY.account
-        };
-        findData(signInData).then(result => {
-
-            if(result.status == "succ"){
-                console.log("[succ] succ to response login info." );
-            }
-            else if(result.status == "no found"){
-                console.log("[err] fail to response login info (no found data)." );
-            }
             res.json({
-                status: result.status,
-                result: result
-            })
-
-        },(err) => {
-            console.log("[err] login err." );
-            res.json({
-                status: result.status,
-                result: err
-            })
+                result: "login err"
+            });
         });
     }
 
     postMatchOwner(req, res, next){             //乘客頁面列出車主
     
-        //LOCAL_IDENTITY.account = req.body.account;
         var matchData = {
-            identityP: LOCAL_IDENTITY.identityP,
-            status: LOCAL_IDENTITY.status,
-            area: LOCAL_IDENTITY.area
+            status:     "online"
         };
+        var returnArray = [];
         
-        matchOwner(matchData).then(result =>{
-            res.json({
-                status: "match 成功",
-                result: result
-            })
-        },(err) => {
-            res.json({
-                result: err
-            })
-        })
+        matchOwner(matchData, 'ownerCollection').then(result =>{
+            addArr(result).then(()=>{
+                res.json({
+                    status: "match 成功",
+                    result: returnArray
+                });
+            });
+        });
+
+        async function addArr(result){
+            for(var i = 0; i < result.length; i++){
+                var returnCompenent = {
+                    name            : null,
+                    phone           : null,
+                    email           : null,
+                    identity        : null,
+                    findPair        : null,
+                    account         : null,
+                    status          : null,
+                    gender          : null,
+                    license         : null,
+                    helmet          : null,
+                    area            : null,
+                    workingTime     : null,
+                    other           : null,
+                    denyReason      : null,
+                    remark          : null,
+                    rateTotal       : 0,
+                    rateCount       : 0,
+                    comment         : null
+                };
+                await findOneData({account: result[i].account}, 'basicCollection').then(basicResult =>{
+                    returnCompenent.name     = basicResult.name     ;
+                    returnCompenent.phone    = basicResult.phone    ;
+                    returnCompenent.email    = basicResult.email    ;
+                    returnCompenent.identity = basicResult.identity ;
+                    returnCompenent.findPair = basicResult.findPair ;
+                },(err) =>{
+                    console.log("[err] find matched owner data 失敗")
+                });
+                returnCompenent.account     = result[i].account     ;
+                returnCompenent.status      = result[i].status      ;
+                returnCompenent.gender      = result[i].gender      ;
+                returnCompenent.license     = result[i].license     ;
+                returnCompenent.helmet      = result[i].helmet      ;
+                returnCompenent.area        = result[i].area        ;
+                returnCompenent.workingTime = result[i].workingTime ;
+                returnCompenent.other       = result[i].other       ;
+                returnCompenent.denyReason  = result[i].denyReason  ;
+                returnCompenent.remark      = result[i].remark      ;
+                returnCompenent.rateTotal   = result[i].rateTotal   ;
+                returnCompenent.rateCount   = result[i].rateCount   ;
+                returnCompenent.comment     = result[i].comment     ;
+                
+                returnArray[i] = returnCompenent;
+            }
+        }
     }
 
     postChangeInfo(req, res, next){
 
-        var changeData = {
-            account:            LOCAL_IDENTITY.account,     //帳號
-            name:               req.body.name,              //姓名
-            phone:              req.body.phone,             //電話
-            email:              req.body.email,             //email
-            gender:             req.body.gender,            //性別
-            license:            req.body.license,           //車牌號碼
-            area:               req.body.area,              //可接送地點
-            workingTime:        req.body.workingTime,       //可載客時間
-            takingPlace:        req.body.takingPlace,       //乘客上車地點
-            takingTime:         req.body.takingTime,        //可搭乘時間
-            helmet:             req.body.helmet,            //是否有安全帽
-            other:              req.body.other,             //其他說明
-            status:             req.body.status,            //上線狀態
-            denyReason:         req.body.denyReason,        //拒絕原因
-            remark:             req.body.remark,            //備註
-            identityO:          req.body.identityO,
-            identityP:          req.body.identityP
+        var changeBasicData = {
+            account:    LOCAL_INFO.account,         //帳號
+            name:       req.body.name,              //姓名
+            phone:      req.body.phone,             //電話
+            email:      req.body.email,             //email
+            identity:   req.body.identity,          //登入身分
+        };
+        
+        var changeOwnerData = {
+            account:        LOCAL_INFO.account,     //帳號
+            gender:         req.body.gender,        //性別
+            license:        req.body.license,       //車牌
+            helmet:         req.body.helmet,        //安全帽
+            area:           req.body.area,          //接送區域
+            workingTime:    req.body.workingTime,   //時間
+            other:          req.body.other,         //其他資訊
+            denyReason:     req.body.denyReason,    //拒絕原因
+            remark:         req.body.remark,        //remaek
+            rateTotal:      req.body.rateTotal,
+            rateCount:      req.body.rateCount,
+            comment:        req.body.comment
+        };
+        
+        var changePassengerData = {
+            account:        LOCAL_INFO.account,     //帳號
+            gender:         req.body.gender,        //性別
+            helmet:         req.body.helmet,        //安全帽
+            takingTime:     req.body.takingTime,    //接送區域
+            takingPlace:    req.body.takingPlace,   //時間
+            destination:    req.body.destination,   //其他資訊
+            other:          req.body.other,         //拒絕原因
+            remark:         req.body.remark,        //remaek
         };
 
-        updateLocalVar(changeData);
-        
-        inputDataByAcc(LOCAL_IDENTITY).then(result => {
-            res.json({
-                status: "change data 成功",
-                result: result
-            })
-        },(err) => {
-            res.json({
-                status: "change data 失敗",
-                result: err
-            })
+        updateLocalInfo(changeBasicData);
+        inputDataByAcc(LOCAL_INFO, 'basicCollection').then(() => {
+            if(LOCAL_INFO.identity == "owner") {
+                updateLocalOData(changeOwnerData);
+                // console.log(">>> LOCAL_O_DATA = " + JSON.stringify(LOCAL_O_DATA));
+                inputDataByAcc(LOCAL_O_DATA, 'ownerCollection').then(() => {
+                    console.log("[succ] change owner data 成功");
+                });
+            }
+            else if(LOCAL_INFO.identity == "passenger") {
+                updateLocalPData(changePassengerData);
+                // console.log(">>> LOCAL_P_DATA = " + JSON.stringify(LOCAL_P_DATA));
+                inputDataByAcc(LOCAL_P_DATA, 'passengerCollection').then(() => {
+                    console.log("[succ] change passenger data 成功");
+                });
+            }
         });
     }
 
     postRiderFilter(req, res, next){
+        
+        var returnArray = [];
+        var desData = {
+            // account:     "peanut",
+            // password:    "peanutPie",
+            account:     LOCAL_INFO.account,
+            destination: req.body.destination
+        };
+        // updateLocalVar(desData);
+        // inputDataByAcc(LOCAL_INFO);
+        console.log("destination" + req.body.destination);
+
+        findData(desData, 'passengerCollection').then(result => {
+            if(result.status == "succ"){
+                console.log("[account]" + result[0].account);
+                updateLocalVar(result[0]);
+                inputDataByAcc(LOCAL_INFO, 'passengerCollection');
+            }
+            else if(result.status == "no found"){
+                console.log("[err] fail to find." );
+                clearLocalVar();
+            }
+        });
         var filterData = {
+            /*name:       req.body.name,*/
             gender:     req.body.gender,
             helmet:     req.body.helmet,
-            area:       req.body.area
+            area:       req.body.area,
+            takingPlace:req.body.takingPlace
         }
        
         console.log("[filter] gender: " + filterData.gender);
-
-        riderFilter(filterData).then(result => {
+        riderFilter(filterData)
+        .then(result => {
             console.log("[note] this is filter");
-            console.log(result);
-            res.json({
-                status: "filt data 成功",
-                result: result
+            
+            addArr(result).then(() => {
+                console.log("riderFilter = " + returnArray);
+                res.json({
+                    status: "match 成功",
+                    result: returnArray
+                })
             })
             
         },(err) => {
@@ -249,46 +374,193 @@ module.exports = class member{
                 result: err
             })
         });
+
+        async function addArr(result){
+            for(var i = 0; i < result.length; i++){
+                var returnCompenent = {
+                    name            : null,
+                    phone           : null,
+                    email           : null,
+                    identity        : null,
+                    findPair        : null,
+                    account         : null,
+                    status          : null,
+                    gender          : null,
+                    license         : null,
+                    helmet          : null,
+                    area            : null,
+                    workingTime     : null,
+                    other           : null,
+                    denyReason      : null,
+                    remark          : null,
+                    rateTotal       : 0,
+                    rateCount       : 0,
+                    comment         : null
+                };
+                await findOneData({account: result[i].account}, 'basicCollection').then(basicResult =>{
+                    returnCompenent.name     = basicResult.name     ;
+                    returnCompenent.phone    = basicResult.phone    ;
+                    returnCompenent.email    = basicResult.email    ;
+                    returnCompenent.identity = basicResult.identity ;
+                    returnCompenent.findPair = basicResult.findPair ;
+                });
+                returnCompenent.account     = result[i].account     ;
+                returnCompenent.status      = result[i].status      ;
+                returnCompenent.gender      = result[i].gender      ;
+                returnCompenent.license     = result[i].license     ;
+                returnCompenent.helmet      = result[i].helmet      ;
+                returnCompenent.area        = result[i].area        ;
+                returnCompenent.workingTime = result[i].workingTime ;
+                returnCompenent.other       = result[i].other       ;
+                returnCompenent.denyReason  = result[i].denyReason  ;
+                returnCompenent.remark      = result[i].remark      ;
+                returnCompenent.rateTotal   = result[i].rateTotal   ;
+                returnCompenent.rateCount   = result[i].rateCount   ;
+                returnCompenent.comment     = result[i].comment     ;
+
+                returnArray[i] = returnCompenent;
+            }
+        }
+    }
+
+    postUploadPhoto(req, res, next){        //上傳照片
+        upload(req, res, async () => {
+            const client = new ImgurClient({
+              clientId: process.env.IMGUR_CLIENTID,
+              clientSecret: process.env.IMGUR_CLIENT_SECRET,
+              refreshToken: process.env.IMGUR_REFRESH_TOKEN,
+            });
+            const response = await client.upload({
+                image: req.files[0].buffer.toString('base64'),
+                type: 'base64',
+                album: process.env.IMGUR_ALBUM_ID
+              });
+              res.send({ url: response.data.link });
+            })
     }
 
     postFindPassenger(req, res, next){   //列出車主 mainPage 的乘客資料
+        
         var passengerDataQuery = {
-            identityP: "passenger",
-            findPair: LOCAL_IDENTITY.name
+            findPair: LOCAL_INFO.name
         };
-        findData(passengerDataQuery).then(result =>{
-            console.log("[succ] succ to list passengers.");
-            res.json({
-                status: result.status,
-                result: result
-            })
-        },(err) => {
-            res.json({
-                result: err
-            })
+        var returnArray = [];
+
+        findData(passengerDataQuery, 'basicCollection').then(result =>{
+            addArr(result).then(() => {
+                res.json({
+                    status: "list 成功",
+                    result: returnArray
+                });
+            });
         });
+
+        async function addArr(result){
+            for(var i = 0; i < result.length; i++){
+                var returnCompenent ={
+                    name            : null,
+                    phone           : null,
+                    email           : null,
+                    identity        : null,
+                    findPair        : null,
+                    account         : null,
+                    gender          : null,
+                    helmet          : null,
+                    takingTime      : null,
+                    takingPlace     : null,
+                    destination     : null,
+                    other           : null,
+                    remark          : null
+                }
+                await findOneData({account : result[i].account}, 'passengerCollection').then(basicResult => {
+                    
+                    returnCompenent.gender      = basicResult.gender;
+                    returnCompenent.helmet      = basicResult.helmet;
+                    returnCompenent.takingTime  = basicResult.takingTime;
+                    returnCompenent.takingPlace = basicResult.takingPlace;
+                    returnCompenent.destination = basicResult.destination;
+                    returnCompenent.other       = basicResult.other;
+                    returnCompenent.remark      = basicResult.remark;
+                },(err)=> {
+                    console.log("[err] find passenger request 失敗");
+                });
+                returnCompenent.account  = result[i].account;
+                returnCompenent.name     = result[i].name;
+                returnCompenent.phone    = result[i].phone;
+                returnCompenent.email    = result[i].email;
+                returnCompenent.identity = result[i].identity;
+                returnCompenent.findPair = result[i].findPair;    
+                returnArray[i] = returnCompenent
+            }
+        }
     }
 
     getCheckIdentify(req, res, next){  
-        var findIdentify = {
-            account: LOCAL_IDENTITY.account
-        };
-        checkIdentify(findIdentify).then(result =>{
-            console.log("[succ] succ to check identify.");
-            res.json({
-                result: result
-            })
-        },(err) => {
-            res.json({
-                result: err
-            })
-        });
+
+        LOCAL_INFO.identity = req.body.identity;
+        if(LOCAL_INFO.identity == "owner") {
+            console.log("[chk] it's owner");
+
+            // change owner's data
+            if (checkIdentity("owner")){
+                LOCAL_O_DATA.status = "online";
+                inputDataByAcc(LOCAL_O_DATA, 'ownerCollection')
+                .then(() => {
+                    console.log("chk result = find owner");
+                    res.json({
+                        status: "change owner data 成功",
+                        result: "find owner"
+                    });
+                });
+            }
+            else{
+                console.log("chk result = no owner");
+                res.json({
+                    status: "change owner data 失敗",
+                    result: "no owner"
+                });
+            }
+        }
+        else if(LOCAL_INFO.identity == "passenger") {
+            console.log("[chk] it's passenger");
+
+            // change owner's status to offline
+            if(checkIdentity("owner")){
+                LOCAL_O_DATA.status = "offline";
+                inputDataByAcc(LOCAL_O_DATA, 'ownerCollection');
+            }
+
+            // change passenger's data
+            if(checkIdentity("passenger")){
+                console.log("[succ] find passenger");
+                res.json({
+                    status: "change passenger data 成功",
+                    result: "find passenger"
+                });
+            }
+            else{
+                console.log("[fail] no passenger");
+                res.json({
+                    status: "change passenger data 失敗",
+                    result: "no passenger"
+                });
+            }
+        }
+
+        function checkIdentity(identityToCheck){
+            if(identityToCheck == "owner") {
+                return (LOCAL_O_DATA.account != null);
+            }
+            else if(identityToCheck == "passenger"){
+                return (LOCAL_P_DATA.account != null);
+            }
+        }
     }
 
     postFindOwner(req, res, next){   //乘客送出訂單給車主
         
-        updateLocalVar({findPair : req.body.name});
-        inputDataByAcc(LOCAL_IDENTITY).then(result => {
+        updateLocalInfo({findPair : req.body.name});
+        inputDataByAcc(LOCAL_INFO, 'basicCollection').then(result => {
             res.json({
                 status: "findPair 成功",
                 result: result
@@ -301,27 +573,51 @@ module.exports = class member{
         });
 
         var myOwner = {
-            identityO:   "owner", 
-            status:     "online",
-            name:       LOCAL_IDENTITY.findPair
+            identity:   "owner",
+            name:       LOCAL_INFO.findPair
         }
 
-        findData(myOwner).then(result =>{
-
-            console.log("[succ] succ to find the owner." );
+        findOneData(myOwner, 'basicCollection').then(result =>{
 
             var sendData = {
                 from:       from,
-                to:         result[0].email,
+                to:         result.email,
                 subject:    '海大共乘網 有您的新消息',
                 html:       "<p>叮咚! 有新的訂單囉!</p><br><a href='http://127.0.0.1:3000/mainPage.html'>來去海大共乘網看看~</a>"
             };
             transporter.sendMail(sendData).then(info => {
                 console.log("[succ] send mail.");
             }).catch(console.error);
-
+            
         },(err) => {
             console.log("err: " + err);
         });
+    }
+    postReplyOrder(req, res, next){   //車主回復訂單給乘客
+        
+        
+    }
+
+    postRate(req, res, next){                               //新增評分
+        
+        var rateData = {
+            account : LOCAL_O_DATA.account,
+            rateTotal : LOCAL_O_DATA.rateTotal,
+            rateCount : LOCAL_O_DATA.rateCount,
+            comment : LOCAL_O_DATA.comment,
+            rate : req.body.rate,
+            newComment : req.body.comment
+        };
+
+        rate(rateData).then(result =>{
+            res.json({
+                status: "rating 成功",
+                result: result
+            })
+        },(err) => {
+            res.json({
+                result: err
+            })
+        })
     }
 }

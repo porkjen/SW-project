@@ -9,7 +9,6 @@ const rate = require('../models/rate');
 const credentials = require('../models/credentials')
 const from = credentials.gmail.user;
 const nodemailer = require('nodemailer');
-const rate = require('../models/rate');
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,

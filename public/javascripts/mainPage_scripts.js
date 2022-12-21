@@ -15,7 +15,7 @@ $(document).ready(function(){
                               '<div class="card-body">'+
                               '<h5 class="card-title">'+data.result[i].name+'</h5>'+
                               '<h6 class="card-subtitle mb-2 text-muted">'+data.result[i].gender+'</h6>'+
-                              '<p class="card-text">'+'搭乘地點:'+'<br>'+'目的地:'+'<br>'+'其他資訊:'+'<br>'+data.result[i].other+'</p>'+
+                              '<p class="card-text">'+'搭乘地點:'+data.result[i].takingPlace+'<br>'+'搭乘時間:'+data.result[i].takingTime+'<br>'+'目的地:'+data.result[i].destination+'<br>'+'其他資訊:'+data.result[i].other+'</p>'+
                               '<button type="button" class="btn btn-outline-success" id="accept" onclick="getInfo('+i+')">接受</button>'+
                               '<button type="button" class="btn btn-outline-success" id="reject" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="removeCard('+i+')">拒絕</button>'+
                             '</div>'+
@@ -62,7 +62,7 @@ function btn1(){
                           '<div class="card-body">'+
                           '<h5 class="card-title">'+data.result[i].name+'</h5>'+
                           '<h6 class="card-subtitle mb-2 text-muted">'+data.result[i].gender+'</h6>'+
-                          '<p class="card-text">'+'搭乘地點:'+'<br>'+'目的地:'+'<br>'+'其他資訊:'+'<br>'+data.result[i].other+'</p>'+
+                          '<p class="card-text">'+'搭乘地點:'+data.result[i].takingPlace+'<br>'+'搭乘時間:'+data.result[i].takingTime+'<br>'+'目的地:'+data.result[i].destination+'<br>'+'其他資訊:'+data.result[i].other+'</p>'+
                           '<button type="button" class="btn btn-outline-success" id="accept" onclick="getInfo('+i+')">接受</button>'+
                           '<button type="button" class="btn btn-outline-success" id="reject" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="removeCard('+i+')">拒絕</button>'+
                         '</div>'+
@@ -115,21 +115,24 @@ function getInfo(num){
 }
 
 function uploadPicture(){
+  const input = document.querySelector('#fileUpload');
+
+  const formData = new FormData();
+  //formData.append('fileUpload', input.files[0]);
+  formData.append('fileUpload', $('input[name="fileUpload"]').get(0).files[0]);
+  console.log( $('input[name="fileUpload"]').get(0).files[0]);
   $.ajax({
-    url: 'http://127.0.0.1:3000/upload',
-    success: function(e){
-      const formData = new FormData();
-      formData.append('file-to-upload', e.target.form[0].files[0]);
-      axios.post('/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-    },
-    error: function(){
-      alert("wrong");
+    type: "POST",
+    url: 'http://127.0.0.1:3000/uploadPhoto',
+    data: formData,
+    processData : false, 
+    contentType : false,
+    dataType: "json",
+    success: function(data) {
+      console.log(data);
     }
-  })
+  });
+  
   
 }
 

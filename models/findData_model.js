@@ -1,7 +1,7 @@
 var MongoClient = require('mongodb').MongoClient;
 var connectAddr = "mongodb+srv://victoria:cody97028@cluster17.mrmgdrw.mongodb.net/mydb?retryWrites=true&w=majority";
 
-module.exports = async function findData(dataToFind){
+module.exports = async function findData(dataToFind, collection){
 
     let res = {};
     
@@ -20,7 +20,7 @@ module.exports = async function findData(dataToFind){
             // console.log("[succ] succeed to connect mongodb.");
             const dbo = client.db("mydb");
 
-            dbo.collection("test").find(dataToFind).toArray()
+            dbo.collection(collection).find(dataToFind).toArray()
             .then((res, err) => {
                 if(err){
                     // console.log("[err] fail to connect collection.");

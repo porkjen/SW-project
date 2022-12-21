@@ -1,7 +1,7 @@
 var MongoClient = require('mongodb').MongoClient;
 var connectAddr = "mongodb+srv://victoria:cody97028@cluster17.mrmgdrw.mongodb.net/mydb?retryWrites=true&w=majority";
 
-module.exports = function insertNewData(memberData){
+module.exports = function insertNewData(memberData, icollection){
     let result = {};
     return new Promise((resolve, reject) =>{
 
@@ -15,7 +15,7 @@ module.exports = function insertNewData(memberData){
 
             var dbo = db.db('mydb');
 
-            dbo.collection('test').insertOne(memberData, function(err, res){
+            dbo.collection(icollection).insertOne(memberData, function(err, res){
 
                 if(err){
                     console.log("[err] fail to insert a new data." );

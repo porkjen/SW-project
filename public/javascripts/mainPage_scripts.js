@@ -7,7 +7,7 @@ $(document).ready(function(){
       url: 'http://127.0.0.1:3000/listPassenger',
       type: 'get',
       success: function(data){
-          for(i = 0;i<5;i++){
+          for(i = 0; i < 5; i++){
             if(data.result[i]){
               console.log(i);
                   $('.container').append(

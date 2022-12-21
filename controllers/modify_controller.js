@@ -439,22 +439,6 @@ module.exports = class member{
             })
     }
 
-    postUploadPhoto(req, res, next){        //上傳照片
-        upload(req, res, async () => {
-            const client = new ImgurClient({
-              clientId: process.env.IMGUR_CLIENTID,
-              clientSecret: process.env.IMGUR_CLIENT_SECRET,
-              refreshToken: process.env.IMGUR_REFRESH_TOKEN,
-            });
-            const response = await client.upload({
-                image: req.files[0].buffer.toString('base64'),
-                type: 'base64',
-                album: process.env.IMGUR_ALBUM_ID
-              });
-              res.send({ url: response.data.link });
-            })
-    }
-
     postFindPassenger(req, res, next){   //列出車主 mainPage 的乘客資料
         
         var passengerDataQuery = {
@@ -506,8 +490,6 @@ module.exports = class member{
                 returnCompenent.email    = result[i].email;
                 returnCompenent.identity = result[i].identity;
                 returnCompenent.findPair = result[i].findPair;    
-                
-
                 returnArray[i] = returnCompenent
             }
         }
@@ -610,6 +592,10 @@ module.exports = class member{
         },(err) => {
             console.log("err: " + err);
         });
+    }
+    postReplyOrder(req, res, next){   //車主回復訂單給乘客
+        
+        
     }
 
     postRate(req, res, next){                               //新增評分

@@ -5,14 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./stylesheets/entroll_style.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="crossorigin="anonymous"></script>
+    <script src="./javascripts/checkRegister.js" ></script>
     <title>共享機車_註冊</title>
 </head>
 <body>
-<script type="text/javascript" src="/js/jquery/jquery.form.js"></script>
-<script type="text/javascript" src="/js/jquery/jquery-1.8.0.min.js"></script>
-<script type="text/javascript"src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="text/javascript"src="app.js"></script>
-<script src="./javascripts/entroll_fun.js"></script>
+
     <div class="title">
         海大共乘系統
     </div>
@@ -30,19 +29,12 @@
                 </div>
             </div>
            
-            <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
-                <form id="upload" action="http://127.0.0.1:3000/register" method="post" target="dummyframe">
-                    <div class="info">
-                        帳號: &nbsp;&nbsp;&nbsp;<input type="text" required name="account" id="account"><br>
-                        密碼: &nbsp;&nbsp;<input type="password" required name="password"><br>
-                        E-mail:<input type="email" required  name="email" id="email"><br>
-                        <div class="btn">
-                        <a href="chooseIdentity_main.html">
-                            <button type="submit" onclick="window.location.href = 'chooseIdentity_main.html';" >Start</button>
-                        </a>
-                    </div>
-                    </div>
-                </form>
+            <div class="info">
+                帳號: &nbsp;&nbsp;&nbsp;<input type="text" required name="account" id="account"><br>
+                密碼: &nbsp;&nbsp;<input type="password" required name="password" id="password"><br>
+                E-mail:<input type="email" required  name="email" id="email"><br>
+                <button type="submit" id="btn_register" >Start</button>
+            </div>
         </div>
     </div>
 

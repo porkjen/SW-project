@@ -82,7 +82,19 @@ body{
     text-align: center;
     padding-bottom: 10px;
 }
-
+.info > button[type="submit"]{
+    font-family: 'Josefin Sans', sans-serif;
+    font-size:large;
+    background-color:#FFFFFF;
+    border-radius:8px;
+    width:150px;
+    height:50px;
+    padding-left: 10px;
+}
+.info > button[type="submit"]:hover{
+    cursor: pointer;
+    background-color: #F2FFFF;
+}
 /*
 .choose_identity{
     font-size:0.5cm;
@@ -130,3 +142,5 @@ a > button:hover{
     font-size:50px;
     text-align: center;
 }
+
+

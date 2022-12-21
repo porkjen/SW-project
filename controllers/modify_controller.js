@@ -131,23 +131,28 @@ module.exports = class member{
 
     postRegister(req, res, next){
     
-        LOCAL_INFO.account = req.body.account;
         var registerData = {
             account: req.body.account,
             password: req.body.password,
             email: req.body.email
         };
-        insertNewData(registerData, 'basicCollection').then(result =>{
-            res.json({
-                status: "insert 成功",
-                result: result
-            })
-        },(err) => {
-            res.json({
-                result: err
-            })
-        })
-        updateLocalInfo(registerData);
+        findOneData({account: registerData.account}, 'basicCollection')
+        .then(result => {
+            if(result) {
+                console.log("[warn] This account had been registered.");
+                res.json({
+                    result: "had account"
+                });
+            }
+            else {
+                insertNewData(registerData, 'basicCollection');
+                LOCAL_INFO.account = req.body.account;
+                updateLocalInfo(registerData);
+                res.json({
+                    result: "register succ"
+                });
+            }
+        });
     }
 
     postLogin(req, res, next){

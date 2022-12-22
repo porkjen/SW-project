@@ -16,11 +16,11 @@ module.exports = function inputDataByAcc(rateData){
 
             var dbo = db.db('mydb');
             
-            dbo.collection('test').updateOne({account:rateData.account}, 
+            dbo.collection('ownerCollection').updateOne({account:rateData.account}, 
                 {$set: {"rateTotal": Number(rateData.rateTotal)+Number(rateData.rate), "rateCount": rateData.rateCount+1} });
             resolve(result);
 
-            dbo.collection('test').updateOne({account:rateData.account}, 
+            dbo.collection('ownerCollection').updateOne({account:rateData.account}, 
                 {$push: {comment:rateData.newComment} });
             resolve(result);
         })

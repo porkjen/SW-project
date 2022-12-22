@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./stylesheets/infoPage_styles.css">
   <script src="./javascripts/infoPage_scripts.js" defer></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="crossorigin="anonymous"></script>
   <title>設定個人資料</title>
 </head>
 <body>
@@ -66,6 +68,10 @@
           <p><label>是否提供安全帽:</label>
           <input type="radio" value="是" name="helmet">是
           <input type="radio" value="否" name="helmet">否</p>
+        </div>
+        <div class="info-group">
+          <label>上傳你心愛的機車照吧!</label>
+            <input type="file" id="fileUpload" name="fileUpload" accept=".png,.jpg,.gif"> 
         </div>
         <button type="button" class="nextBtn" data-next>Next</button>
       </div>

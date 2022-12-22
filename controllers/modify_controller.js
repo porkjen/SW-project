@@ -289,7 +289,7 @@ module.exports = class member{
             workingTime:    req.body.workingTime,   //時間
             other:          req.body.other,         //其他資訊
             denyReason:     req.body.denyReason,    //拒絕原因
-            remark:         req.body.remark,        //remaek
+            remark:         req.body.remark,        //remark
             rateTotal:      req.body.rateTotal,
             rateCount:      req.body.rateCount,
             comment:        req.body.comment
@@ -303,7 +303,7 @@ module.exports = class member{
             takingPlace:    req.body.takingPlace,   //時間
             destination:    req.body.destination,   //其他資訊
             other:          req.body.other,         //拒絕原因
-            remark:         req.body.remark,        //remaek
+            remark:         req.body.remark,        //remark
         };
 
         updateLocalInfo(changeBasicData);

@@ -3,11 +3,25 @@
     font-family:'cwTeXYen', Comic Sans MS;  
 }
 
+@media (max-width:569px) {
+    .container{
+        min-width: 40%;
+        height: 40%;
+    }
+    
+}
+
+
 body{
-    background: radial-gradient(transparent 85%, #3D7878 100%),url("https://png.pngtree.com/thumb_back/fw800/back_our/20190625/ourmid/pngtree-creative-road-pavement-background-image_262322.jpg");
-    height: 100%;       
-    min-width: 100%;     
+    min-height: 100vh;
+    min-width: 100vw;
+    background-image: url("https://png.pngtree.com/thumb_back/fw800/back_our/20190625/ourmid/pngtree-creative-road-pavement-background-image_262322.jpg");
+    background-position:center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     background-size: cover;
+    font-family: 'Noto Serif TC', serif;
+    margin: 0;
 }
 body:hover{
     background: radial-gradient(transparent 55%, #3D7878 100%),url("https://png.pngtree.com/thumb_back/fw800/back_our/20190625/ourmid/pngtree-creative-road-pavement-background-image_262322.jpg");
@@ -49,15 +63,15 @@ body:hover{
     text-align:center;
 }
 .bg1{
-    width: 200;
-    height: 200;
+    width: 200px;
+    height: 200px;
     position: relative;
     top:-50px;
     left: 350px;
 }
 .bg2{
-    width: 200;
-    height: 200;
+    width: 200px;
+    height: 200px;
     position: relative;
     top: -85px;
     left: 160px;

@@ -161,7 +161,6 @@ module.exports = class member{
             account:    req.body.account,
             password:   req.body.password
         };
-        console.log("signInData = " + JSON.stringify(signInData));
         
         findOneData({account: signInData.account}, 'ownerCollection')
         .then(result => {
@@ -442,7 +441,7 @@ module.exports = class member{
     postFindPassenger(req, res, next){   //列出車主 mainPage 的乘客資料
         
         var passengerDataQuery = {
-            findPair: LOCAL_INFO.name
+            findPair: LOCAL_INFO.account
         };
         var returnArray = [];
 
@@ -559,31 +558,31 @@ module.exports = class member{
 
     postFindOwner(req, res, next){   //乘客送出訂單給車主
         
-        updateLocalInfo({findPair : req.body.name});
-        inputDataByAcc(LOCAL_INFO, 'basicCollection').then(result => {
-            res.json({
-                status: "findPair 成功",
-                result: result
-            })
-        },(err) => {
-            res.json({
-                status: "findPair 失敗",
-                result: err
-            })
-        });
+        updateLocalInfo({findPair : req.body.account});
+        // var resResult = {
+        //     takingTime  : req.body.takingTime,
+        //     takingPlace : req.body.takingPlace,
+        //     remark      : req.body.remark
+        // };
+
+        // console.log("resResult = " + JSON.stringify(resResult));
+
+        inputDataByAcc(LOCAL_INFO, 'basicCollection');
+        // inputDataByAcc(LOCAL_P_DATA, 'passengerCollection');
 
         var myOwner = {
             identity:   "owner",
-            name:       LOCAL_INFO.findPair
+            account:     LOCAL_INFO.findPair
         }
 
         findOneData(myOwner, 'basicCollection').then(result =>{
-
+            var sendContent = 
+                "<p>叮咚! 有新的訂單囉!<br><a href='http://127.0.0.1:3000/mainPage.html'>來去海大共乘網看看~</a><br>";
             var sendData = {
                 from:       from,
                 to:         result.email,
                 subject:    '海大共乘網 有您的新消息',
-                html:       "<p>叮咚! 有新的訂單囉!</p><br><a href='http://127.0.0.1:3000/mainPage.html'>來去海大共乘網看看~</a>"
+                html:       sendContent
             };
             transporter.sendMail(sendData).then(info => {
                 console.log("[succ] send mail.");
@@ -593,8 +592,38 @@ module.exports = class member{
             console.log("err: " + err);
         });
     }
-    postReplyOrder(req, res, next){   //車主回復訂單給乘客
+    postAcceptOrder(req, res, next){   //車主回復訂單給乘客
+        updateLocalInfo({findPair : req.body.account});
+        inputDataByAcc(LOCAL_INFO, 'basicCollection');
+
+        var myPassenger = {
+            identity:   "passenger",
+            account:    LOCAL_INFO.findPair
+        }
         
+        findOneData(myPassenger, 'basicCollection').then(result =>{
+
+            var sendContent = 
+                "<p>您的訂單已被接受<br>" +
+                '姓名 : '+ LOCAL_INFO.name + '<br>' + 
+                '性別 : '+ LOCAL_O_DATA.gender + '<br>' + 
+                '電話 : ' + LOCAL_INFO.phone + '<br>' +
+                '有任何問題請電話詳細聯絡~</p>';
+
+            var sendData = {
+                from:       from,
+                to:         result.email,
+                subject:    '海大共乘網 有您的新消息',
+                html:       sendContent
+            };
+            
+            transporter.sendMail(sendData).then(info => {
+                console.log("[succ] send mail.");
+            }).catch(console.error);
+            
+        },(err) => {
+            console.log("err: " + err);
+        });
         
     }
 

@@ -2,8 +2,15 @@
 //Client ID:73d766fcb0de170 Client secret:d15fa884f676e9c4d5ec0528b4c9f510ce72b76d
 //https://imgur.com/#access_token=367fae1c61694fbd3b82c7eac77fb680f6d32a52&expires_in=315360000&token_type=bearer&refresh_token=d6cd7b8e0e067ba6f6292f0e85a7d1c24543efcb&account_username=face021616&account_id=59042281
 $(document).ready(function(){
-  $(".container").empty();
-  $.ajax({
+	$(".container").empty();
+	listPassengers();
+	$("#btn_logout").click(function(){
+		logout();
+	});
+})
+
+function listPassengers(){
+	$.ajax({
 		url: '/listPassenger',
 		type: 'post',
 		success: function(data){													
@@ -46,8 +53,24 @@ $(document).ready(function(){
 		error: function(){
 			alert("wrong");
 		}
-    })
-})
+    });
+}
+
+function logout(){
+	$.ajax({
+		url: '/logout',
+		type: 'POST',
+		success:function(logoutRes){
+			if(logoutRes.result == "logout succ"){
+				alert("登出成功!");
+				location.href="/SignIn.html";
+			}
+		},
+		error: function(){
+			alert("登出失敗!");
+		}    
+	});
+}
 
 function removeCard(num){
     var eDiv = document.getElementById(num);
@@ -82,7 +105,7 @@ function uploadPicture(){
   console.log( $('input[name="fileUpload"]').get(0).files[0]);
   $.ajax({
     type: "POST",
-    url: 'http://127.0.0.1:3000/uploadPhoto',
+    url: '/uploadPhoto',
     data: formData,
     processData : false, 
     contentType : false,

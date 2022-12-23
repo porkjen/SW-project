@@ -590,6 +590,7 @@ module.exports = class member{
                 '<p>車主姓名 : '+ LOCAL_INFO.name + '<br>' + 
                 '    性別 : '+ LOCAL_O_DATA.gender + '<br>' + 
                 '    電話 : ' + LOCAL_INFO.phone + '<br>' +
+                '    車牌 : ' + LOCAL_O_DATA.license + '<br>' +
                 '    備註 : ' + LOCAL_O_DATA.other + '</p>' +
                 '<p>有任何問題請電話詳細聯絡~</p>';
 

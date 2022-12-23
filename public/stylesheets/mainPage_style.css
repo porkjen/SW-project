@@ -12,6 +12,10 @@
         padding-left: 0px;
     }
 
+    .btn-group{
+        width: 100%;
+    }
+
     .btn-group > button{
         float: left;
         width: 20%;
@@ -20,13 +24,13 @@
     }
 
     .header-nav{
-        width: 15vw;
-        justify-content: right;
+        width: 45vw;
     
     }
+
     .header-content{
-        min-width: 80vw;
-        justify-content: none;
+        min-width: 100vw;
+        justify-content: flex-start;
     }
     
     .bg img {

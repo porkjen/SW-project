@@ -15,7 +15,7 @@ $(document).ready(function(){
                               '<div class="card-body">'+
                               '<h5 class="card-title">'+data.result[i].name+'</h5>'+
                               '<h6 class="card-subtitle mb-2 text-muted">'+data.result[i].gender+'</h6>'+
-                              '<p class="card-text">'+'搭乘地點:'+data.result[i].takingPlace+'<br>'+'搭乘時間:'+data.result[i].takingTime+'<br>'+'目的地:'+data.result[i].destination+'<br>'+'其他資訊:'+data.result[i].other+'</p>'+
+                              '<p class="card-text">'+'搭乘地點:'+data.result[i].takingPlace+'<br>'+'搭乘時間:'+data.result[i].takingTime+'<br>'+'目的地:'+data.result[i].destination+'<br>'+'其他資訊:'+data.result[i].other+'<br>'+'備註:'+data.result[i].remark+'<br>'+'</p>'+
                               '<button type="button" class="btn btn-outline-success" id="accept" onclick="getInfo('+i+')">接受</button>'+
                               '<button type="button" class="btn btn-outline-success" id="reject" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="removeCard('+i+')">拒絕</button>'+
                             '</div>'+
@@ -62,7 +62,7 @@ function btn1(){
                           '<div class="card-body">'+
                           '<h5 class="card-title">'+data.result[i].name+'</h5>'+
                           '<h6 class="card-subtitle mb-2 text-muted">'+data.result[i].gender+'</h6>'+
-                          '<p class="card-text">'+'搭乘地點:'+data.result[i].takingPlace+'<br>'+'搭乘時間:'+data.result[i].takingTime+'<br>'+'目的地:'+data.result[i].destination+'<br>'+'其他資訊:'+data.result[i].other+'</p>'+
+                          '<p class="card-text">'+'搭乘地點:'+data.result[i].takingPlace+'<br>'+'搭乘時間:'+data.result[i].takingTime+'<br>'+'目的地:'+data.result[i].destination+'<br>'+'其他資訊:'+data.result[i].other+'<br>'+'備註:'+data.result[i].remark+'<br>'+'</p>'+
                           '<button type="button" class="btn btn-outline-success" id="accept" onclick="getInfo('+i+')">接受</button>'+
                           '<button type="button" class="btn btn-outline-success" id="reject" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="removeCard('+i+')">拒絕</button>'+
                         '</div>'+

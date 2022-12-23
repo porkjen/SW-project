@@ -5,6 +5,9 @@ const riderFilter = require('../models/riderFilter_model');
 const findData = require('../models/findData_model');
 const findOneData = require('../models/findOneData_model');
 const rate = require('../models/rate');
+const upload = require('../service/image');
+const { ImgurClient } = require('imgur');
+
 // sending email
 const credentials = require('../models/credentials')
 const from = credentials.gmail.user;
@@ -285,7 +288,7 @@ module.exports = class member{
             workingTime:    req.body.workingTime,   //時間
             other:          req.body.other,         //其他資訊
             denyReason:     req.body.denyReason,    //拒絕原因
-            remark:         req.body.remark,        //remaek
+            remark:         req.body.remark,        //remark
             rateTotal:      req.body.rateTotal,
             rateCount:      req.body.rateCount,
             comment:        req.body.comment
@@ -299,7 +302,7 @@ module.exports = class member{
             takingPlace:    req.body.takingPlace,   //時間
             destination:    req.body.destination,   //其他資訊
             other:          req.body.other,         //拒絕原因
-            remark:         req.body.remark,        //remaek
+            remark:         req.body.remark,        //remark
         };
 
         updateLocalInfo(changeBasicData);
@@ -425,14 +428,14 @@ module.exports = class member{
     postUploadPhoto(req, res, next){        //上傳照片
         upload(req, res, async () => {
             const client = new ImgurClient({
-              clientId: process.env.IMGUR_CLIENTID,
-              clientSecret: process.env.IMGUR_CLIENT_SECRET,
-              refreshToken: process.env.IMGUR_REFRESH_TOKEN,
+              clientId: '73d766fcb0de170',
+              clientSecret: 'd15fa884f676e9c4d5ec0528b4c9f510ce72b76d',
+              refreshToken: 'd6cd7b8e0e067ba6f6292f0e85a7d1c24543efcb',
             });
             const response = await client.upload({
                 image: req.files[0].buffer.toString('base64'),
                 type: 'base64',
-                album: process.env.IMGUR_ALBUM_ID
+                album: '4IcQTIb'
               });
               res.send({ url: response.data.link });
             })

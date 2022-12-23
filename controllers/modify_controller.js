@@ -159,32 +159,22 @@ module.exports = class member{
     }
 
     postLogin(req, res, next){
-    
+        
+        clearLocalVar();
+
         var signInData = {
             account:    req.body.account,
             password:   req.body.password
         };
-        console.log("signInData = " + JSON.stringify(signInData));
         
-        findOneData({account: signInData.account}, 'ownerCollection')
-        .then(result => {
-            if(result)
-                updateLocalOData(result);
-        });
-        
-        findOneData({account: signInData.account}, 'passengerCollection')
-        .then(result => {
-            if(result)
-                updateLocalPData(result);
-        });
-
-        findOneData(signInData, 'basicCollection')
-        .then(result => {
+        findOneData(signInData, 'basicCollection').then(result => {
             if(result){
                 console.log("[succ] succ to login." );
                 updateLocalInfo(result);
-                res.json({
-                    result: "find user"
+                updateDataFromDB(signInData.account).then(() => {
+                    res.json({
+                        result: "find user"
+                    });
                 });
             }
             else {
@@ -202,9 +192,45 @@ module.exports = class member{
                 result: "login err"
             });
         });
+        
+        
+        async function updateDataFromDB(userAccount){
+            await findOneData({account: userAccount}, 'ownerCollection')
+            .then(result => {
+                if(result)
+                    updateLocalOData(result);
+            });
+            
+            await findOneData({account: userAccount}, 'passengerCollection')
+            .then(result => {
+                if(result)
+                    updateLocalPData(result);
+            });
+    
+        }
     }
 
-    postMatchOwner(req, res, next){             //乘客頁面列出車主
+    postLogout(req, res, next){
+        
+        if(LOCAL_INFO.identity == "owner"){
+            updateLocalOData({status : "offline"});
+            ownerLogout().then(()=>{
+                inputDataByAcc(LOCAL_O_DATA, 'ownerCollection');
+                res.json({
+                    result: "logout succ"
+                });
+            })
+        }
+        else{
+            clearLocalVar();
+            res.json({
+                result: "logout succ"
+            });
+        }
+        
+    }
+
+    postMatchOwner(req, res, next){     //乘客頁面列出車主
     
         var matchData = {
             status:     "online"
@@ -222,26 +248,7 @@ module.exports = class member{
 
         async function addArr(result){
             for(var i = 0; i < result.length; i++){
-                var returnCompenent = {
-                    name            : null,
-                    phone           : null,
-                    email           : null,
-                    identity        : null,
-                    findPair        : null,
-                    account         : null,
-                    status          : null,
-                    gender          : null,
-                    license         : null,
-                    helmet          : null,
-                    area            : null,
-                    workingTime     : null,
-                    other           : null,
-                    denyReason      : null,
-                    remark          : null,
-                    rateTotal       : 0,
-                    rateCount       : 0,
-                    comment         : null
-                };
+                var returnCompenent = {};
                 await findOneData({account: result[i].account}, 'basicCollection').then(basicResult =>{
                     returnCompenent.name     = basicResult.name     ;
                     returnCompenent.phone    = basicResult.phone    ;
@@ -270,7 +277,7 @@ module.exports = class member{
         }
     }
 
-    postChangeInfo(req, res, next){
+    postChangeInfo(req, res, next){     // 修改資訊
 
         var changeBasicData = {
             account:    LOCAL_INFO.account,         //帳號
@@ -289,7 +296,7 @@ module.exports = class member{
             workingTime:    req.body.workingTime,   //時間
             other:          req.body.other,         //其他資訊
             denyReason:     req.body.denyReason,    //拒絕原因
-            remark:         req.body.remark,        //remaek
+            remark:         req.body.remark,        //remark
             rateTotal:      req.body.rateTotal,
             rateCount:      req.body.rateCount,
             comment:        req.body.comment
@@ -303,21 +310,19 @@ module.exports = class member{
             takingPlace:    req.body.takingPlace,   //時間
             destination:    req.body.destination,   //其他資訊
             other:          req.body.other,         //拒絕原因
-            remark:         req.body.remark,        //remaek
+            remark:         req.body.remark,        //remark
         };
 
         updateLocalInfo(changeBasicData);
         inputDataByAcc(LOCAL_INFO, 'basicCollection').then(() => {
             if(LOCAL_INFO.identity == "owner") {
                 updateLocalOData(changeOwnerData);
-                // console.log(">>> LOCAL_O_DATA = " + JSON.stringify(LOCAL_O_DATA));
                 inputDataByAcc(LOCAL_O_DATA, 'ownerCollection').then(() => {
                     console.log("[succ] change owner data 成功");
                 });
             }
             else if(LOCAL_INFO.identity == "passenger") {
                 updateLocalPData(changePassengerData);
-                // console.log(">>> LOCAL_P_DATA = " + JSON.stringify(LOCAL_P_DATA));
                 inputDataByAcc(LOCAL_P_DATA, 'passengerCollection').then(() => {
                     console.log("[succ] change passenger data 成功");
                 });
@@ -391,26 +396,7 @@ module.exports = class member{
 
         async function addArr(result){
             for(var i = 0; i < result.length; i++){
-                var returnCompenent = {
-                    name            : null,
-                    phone           : null,
-                    email           : null,
-                    identity        : null,
-                    findPair        : null,
-                    account         : null,
-                    status          : null,
-                    gender          : null,
-                    license         : null,
-                    helmet          : null,
-                    area            : null,
-                    workingTime     : null,
-                    other           : null,
-                    denyReason      : null,
-                    remark          : null,
-                    rateTotal       : 0,
-                    rateCount       : 0,
-                    comment         : null
-                };
+                var returnCompenent = {};
                 await findOneData({account: result[i].account}, 'basicCollection').then(basicResult =>{
                     returnCompenent.name     = basicResult.name     ;
                     returnCompenent.phone    = basicResult.phone    ;
@@ -456,7 +442,8 @@ module.exports = class member{
     postFindPassenger(req, res, next){   //列出車主 mainPage 的乘客資料
         
         var passengerDataQuery = {
-            findPair: LOCAL_INFO.name
+            findPair: LOCAL_INFO.account,
+            identity: "passenger"
         };
         var returnArray = [];
 
@@ -471,23 +458,9 @@ module.exports = class member{
 
         async function addArr(result){
             for(var i = 0; i < result.length; i++){
-                var returnCompenent ={
-                    name            : null,
-                    phone           : null,
-                    email           : null,
-                    identity        : null,
-                    findPair        : null,
-                    account         : null,
-                    gender          : null,
-                    helmet          : null,
-                    takingTime      : null,
-                    takingPlace     : null,
-                    destination     : null,
-                    other           : null,
-                    remark          : null
-                }
+                var returnCompenent = {};
+
                 await findOneData({account : result[i].account}, 'passengerCollection').then(basicResult => {
-                    
                     returnCompenent.gender      = basicResult.gender;
                     returnCompenent.helmet      = basicResult.helmet;
                     returnCompenent.takingTime  = basicResult.takingTime;
@@ -509,7 +482,7 @@ module.exports = class member{
         }
     }
 
-    getCheckIdentify(req, res, next){  
+    getCheckIdentify(req, res, next){   // 確認有無該身分
 
         LOCAL_INFO.identity = req.body.identity;
         if(LOCAL_INFO.identity == "owner") {
@@ -571,33 +544,26 @@ module.exports = class member{
         }
     }
 
-    postFindOwner(req, res, next){   //乘客送出訂單給車主
+    postFindOwner(req, res, next){      //乘客送出訂單給車主
         
-        updateLocalInfo({findPair : req.body.name});
-        inputDataByAcc(LOCAL_INFO, 'basicCollection').then(result => {
-            res.json({
-                status: "findPair 成功",
-                result: result
-            })
-        },(err) => {
-            res.json({
-                status: "findPair 失敗",
-                result: err
-            })
-        });
+        updateLocalInfo({findPair : req.body.account});
+
+        inputDataByAcc(LOCAL_INFO, 'basicCollection');
+        // inputDataByAcc(LOCAL_P_DATA, 'passengerCollection');
 
         var myOwner = {
             identity:   "owner",
-            name:       LOCAL_INFO.findPair
+            account:     LOCAL_INFO.findPair
         }
 
         findOneData(myOwner, 'basicCollection').then(result =>{
-
+            var sendContent = 
+                "<p>叮咚! 有新的訂單囉!<br><a href='http://127.0.0.1:3000/mainPage.html'>來去海大共乘網看看~</a><br>";
             var sendData = {
                 from:       from,
                 to:         result.email,
                 subject:    '海大共乘網 有您的新消息',
-                html:       "<p>叮咚! 有新的訂單囉!</p><br><a href='http://127.0.0.1:3000/mainPage.html'>來去海大共乘網看看~</a>"
+                html:       sendContent
             };
             transporter.sendMail(sendData).then(info => {
                 console.log("[succ] send mail.");
@@ -607,8 +573,46 @@ module.exports = class member{
             console.log("err: " + err);
         });
     }
-    postReplyOrder(req, res, next){   //車主回復訂單給乘客
+
+    postAcceptOrder(req, res, next){   //車主接收並回覆訂單給乘客
+        updateLocalInfo({findPair : req.body.account});
+        inputDataByAcc(LOCAL_INFO, 'basicCollection');
+
+        updateLocalOData({status: "busy"});
+        inputDataByAcc(LOCAL_O_DATA, 'ownerCollection');
+
+        var myPassenger = {
+            identity:   "passenger",
+            account:    LOCAL_INFO.findPair
+        }
         
+        findOneData(myPassenger, 'basicCollection').then(result =>{
+
+            var sendContent = 
+                "<p>您的訂單已被接受</p>" +
+                '<p>車主姓名 : '+ LOCAL_INFO.name + '<br>' + 
+                '    性別 : '+ LOCAL_O_DATA.gender + '<br>' + 
+                '    電話 : ' + LOCAL_INFO.phone + '<br>' +
+                '    備註 : ' + LOCAL_O_DATA.other + '</p>' +
+                '<p>有任何問題請電話詳細聯絡~</p>';
+
+            var sendData = {
+                from:       from,
+                to:         result.email,
+                subject:    '海大共乘網 有您的新消息',
+                html:       sendContent
+            };
+            
+            transporter.sendMail(sendData).then(info => {
+                console.log("[succ] send mail.");
+                res.json({
+                    result: "accept request succ"
+                });
+            }).catch(console.error);
+            
+        },(err) => {
+            console.log("err: " + err);
+        });
         
     }
 

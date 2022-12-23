@@ -53,3 +53,22 @@ function showCurrentStep() {
         step.classList.toggle("active", index === currentStep)
     })
 }
+
+const fileUploader = document.getElementById('fileUpload');
+fileUploader.addEventListener('change', (event) => {
+    const formData = new FormData();
+  //formData.append('fileUpload', input.files[0]);
+    formData.append('fileUpload', $('input[name="fileUpload"]').get(0).files[0]);
+    console.log( $('input[name="fileUpload"]').get(0).files[0]);
+    $.ajax({
+        type: "POST",
+        url: 'http://127.0.0.1:3000/uploadPhoto',
+        data: formData,
+        processData : false, 
+        contentType : false,
+        dataType: "json",
+        success: function(data) {
+        console.log(data);
+        }
+    });
+  });

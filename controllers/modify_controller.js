@@ -159,7 +159,9 @@ module.exports = class member{
     }
 
     postLogin(req, res, next){
-    
+        
+        clearLocalVar();
+
         var signInData = {
             account:    req.body.account,
             password:   req.body.password
@@ -209,21 +211,21 @@ module.exports = class member{
     }
 
     postLogout(req, res, next){
-    
+        
         if(LOCAL_INFO.identity == "owner"){
             updateLocalOData({status : "offline"});
-            inputDataByAcc(LOCAL_O_DATA, 'ownerCollection').then(()=>{
-                clearLocalVar();
+            ownerLogout().then(()=>{
+                inputDataByAcc(LOCAL_O_DATA, 'ownerCollection');
                 res.json({
                     result: "logout succ"
                 });
-            });
+            })
         }
         else{
             clearLocalVar();
-                res.json({
-                    result: "logout succ"
-                });
+            res.json({
+                result: "logout succ"
+            });
         }
         
     }
@@ -580,7 +582,7 @@ module.exports = class member{
                 '<p>車主姓名 : '+ LOCAL_INFO.name + '<br>' + 
                 '    性別 : '+ LOCAL_O_DATA.gender + '<br>' + 
                 '    電話 : ' + LOCAL_INFO.phone + '<br>' +
-                '    備註 : ' + LOCAL_O_DATA.remark + '</p>' +
+                '    備註 : ' + LOCAL_O_DATA.other + '</p>' +
                 '<p>有任何問題請電話詳細聯絡~</p>';
 
             var sendData = {
@@ -592,6 +594,9 @@ module.exports = class member{
             
             transporter.sendMail(sendData).then(info => {
                 console.log("[succ] send mail.");
+                res.json({
+                    result: "accept request succ"
+                });
             }).catch(console.error);
             
         },(err) => {

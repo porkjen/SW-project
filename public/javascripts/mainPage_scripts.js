@@ -34,11 +34,13 @@ function listPassengers(){
 										'<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'+
 									'</div>'+
 									'<div class="modal-body">'+
-										'<form action="" method="post">'+
-											'<input type="text" class="other_info" name="other" id="other" value="" height="50px" width="50px">'+
-											'</div>'+
+										'<iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>' +
+										'<form action="/denyOrder" method="post" target="dummyframe">'+
+											'<input type="hidden" name="account" value="'+data.result[i].account+'">'+
+											'<input type="text" class="other_info" name="denyReason" id="input_denyReason" value="" height="50px" width="50px">'+
+											
 											'<div class="modal-footer">'+
-												'<button type="submit" class="btn btn-outline-success" data-bs-dismiss="modal">確認</button>'+
+												'<button type="submit" id="btn_denyOrder" class="btn btn-outline-success" data-bs-dismiss="modal">確認</button>'+
 											'</div>'+
 										'</form>'+
 									'</div>'+
@@ -65,6 +67,9 @@ function logout(){
 				alert("登出成功!");
 				location.href="/SignIn.html";
 			}
+			else{
+				alert("sth wrong")
+			}
 		},
 		error: function(){
 			alert("登出失敗!");
@@ -86,6 +91,9 @@ function acceptRequest(resData){
 			if(acceptRes.result == "accept request succ"){
 				location.href = "/going.html"  
 			}
+		},
+		error: function(){
+			alert("accept order error");
 		}       
 	})
 }

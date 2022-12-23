@@ -208,7 +208,27 @@ module.exports = class member{
         }
     }
 
-    postMatchOwner(req, res, next){             //乘客頁面列出車主
+    postLogout(req, res, next){
+    
+        if(LOCAL_INFO.identity == "owner"){
+            updateLocalOData({status : "offline"});
+            inputDataByAcc(LOCAL_O_DATA, 'ownerCollection').then(()=>{
+                clearLocalVar();
+                res.json({
+                    result: "logout succ"
+                });
+            });
+        }
+        else{
+            clearLocalVar();
+                res.json({
+                    result: "logout succ"
+                });
+        }
+        
+    }
+
+    postMatchOwner(req, res, next){     //乘客頁面列出車主
     
         var matchData = {
             status:     "online"
@@ -255,7 +275,7 @@ module.exports = class member{
         }
     }
 
-    postChangeInfo(req, res, next){
+    postChangeInfo(req, res, next){     // 修改資訊
 
         var changeBasicData = {
             account:    LOCAL_INFO.account,         //帳號
@@ -449,7 +469,7 @@ module.exports = class member{
         }
     }
 
-    getCheckIdentify(req, res, next){  
+    getCheckIdentify(req, res, next){   // 確認有無該身分
 
         LOCAL_INFO.identity = req.body.identity;
         if(LOCAL_INFO.identity == "owner") {
@@ -511,7 +531,7 @@ module.exports = class member{
         }
     }
 
-    postFindOwner(req, res, next){   //乘客送出訂單給車主
+    postFindOwner(req, res, next){      //乘客送出訂單給車主
         
         updateLocalInfo({findPair : req.body.account});
 
@@ -540,7 +560,7 @@ module.exports = class member{
             console.log("err: " + err);
         });
     }
-    
+
     postAcceptOrder(req, res, next){   //車主接收並回覆訂單給乘客
         updateLocalInfo({findPair : req.body.account});
         inputDataByAcc(LOCAL_INFO, 'basicCollection');
@@ -560,7 +580,7 @@ module.exports = class member{
                 '<p>車主姓名 : '+ LOCAL_INFO.name + '<br>' + 
                 '    性別 : '+ LOCAL_O_DATA.gender + '<br>' + 
                 '    電話 : ' + LOCAL_INFO.phone + '<br>' +
-                '    其他 : ' + LOCAL_O_DATA.other + '</p>' +
+                '    備註 : ' + LOCAL_O_DATA.remark + '</p>' +
                 '<p>有任何問題請電話詳細聯絡~</p>';
 
             var sendData = {

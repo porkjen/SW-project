@@ -35,7 +35,7 @@
             </div>
             
             <div class="modal-body">
-              <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+              <iframe name="dummyframe" id="dummyframe" style="display: none;" ></iframe>
               <form action="http://127.0.0.1:3000/riderFilter" method="post" target="dummyframe">
                 <div class="form-group1">
                   偏好車主性別
@@ -71,9 +71,9 @@
                 </select>          
                 <div class="input-group">                  
                   <span class="input-group-text" id="destination">目的地</span>
-                  <input type="text" class="form-control" placeholder="完整地址"  aria-describedby="destination" id="d" name="destination" required>
+                  <input type="text" class="form-control" placeholder="完整地址" aria-label="Username" aria-describedby="destination" id="d" name="destination" required="required">
                 </div>      
-                <select class="form-select" aria-label="Default select example" required>
+                <select class="form-select" aria-label="Default select example">
                   <option selected>乘車地區</option>
                   <option value="仁愛區" name="takingPlace">仁愛區</option>
                   <option value="中正區" name="takingPlace">中正區</option>
@@ -85,20 +85,16 @@
                 </select>              
                 <div class="input-group">                  
                   <span class="input-group-text" id="getOn">乘車地點</span>
-                  <input type="text" class="form-control" placeholder="完整地址" aria-describedby="getOn" id="g">
+                  <input type="text" class="form-control" placeholder="完整地址" aria-label="Username" aria-describedby="getOn" id="g">
                 </div>
                 <br>
-				<div class="input-group">                  
-					<span class="input-group-text" id="filtOwnerName">車主姓名</span>
-					<input type="text" class="form-control" placeholder="輸入想尋找的車主" aria-describedby="filtOwnerName" id="filtOwnerNameIn">
-				</div>
-				<br>
-                <button type="submit" class="btn btn-primary" id="closefmodal" onclick="filter()">確認</button>
+                <button type="submit" class="btn btn-primary" id="closeFBtn" onclick="closeF()">確認</button>
               </form>      
             </div>
           </div>
         </div>
       </div>
+      <button class="btn btn-outline-primary btn-sm" onclick="filter();">顯示篩選結果</button>
       <!--修改個人資料按鈕-->
       <a href="#" type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#infomodal">修改個人資料</a>
       <!--跳出視窗-->
@@ -130,7 +126,7 @@
                   <label class="form-check-label" for="newsexF">女</label>                   
                   </div>                  
                 </div>
-                <button type="submit" class="btn btn-primary" onclick="changeInfoBtn()" id="closeimodal">確認</button>
+                <button type="submit" class="btn btn-primary" id="closeIBtn"  onClick="closeI()">確認</button>
               </form>
               
             </div>
@@ -148,14 +144,77 @@
 		var count;
 		var pressedBtn;
 		var name;
-		//頁面重整時
 		$(document).ready(function () {
-		$.ajax({
-			url : 'http://127.0.0.1:3000/matchOwner',
+		  alert("請先篩選");
+		});
+    function closeF(){
+      $('#closeFBtn').click(function() {
+				//modal收起
+				$('#selectmodal').modal('hide');
+		  });
+    }
+    function closeI(){
+      $('#closeIBtn').click(function() {
+				//modal收起
+				$('#infomodal').modal('hide');
+		  });
+    }
+    function closeS(num){
+      $('#closeSBtn').click(function() {
+				//modal收起
+				$('#sendmodal'+i).modal('hide');
+		  });
+    }
+		function selectAnswer(){
+			var s = $("[name='Sex']:checked").val();
+			var h = $("[name='Helmet']:checked").val();
+			var d = document.getElementById("d").value;
+			var g = document.getElementById("g").value;
+			alert(d);
+			alert(g);
+			//var z = $('select').val();
+		}
+		function sendRequest(c){
+			pressedBtn = c;
+      
+			for(var j = 0; j <= count - 1; j++){
+			  document.getElementById(j).disabled = true;
+			}     
+			$.ajax({
+				url : 'http://127.0.0.1:3000/matchOwner',
+				type : 'GET',
+				success:function(data){
+					name = JSON.stringify(data.result[c]);
+					//alert(name);  
+					post(name);       
+				}       
+			})
+		}
+		function post(n){
+			fetch('http://127.0.0.1:3000/sendOrderToOwner', {
+			body: n, // must match 'Content-Type' header
+			cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached         
+			headers: {
+				'content-type': 'application/json'
+			},
+			method: 'POST', // *GET, POST, PUT, DELETE, etc.
+			mode: 'cors'
+			})
+			.then(response => console.log(n))
+			.then(response => response.json()) 
+			.catch(function() {
+			console.log(n);
+			});
+		}
+    function filter(){
+        
+      $.ajax({
+			url : '/getRiderFilter',
 			type : 'GET',
-			success: function(data){		
+			success: function(data){
+        console.log("?????");		
         count = data.result.length;
-		for(var i = 0; i < data.result.length; i++){
+		    for(var i = 0; i < data.result.length; i++){
           $('.card-group').append(   
           '<div class="col-md-12">'+
             '<div class="card border-primary">'+
@@ -176,6 +235,7 @@
             '<div class="card-footer" style="background-color: rgb(157, 215, 233)">'+
               '<div style="text-align: center;">'+
                 '評分: 星<br>'+
+                //'<button id="'+i+'" name="sendButton" class="btn btn-primary btn-sm" onclick="sendRequest('+i+');window.setTimeout(setDisabled, 208000);setstr(180);" style="background-color: rgb(0, 0, 0); text-align: center;">發送請求</button>'+
                 '<button id="'+i+'" name="sendButton" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#sendmodal'+i+'" style="background-color: rgb(0, 0, 0); text-align: center;">發送請求</button>'+
                 '<!--發送請求彈出視窗-->'+
                 '<div class="modal fade" id="sendmodal'+i+'">'+
@@ -190,19 +250,19 @@
                         '<form action="http://127.0.0.1:3000/changePassengerInfo" method="post" target="dummyframe" id="newModalForm">'+   
                           '<div class="input-group">'+
                             '<span class="input-group-text" id="time">今天</span>'+
-                            '<input type="text" name="takingTime" class="form-control" placeholder="24小時制" aria-describedby="time" pattern="([0-1]{1}[0-9]{1}|20|21|22|23):[0-5]{1}[0-9]{1}" id="t"  required>'+
+                            '<input type="text" name="takingTime" class="form-control required" placeholder="24小時制" aria-describedby="time" pattern="([0-1]{1}[0-9]{1}|20|21|22|23):[0-5]{1}[0-9]{1}" id="t" required>'+
                           '</div>'+
                           '<div class="input-group">'+
                             '<span class="input-group-text" id="getOn">地點</span>'+
-                            '<input type="text" name="takingPlace" class="form-control" placeholder="上車地點" aria-describedby="getOn" id="gO"  required>'+
+                            '<input type="text" name="takingPlace" class="form-control required" placeholder="上車地點" aria-describedby="getOn" id="gO" required>'+
                           '</div>'+
                           '<div class="input-group">'+
                             '<span class="input-group-text" id="other">備註</span>'+
-                            '<input type="text" name="remark" class="form-control" placeholder="" aria-describedby="other" id="oth">'+
+                            '<input type="text" name="remark" class="form-control required" placeholder="" aria-describedby="other" id="oth">'+
                           '</div>'+
                           '<br>'+
                           '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>'+
-                          '<button type="submit" onclick="sendRequest('+i+');window.setTimeout(setDisabled, 208000);" class="btn btn-primary" id="closesmodal">確認發送</button>'+
+                          '<button type="submit" onclick="sendRequest('+i+');window.setTimeout(setDisabled, 208000);closeS('+i+');" id="closeSBtn" class="btn btn-primary">確認發送</button>'+
                         '</form>'+
                       '</div>'+
                     '</div>'+
@@ -214,55 +274,14 @@
           '<div>'             
           )
         }
-			}
-		})  
-		});
-		//按下送出請求按鈕
-		function sendRequest(c){
-			pressedBtn = c;
-			//收起modal
-			$('#closesmodal').click(function() {
-				$('#sendmodal'+c).modal('hide');
-			});
-			//將按鈕都設為禁用
-			for(var j = 0; j <= count - 1; j++){
-			  document.getElementById(j).disabled = true;
-			}  
-			//拿到按鈕車主姓名   
-			$.ajax({
-				url : 'http://127.0.0.1:3000/matchOwner',
-				type : 'GET',
-				success:function(data){
-					name = JSON.stringify(data.result[c]);
-					//alert(name);  
-					post(name);       
-				}       
-			})
-		}
-		//篩選確認按鈕
-		function filter(){
-			$('#closefmodal').click(function() {
-				$('#selectmodal').modal('hide');
-			});
-		}
-		//送出被按下邀請的車主姓名傳到後端
-		function post(n){
-			fetch('http://127.0.0.1:3000/sendOrderToOwner', {
-			body: n, // must match 'Content-Type' header
-			cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached         
-			headers: {
-				'content-type': 'application/json'
 			},
-			method: 'POST', // *GET, POST, PUT, DELETE, etc.
-			mode: 'cors'
-			})
-			.then(response => console.log(n))
-			.then(response => response.json()) 
-			.catch(function() {
-			console.log(n);
-			});
-		}
-		//按鈕恢復可用
+      error:function(){
+        alert("no");
+      }
+		})
+      
+           
+    }
 		function setDisabled() {
 			for(var k = 0; k <= count - 1; k++){
 			  document.getElementById(k).disabled = false;
@@ -276,16 +295,9 @@
 			}
 			else{document.getElementById(pressedBtn).innerHTML='發送請求';}
 		}
-		//按下更改資料按鈕
-		function changeInfoBtn(){
-			$('#closeimodal').click(function() {
-				//modal收起
-				$('#infomodal').modal('hide');
-			});
-		}
-		date = new Date();
-		year = date.getFullYear();
-		var month = date.getMonth()+1 ;
-		day = date.getDate();
+    date = new Date();
+    year = date.getFullYear();
+    var month = date.getMonth()+1 ;
+    day = date.getDate();
 	</script>
 </html>

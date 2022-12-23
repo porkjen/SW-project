@@ -5,8 +5,8 @@ const riderFilter = require('../models/riderFilter_model');
 const findData = require('../models/findData_model');
 const findOneData = require('../models/findOneData_model');
 const rate = require('../models/rate');
-const upload = require('../service/image');
-const { ImgurClient } = require('imgur');
+
+var list={};
 
 // sending email
 const credentials = require('../models/credentials')
@@ -325,6 +325,15 @@ module.exports = class member{
         });
     }
 
+    getRiderFilter(req, res, next){
+        console.log("[getRiderFilter] get data");
+        console.log(list);
+        res.json({
+            status: "match",
+            result: list
+        });
+    }
+
     postRiderFilter(req, res, next){
         
         var returnArray = [];
@@ -336,12 +345,12 @@ module.exports = class member{
         };
         // updateLocalVar(desData);
         // inputDataByAcc(LOCAL_INFO);
-        console.log("destination" + req.body.destination);
+        console.log("destination " + req.body.destination);
 
         findData(desData, 'passengerCollection').then(result => {
             if(result.status == "succ"){
                 console.log("[account]" + result[0].account);
-                updateLocalVar(result[0]);
+                updateLocalPData(result[0]);
                 inputDataByAcc(LOCAL_INFO, 'passengerCollection');
             }
             else if(result.status == "no found"){
@@ -350,7 +359,7 @@ module.exports = class member{
             }
         });
         var filterData = {
-            /*name:       req.body.name,*/
+            name:       req.body.name,
             gender:     req.body.gender,
             helmet:     req.body.helmet,
             area:       req.body.area,
@@ -362,21 +371,23 @@ module.exports = class member{
         .then(result => {
             console.log("[note] this is filter");
             
-            addArr(result).then(() => {
-                console.log("riderFilter = " + returnArray);
+            addArr(result).then(()=>{
                 res.json({
                     status: "match 成功",
                     result: returnArray
-                })
-            })
-            
-        },(err) => {
+                }) 
+                list = returnArray;
+                console.log(list);
+            }),(err) => {
             console.log("[fail] fail to filt");
             res.json({
                 status: "filt data 失敗",
                 result: err
             })
+            }
         });
+
+        
 
         async function addArr(result){
             for(var i = 0; i < result.length; i++){
@@ -429,14 +440,14 @@ module.exports = class member{
     postUploadPhoto(req, res, next){        //上傳照片
         upload(req, res, async () => {
             const client = new ImgurClient({
-              clientId: '73d766fcb0de170',
-              clientSecret: 'd15fa884f676e9c4d5ec0528b4c9f510ce72b76d',
-              refreshToken: 'd6cd7b8e0e067ba6f6292f0e85a7d1c24543efcb',
+              clientId: process.env.IMGUR_CLIENTID,
+              clientSecret: process.env.IMGUR_CLIENT_SECRET,
+              refreshToken: process.env.IMGUR_REFRESH_TOKEN,
             });
             const response = await client.upload({
                 image: req.files[0].buffer.toString('base64'),
                 type: 'base64',
-                album: '4IcQTIb'
+                album: process.env.IMGUR_ALBUM_ID
               });
               res.send({ url: response.data.link });
             })

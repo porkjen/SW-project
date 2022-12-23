@@ -44,7 +44,6 @@ var LOCAL_O_DATA = {
     area        : null,                                     //可接送地點 <Array>
     workingTime : null,                                     //可載客時間 <Array>
     other       : "No other condition or comment.",         //其他說明
-    denyReason  : null,                                     //拒絕原因
     remark      : null,                                     //備註
     rateTotal   : 0,                                        //總評分	
     rateCount   : 0,                                        //評分數量	
@@ -52,14 +51,15 @@ var LOCAL_O_DATA = {
 };
 
 var LOCAL_P_DATA = {  
-    account     : null,                                     //帳號
-    gender      : "secret",                                 //性別 (male / female)
-    helmet      : null,                                     //是否有安全帽 (yes / no)
-    takingTime  : null,                                     //搭乘時間
-    takingPlace : null,                                     //乘客上車地點
-    destination : null,                                     //目的地
-    other       : "No other condition or comment.",         //其他說明
-    remark      : null,                                     //備註
+    account     : null,                                     // 帳號
+    gender      : "secret",                                 // 性別 (male / female)
+    helmet      : null,                                     // 是否有安全帽 (yes / no)
+    takingTime  : null,                                     // 搭乘時間
+    takingPlace : null,                                     // 乘客上車地點
+    destination : null,                                     // 目的地
+    other       : "No other condition or comment.",         // 其他說明
+    remark      : null,                                     // 備註
+    orderStatus : "unsend"                                  // 訂單狀態 (unsend / sent / accepted / denyed)
 };
 
 /*  To avoid the data not changed to cover old data.  
@@ -83,7 +83,6 @@ function updateLocalOData(ownerData) {
     LOCAL_O_DATA.area        = (ownerData.area)        ? ownerData.area         : LOCAL_O_DATA.area;
     LOCAL_O_DATA.workingTime = (ownerData.workingTime) ? ownerData.workingTime  : LOCAL_O_DATA.workingTime;
     LOCAL_O_DATA.other       = (ownerData.other)       ? ownerData.other        : LOCAL_O_DATA.other;
-    LOCAL_O_DATA.denyReason  = (ownerData.denyReason)  ? ownerData.denyReason   : LOCAL_O_DATA.denyReason;
     LOCAL_O_DATA.rateTotal    = (ownerData.rateTotal ) ? ownerData.rateTotal    : LOCAL_O_DATA.rateTotal   ;
     LOCAL_O_DATA.rateCount    = (ownerData.rateCount ) ? ownerData.rateCount    : LOCAL_O_DATA.rateCount   ;
     LOCAL_O_DATA.comment      = (ownerData.comment   ) ? ownerData.comment      : LOCAL_O_DATA.comment     ;
@@ -120,12 +119,12 @@ function clearLocalVar() {
     LOCAL_P_DATA.takingPlace = null; 
     LOCAL_P_DATA.takingTime  = null;                         
     LOCAL_O_DATA.other       = "No other condition or comment.";
-    LOCAL_O_DATA.denyReason  = null;  
     LOCAL_P_DATA.remark      = null;                     
     LOCAL_INFO.findPair      = null; 
     LOCAL_O_DATA.rateTotal   = 0;
     LOCAL_O_DATA.rateCount   = 0;
-    LOCAL_O_DATA.comment     = null;                               
+    LOCAL_O_DATA.comment     = null;      
+    LOCAL_P_DATA.orderStatus = "unsend";                        
     console.log("[succ] clear local variable successfully." );
 };
 
@@ -211,15 +210,13 @@ module.exports = class member{
     }
 
     postLogout(req, res, next){
-        
+        console.log("logout");
         if(LOCAL_INFO.identity == "owner"){
             updateLocalOData({status : "offline"});
-            ownerLogout().then(()=>{
-                inputDataByAcc(LOCAL_O_DATA, 'ownerCollection');
-                res.json({
-                    result: "logout succ"
-                });
-            })
+            inputDataByAcc(LOCAL_O_DATA, 'ownerCollection');
+            res.json({
+                result: "logout succ"
+            });
         }
         else{
             clearLocalVar();
@@ -227,7 +224,6 @@ module.exports = class member{
                 result: "logout succ"
             });
         }
-        
     }
 
     postMatchOwner(req, res, next){     //乘客頁面列出車主
@@ -266,7 +262,6 @@ module.exports = class member{
                 returnCompenent.area        = result[i].area        ;
                 returnCompenent.workingTime = result[i].workingTime ;
                 returnCompenent.other       = result[i].other       ;
-                returnCompenent.denyReason  = result[i].denyReason  ;
                 returnCompenent.remark      = result[i].remark      ;
                 returnCompenent.rateTotal   = result[i].rateTotal   ;
                 returnCompenent.rateCount   = result[i].rateCount   ;
@@ -295,7 +290,6 @@ module.exports = class member{
             area:           req.body.area,          //接送區域
             workingTime:    req.body.workingTime,   //時間
             other:          req.body.other,         //其他資訊
-            denyReason:     req.body.denyReason,    //拒絕原因
             remark:         req.body.remark,        //remark
             rateTotal:      req.body.rateTotal,
             rateCount:      req.body.rateCount,
@@ -412,7 +406,6 @@ module.exports = class member{
                 returnCompenent.area        = result[i].area        ;
                 returnCompenent.workingTime = result[i].workingTime ;
                 returnCompenent.other       = result[i].other       ;
-                returnCompenent.denyReason  = result[i].denyReason  ;
                 returnCompenent.remark      = result[i].remark      ;
                 returnCompenent.rateTotal   = result[i].rateTotal   ;
                 returnCompenent.rateCount   = result[i].rateCount   ;
@@ -423,7 +416,7 @@ module.exports = class member{
         }
     }
 
-    postUploadPhoto(req, res, next){        //上傳照片
+    postUploadPhoto(req, res, next){    //上傳照片
         upload(req, res, async () => {
             const client = new ImgurClient({
               clientId: process.env.IMGUR_CLIENTID,
@@ -547,9 +540,7 @@ module.exports = class member{
     postFindOwner(req, res, next){      //乘客送出訂單給車主
         
         updateLocalInfo({findPair : req.body.account});
-
         inputDataByAcc(LOCAL_INFO, 'basicCollection');
-        // inputDataByAcc(LOCAL_P_DATA, 'passengerCollection');
 
         var myOwner = {
             identity:   "owner",
@@ -567,6 +558,8 @@ module.exports = class member{
             };
             transporter.sendMail(sendData).then(info => {
                 console.log("[succ] send mail.");
+                updateLocalPData({orderStatus : "sent"});
+                inputDataByAcc(LOCAL_INFO, 'basicCollection');
             }).catch(console.error);
             
         },(err) => {
@@ -574,7 +567,8 @@ module.exports = class member{
         });
     }
 
-    postAcceptOrder(req, res, next){   //車主接收並回覆訂單給乘客
+    postAcceptOrder(req, res, next){    //車主接收並回覆訂單給乘客
+        
         updateLocalInfo({findPair : req.body.account});
         inputDataByAcc(LOCAL_INFO, 'basicCollection');
 
@@ -587,7 +581,10 @@ module.exports = class member{
         }
         
         findOneData(myPassenger, 'basicCollection').then(result =>{
-
+            findOneData({account: LOCAL_INFO.findPair}, 'passengerCollection').then((passengerCollectionData) => {
+                passengerCollectionData.orderStatus = "accepted";
+                inputDataByAcc(passengerCollectionData, 'passengerCollection');
+            });
             var sendContent = 
                 "<p>您的訂單已被接受</p>" +
                 '<p>車主姓名 : '+ LOCAL_INFO.name + '<br>' + 
@@ -607,6 +604,49 @@ module.exports = class member{
                 console.log("[succ] send mail.");
                 res.json({
                     result: "accept request succ"
+                });
+            }).catch(console.error);
+            
+        },(err) => {
+            console.log("err: " + err);
+        });
+        
+    }
+
+    postDenyOrder(req, res, next){      //車主拒絕並回覆訂單給乘客
+
+        console.log("[note] replying order..")
+        var myPassenger = {
+            identity:   "passenger",
+            account:    req.body.account
+        }
+        
+        findOneData(myPassenger, 'basicCollection').then(result =>{
+            findOneData({account: req.body.account}, 'passengerCollection').then((passengerCollectionData) => {
+                passengerCollectionData.orderStatus = "denyed";
+                inputDataByAcc(passengerCollectionData, 'passengerCollection');
+            });
+            result.findPair = null;
+            inputDataByAcc(result, 'basicCollection');
+
+            var sendContent = 
+                "<p>您的訂單已被拒絕</p>" +
+                '<p>車主姓名 : '+ LOCAL_INFO.name + '<br>' + 
+                '    電話 : ' + LOCAL_INFO.phone + '<br>' +
+                '    原因 : ' + req.body.denyReason + '</p>' +
+                '<p>有任何問題請電話詳細聯絡~</p>';
+
+            var sendData = {
+                from:       from,
+                to:         result.email,
+                subject:    '海大共乘網 有您的新消息',
+                html:       sendContent
+            };
+            
+            transporter.sendMail(sendData).then(info => {
+                console.log("[succ] send mail.");
+                res.json({
+                    result: "deny request succ"
                 });
             }).catch(console.error);
             

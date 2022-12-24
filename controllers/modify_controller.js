@@ -633,7 +633,6 @@ module.exports = class member{
             });
             result.findPair = null;
             inputDataByAcc(result, 'basicCollection');
-
             var sendContent = 
                 "<p>您的訂單已被拒絕</p>" +
                 '<p>車主姓名 : '+ LOCAL_INFO.name + '<br>' + 

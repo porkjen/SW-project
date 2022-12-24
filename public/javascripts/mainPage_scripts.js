@@ -1,7 +1,7 @@
 //增加搭乘時間
 //Client ID:73d766fcb0de170 Client secret:d15fa884f676e9c4d5ec0528b4c9f510ce72b76d
 //https://imgur.com/#access_token=367fae1c61694fbd3b82c7eac77fb680f6d32a52&expires_in=315360000&token_type=bearer&refresh_token=d6cd7b8e0e067ba6f6292f0e85a7d1c24543efcb&account_username=face021616&account_id=59042281
-$(document).ready(function(){
+$(window).ready(function(){
 	$(".container").empty();
 	listPassengers();
 	$("#btn_logout").click(function(){
@@ -39,7 +39,7 @@ function listPassengers(){
 										// '<iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>' +
 										// '<form action="/denyOrder" method="post" target="dummyframe">'+
 											// '<input type="hidden" name="account" value="'+data.result[i].account+'">'+
-											'<input type="text" class="other_info" name="denyReason" id="input_denyReason" value="" height="50px" width="50px">'+
+											'<input type="text" class="other_info" name="denyReason" id="input_denyReason'+i+'" value="" height="50px" width="50px">'+
 											
 											'<div class="modal-footer">'+
 												'<button type="submit" id="btn_denyOrder'+i+'" class="btn btn-outline-success" data-bs-dismiss="modal" onclick="denyRequest('+i+')">確認</button>'+
@@ -104,10 +104,7 @@ function denyRequest(num){
 	$.ajax({
 		url: '/denyOrder',
 		type: 'POST',
-		data: {account: passengers[num].account, denyReason : $('#input_denyReason').val()},
-		success:function(denyRes){
-
-		},
+		data: {account: passengers[num].account, denyReason : $('#input_denyReason'+num+'').val()},
 		error: function(){
 			alert("deny order error");
 		}       

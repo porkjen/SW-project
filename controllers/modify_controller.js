@@ -27,27 +27,28 @@ const transporter = nodemailer.createTransport({
 /*  global variables, for using the information conviniently.   
     password cannot be recorded in global variables for security. */
 var LOCAL_INFO = {  
-    account     : null,                                     //帳號
-    name        : null,                                     //姓名
-    phone       : null,                                     //電話
-    email       : null,                                     //email
-    identity    : null,                                      //上線身分 (owner / passenger)
-    findPair    : null                                      //車主要找的乘客姓名 or 乘客要找的車主姓名
+    account     : null,                                     // 帳號
+    name        : null,                                     // 姓名
+    phone       : null,                                     // 電話
+    email       : null,                                     // email
+    identity    : null,                                     // 上線身分 (owner / passenger)
+    findPair    : null                                      // 車主要找的乘客姓名 or 乘客要找的車主姓名
 };
 
 var LOCAL_O_DATA = {  
-    account     : null,                                     //帳號
-    status      : "offline",                                //上線狀態 (online / busy / offline)
-    gender      : "secret",                                 //性別 (male / female)
-    license     : null,                                     //車牌號碼
-    helmet      : null,                                     //是否有安全帽 (yes / no)
-    area        : null,                                     //可接送地點 <Array>
-    workingTime : null,                                     //可載客時間 <Array>
-    other       : "No other condition or comment.",         //其他說明
-    remark      : null,                                     //備註
-    rateTotal   : 0,                                        //總評分	
-    rateCount   : 0,                                        //評分數量	
-    comment     : null,                                     //評論
+    account     : null,                                     // 帳號
+    status      : "offline",                                // 上線狀態 (online / busy / offline)
+    gender      : "secret",                                 // 性別 (male / female)
+    license     : null,                                     // 車牌號碼
+    picture     : null,                                     // 照片
+    helmet      : null,                                     // 是否有安全帽 (yes / no)
+    area        : null,                                     // 可接送地點 <Array>
+    workingTime : null,                                     // 可載客時間 <Array>
+    other       : "No other condition or comment.",         // 其他說明
+    remark      : null,                                     // 備註
+    rateTotal   : 0,                                        // 總評分	
+    rateCount   : 0,                                        // 評分數量	
+    comment     : null,                                     // 評論
 };
 
 var LOCAL_P_DATA = {  
@@ -79,6 +80,7 @@ function updateLocalOData(ownerData) {
     LOCAL_O_DATA.status      = (ownerData.status)      ? ownerData.status       : LOCAL_O_DATA.status;       
     LOCAL_O_DATA.gender      = (ownerData.gender && ownerData.gender != "null")      ? ownerData.gender       : LOCAL_O_DATA.gender;   
     LOCAL_O_DATA.license     = (ownerData.license)     ? ownerData.license      : LOCAL_O_DATA.license;
+    LOCAL_O_DATA.picture     = (ownerData.picture)     ? ownerData.picture      : LOCAL_O_DATA.picture;
     LOCAL_O_DATA.helmet      = (ownerData.helmet)      ? ownerData.helmet       : LOCAL_O_DATA.helmet;
     LOCAL_O_DATA.area        = (ownerData.area)        ? ownerData.area         : LOCAL_O_DATA.area;
     LOCAL_O_DATA.workingTime = (ownerData.workingTime) ? ownerData.workingTime  : LOCAL_O_DATA.workingTime;
@@ -97,6 +99,7 @@ function updateLocalPData(passengerData) {
     LOCAL_P_DATA.destination  = (passengerData.destination ) ? passengerData.destination : LOCAL_P_DATA.destination ;
     LOCAL_P_DATA.other        = (passengerData.other       ) ? passengerData.other       : LOCAL_P_DATA.other       ;
     LOCAL_P_DATA.remark       = (passengerData.remark      ) ? passengerData.remark      : LOCAL_P_DATA.remark      ;
+    LOCAL_P_DATA.orderStatus  = (passengerData.orderStatus ) ? passengerData.orderStatus : LOCAL_P_DATA.orderStatus ;
     console.log("[succ] update local passenger data successfully." );
 };
 
@@ -112,6 +115,7 @@ function clearLocalVar() {
     LOCAL_P_DATA.gender      = "secret";                        
     LOCAL_O_DATA.status      = "offline";                            
     LOCAL_O_DATA.license     = null;                            
+    LOCAL_O_DATA.picture     = null;                            
     LOCAL_O_DATA.helmet      = null;                            
     LOCAL_O_DATA.area        = null;                            
     LOCAL_O_DATA.workingTime = null; 
@@ -127,7 +131,6 @@ function clearLocalVar() {
     LOCAL_P_DATA.orderStatus = "unsend";                        
     console.log("[succ] clear local variable successfully." );
 };
-
 
 module.exports = class member{
 
@@ -304,7 +307,8 @@ module.exports = class member{
             takingPlace:    req.body.takingPlace,   //時間
             destination:    req.body.destination,   //其他資訊
             other:          req.body.other,         //拒絕原因
-            remark:         req.body.remark,        //remark
+            remark:         req.body.remark,        //
+            orderStatus:    req.body.orderStatus
         };
 
         updateLocalInfo(changeBasicData);
@@ -313,20 +317,26 @@ module.exports = class member{
                 updateLocalOData(changeOwnerData);
                 inputDataByAcc(LOCAL_O_DATA, 'ownerCollection').then(() => {
                     console.log("[succ] change owner data 成功");
+                    res.json({
+                        result: "change succ"
+                    });
                 });
             }
             else if(LOCAL_INFO.identity == "passenger") {
                 updateLocalPData(changePassengerData);
                 inputDataByAcc(LOCAL_P_DATA, 'passengerCollection').then(() => {
                     console.log("[succ] change passenger data 成功");
+                    res.json({
+                        result: "change succ"
+                    });
                 });
             }
         });
     }
 
     getRiderFilter(req, res, next){
-        console.log("[getRiderFilter] get data");
-        console.log(list);
+        console.log("[succ][getRiderFilter] get data");
+        // console.log(list);
         res.json({
             status: "match",
             result: list
@@ -342,19 +352,18 @@ module.exports = class member{
             account:     LOCAL_INFO.account,
             destination: req.body.destination
         };
-        // updateLocalVar(desData);
-        // inputDataByAcc(LOCAL_INFO);
+        updateLocalPData(desData);
+        inputDataByAcc(LOCAL_P_DATA, 'passengerCollection');
         console.log("destination " + req.body.destination);
 
         findData(desData, 'passengerCollection').then(result => {
             if(result.status == "succ"){
-                console.log("[account]" + result[0].account);
+                // console.log("[account]" + result[0].account);
                 updateLocalPData(result[0]);
                 inputDataByAcc(LOCAL_INFO, 'passengerCollection');
             }
             else if(result.status == "no found"){
                 console.log("[err] fail to find." );
-                clearLocalVar();
             }
         });
         var filterData = {
@@ -376,7 +385,7 @@ module.exports = class member{
                     result: returnArray
                 }) 
                 list = returnArray;
-                console.log(list);
+                // console.log(list);
             }),(err) => {
             console.log("[fail] fail to filt");
             res.json({
@@ -385,8 +394,6 @@ module.exports = class member{
             })
             }
         });
-
-        
 
         async function addArr(result){
             for(var i = 0; i < result.length; i++){
@@ -419,17 +426,17 @@ module.exports = class member{
     postUploadPhoto(req, res, next){    //上傳照片
         upload(req, res, async () => {
             const client = new ImgurClient({
-              clientId: process.env.IMGUR_CLIENTID,
-              clientSecret: process.env.IMGUR_CLIENT_SECRET,
-              refreshToken: process.env.IMGUR_REFRESH_TOKEN,
+                clientId: process.env.IMGUR_CLIENTID,
+                clientSecret: process.env.IMGUR_CLIENT_SECRET,
+                refreshToken: process.env.IMGUR_REFRESH_TOKEN,
             });
             const response = await client.upload({
                 image: req.files[0].buffer.toString('base64'),
                 type: 'base64',
                 album: process.env.IMGUR_ALBUM_ID
-              });
-              res.send({ url: response.data.link });
-            })
+            });
+            res.send({ url: response.data.link });
+        })
     }
 
     postFindPassenger(req, res, next){   //列出車主 mainPage 的乘客資料
@@ -558,8 +565,6 @@ module.exports = class member{
             };
             transporter.sendMail(sendData).then(info => {
                 console.log("[succ] send mail.");
-                updateLocalPData({orderStatus : "sent"});
-                inputDataByAcc(LOCAL_INFO, 'basicCollection');
             }).catch(console.error);
             
         },(err) => {
@@ -621,9 +626,8 @@ module.exports = class member{
             identity:   "passenger",
             account:    req.body.account
         }
-        
         findOneData(myPassenger, 'basicCollection').then(result =>{
-            findOneData({account: req.body.account}, 'passengerCollection').then((passengerCollectionData) => {
+            findOneData({account: result.account}, 'passengerCollection').then((passengerCollectionData) => {
                 passengerCollectionData.orderStatus = "denyed";
                 inputDataByAcc(passengerCollectionData, 'passengerCollection');
             });
@@ -659,6 +663,8 @@ module.exports = class member{
 
     postRate(req, res, next){                               //新增評分
         
+        LOCAL_P_DATA.orderStatus = "unsend";
+        inputDataByAcc(LOCAL_P_DATA, 'passengerCollection');
         var rateData = {
             account : LOCAL_O_DATA.account,
             rateTotal : LOCAL_O_DATA.rateTotal,

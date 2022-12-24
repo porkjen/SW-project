@@ -28,70 +28,63 @@
       <!--跳出視窗-->  
       <div class="modal fade" id="selectmodal">
         <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5>條件篩選</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            
-            <div class="modal-body">
-              <iframe name="dummyframe" id="dummyframe" style="display: none;" ></iframe>
-              <form action="http://127.0.0.1:3000/riderFilter" method="post" target="dummyframe">
-                <div class="form-group1">
-                  偏好車主性別
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="gender" id="sexM" value="男性">
-                    <label class="form-check-label" for="sexM">男</label>
-                    <br>
-                    <input class="form-check-input" type="radio" name="gender" id="sexF" value="女性">
-                    <label class="form-check-label" for="sexF">女</label>                   
-                  </div>                  
-                </div>        
-                <br>              
-                <div class="form-group2">
-                  車主是否備有安全帽
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="helmet" id="yes" value="是">
-                    <label class="form-check-label" for="yes">有</label>
-                    <br>
-                    <input class="form-check-input" type="radio" name="helmet" id="no" value="否">
-                    <label class="form-check-label" for="no">無</label>                   
-                  </div>
-                </div>                            
-                <br>    
-                <select class="form-select" aria-label="Default select example">
-                  <option selected>目的地地區</option>
-                  <option value="仁愛區" name="area">仁愛區</option>
-                  <option value="中正區" name="area">中正區</option>
-                  <option value="信義區" name="area">信義區</option>
-                  <option value="中山區" name="area">中山區</option>
-                  <option value="安樂區" name="area">安樂區</option>
-                  <option value="七堵區" name="area">七堵區</option>
-                  <option value="暖暖區" name="area">暖暖區</option>
-                </select>          
-                <div class="input-group">                  
-                  <span class="input-group-text" id="destination">目的地</span>
-                  <input type="text" class="form-control" placeholder="完整地址" aria-label="Username" aria-describedby="destination" id="d" name="destination" required="required">
-                </div>      
-                <select class="form-select" aria-label="Default select example">
-                  <option selected>乘車地區</option>
-                  <option value="仁愛區" name="takingPlace">仁愛區</option>
-                  <option value="中正區" name="takingPlace">中正區</option>
-                  <option value="信義區" name="takingPlace">信義區</option>
-                  <option value="中山區" name="takingPlace">中山區</option>
-                  <option value="安樂區" name="takingPlace">安樂區</option>
-                  <option value="七堵區" name="takingPlace">七堵區</option>
-                  <option value="暖暖區" name="takingPlace">暖暖區</option>
-                </select>              
-                <div class="input-group">                  
-                  <span class="input-group-text" id="getOn">乘車地點</span>
-                  <input type="text" class="form-control" placeholder="完整地址" aria-label="Username" aria-describedby="getOn" id="g">
-                </div>
-                <br>
-                <button type="submit" class="btn btn-primary" id="closeFBtn" onclick="closeF()">確認</button>
-              </form>      
-            </div>
-          </div>
+          	<div class="modal-content">
+				<div class="modal-header">
+				<h5>條件篩選</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+				
+				<div class="modal-body">
+					<div class="form-group1">
+						偏好車主性別
+						<div class="form-check">
+							<input class="form-check-input" type="radio" name="gender_filter" id="sexM" value="男性">
+							<label class="form-check-label" for="sexM">男</label>
+							<br>
+							<input class="form-check-input" type="radio" name="gender_filter" id="sexF" value="女性">
+							<label class="form-check-label" for="sexF">女</label>                   
+						</div>                  
+					</div>        
+					<br>              
+					<div class="form-group2">
+						車主是否備有安全帽
+						<div class="form-check">
+							<input class="form-check-input" type="radio" name="helmet" id="yes" value="是">
+							<label class="form-check-label" for="yes">有</label>
+							<br>
+							<input class="form-check-input" type="radio" name="helmet" id="no" value="否">
+							<label class="form-check-label" for="no">無</label>                   
+						</div>
+					</div>                            
+					<br>    
+					<select class="form-select" aria-label="Default select example">
+						<option selected>目的地地區</option>
+						<option value="仁愛區" name="area">仁愛區</option>
+						<option value="中正區" name="area">中正區</option>
+						<option value="信義區" name="area">信義區</option>
+						<option value="中山區" name="area">中山區</option>
+						<option value="安樂區" name="area">安樂區</option>
+						<option value="七堵區" name="area">七堵區</option>
+						<option value="暖暖區" name="area">暖暖區</option>
+					</select>          
+					<div class="input-group">                  
+						<span class="input-group-text" id="destination">目的地</span>
+						<input type="text" class="form-control" placeholder="完整地址" aria-label="Username" aria-describedby="destination" id="d" name="destination" required="required">
+					</div>      
+					<select class="form-select" aria-label="Default select example">
+						<option selected>乘車地區</option>
+						<option value="仁愛區" name="takingPlace">仁愛區</option>
+						<option value="中正區" name="takingPlace">中正區</option>
+						<option value="信義區" name="takingPlace">信義區</option>
+						<option value="中山區" name="takingPlace">中山區</option>
+						<option value="安樂區" name="takingPlace">安樂區</option>
+						<option value="七堵區" name="takingPlace">七堵區</option>
+						<option value="暖暖區" name="takingPlace">暖暖區</option>
+					</select>              
+					<br>
+					<button type="submit" class="btn btn-primary" id="btn_filter_query">確認</button>
+				</div>
+          	</div>
         </div>
       </div>
       <button class="btn btn-outline-primary btn-sm" onclick="filter();">顯示篩選結果</button>
@@ -106,29 +99,25 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-              <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
-              <form action="http://127.0.0.1:3000/changePassengerInfo" method="post" target="dummyframe">
-                <div class="input-group">
-                <span class="input-group-text" id="newName" style="width:112px;">姓名</span>
-                <input type="text" name="name" class="form-control" placeholder="新姓名" aria-label="Username" aria-describedby="newName" id="nN">
-                </div>     
-                <div class="input-group">
-                  <span class="input-group-text" id="newPhonenumber" style="width:112px;">手機號碼</span>
-                  <input type="text" name="phone" class="form-control" aria-label="Username" aria-describedby="newPhonenumber" id="nP" pattern="[0-9]{10}">
-                </div>              
-                <div class="form-group">
-                  性別
-                  <div class="form-check">
-                  <input class="form-check-input" type="radio" name="gender" id="newsexM" value="男性">
-                  <label class="form-check-label" for="newsexM">男</label>
-                  <br>
-                  <input class="form-check-input" type="radio" name="gender" id="newsexF" value="女性">
-                  <label class="form-check-label" for="newsexF">女</label>                   
-                  </div>                  
-                </div>
-                <button type="submit" class="btn btn-primary" id="closeIBtn"  onClick="closeI()">確認</button>
-              </form>
-              
+              	<div class="input-group">
+					<span class="input-group-text" id="newName" style="width:112px;">姓名</span>
+					<input type="text" name="name" class="form-control" placeholder="新姓名" aria-label="Username" aria-describedby="newName" id="nN">
+				</div>     
+				<div class="input-group">
+					<span class="input-group-text" id="newPhonenumber" style="width:112px;">手機號碼</span>
+					<input type="text" name="phone" class="form-control" aria-label="Username" aria-describedby="newPhonenumber" id="nP" pattern="[0-9]{10}">
+				</div>              
+				<div class="form-group">
+					性別
+					<div class="form-check">
+						<input class="form-check-input" type="radio" name="gender" id="newsexM" value="男性">
+						<label class="form-check-label" for="newsexM">男</label>
+						<br>
+						<input class="form-check-input" type="radio" name="gender" id="newsexF" value="女性">
+						<label class="form-check-label" for="newsexF">女</label>                   
+					</div>                  
+				</div>
+				<button type="submit" class="btn btn-primary" id="btn_changeBasicData">確認</button>
             </div>
           </div>
         </div>
@@ -145,26 +134,73 @@
 		var pressedBtn;
 		var name;
 		$(document).ready(function () {
-		  alert("請先篩選");
-		});
-    function closeF(){
-      $('#closeFBtn').click(function() {
-				//modal收起
+		 	alert("請先篩選");
+			$('#btn_changeBasicData').click(function() {
+				changeBasicData($('#nN').val(), $('#nP').val(), $('input[name=gender]:checked').val());
+			});
+			$('#btn_filter_query').click(function() {
 				$('#selectmodal').modal('hide');
-		  });
-    }
-    function closeI(){
-      $('#closeIBtn').click(function() {
-				//modal收起
-				$('#infomodal').modal('hide');
-		  });
-    }
-    function closeS(num){
-      $('#closeSBtn').click(function() {
-				//modal收起
+				alert("篩選中，請耐心等候");
+				filter_query(
+					$('input[name=gender_filter]:checked').val(), 
+					$('input[name=helmet]:checked').val(), 
+					$('input[name=area]:checked').val(), 
+					$('#d').val(), 
+					$('input[name=takingPlace]:checked').val()
+				);
+			});
+			$('#closeSBtn').click(function() {
 				$('#sendmodal'+i).modal('hide');
-		  });
-    }
+		  	});
+		});
+		
+		function changeBasicData(name, phone, gender){
+			$.ajax({
+				url: '/changePassengerInfo',
+				type: 'post',
+				data: {name : name, phone: phone, gender:gender},
+				success: function(chkRes){
+					if(chkRes.result == "change succ"){
+						alert("修改成功!");
+						$('#infomodal').modal('hide');
+					}
+					else{
+						alert("change data error.");
+					}
+				},
+				error: function(){
+					alert("帳號已被登出，請重新登入");
+					location.href="/SignIn.html";
+				}
+			})
+		}
+
+		function filter_query(gender, helmet, area, destination, takingPlace){
+			$.ajax({
+				url: '/riderFilter',
+				type: 'post',
+				data: {
+					gender		:gender		,
+					helmet		:helmet		,
+					area		:area		,
+					destination	:destination,
+					takingPlace	:takingPlace
+				},
+				success: function(chkRes){
+					if(chkRes.status == "match 成功"){
+						filter();
+					}
+					else{
+						alert("filter error.");
+					}
+				},
+				error: function(){
+					alert("帳號已被登出，請重新登入");
+					location.href="/SignIn.html";
+				}
+			})
+		}
+
 		function selectAnswer(){
 			var s = $("[name='Sex']:checked").val();
 			var h = $("[name='Helmet']:checked").val();
@@ -247,22 +283,26 @@
                       '</div>'+
                       '<div class="modal-body">'+
                         '<div id="current_date">'+year+'/'+month+'/'+day+'</p>'+
-                        '<form action="http://127.0.0.1:3000/changePassengerInfo" method="post" target="dummyframe" id="newModalForm">'+   
-                          '<div class="input-group">'+
-                            '<span class="input-group-text" id="time">今天</span>'+
-                            '<input type="text" name="takingTime" class="form-control required" placeholder="24小時制" aria-describedby="time" pattern="([0-1]{1}[0-9]{1}|20|21|22|23):[0-5]{1}[0-9]{1}" id="t" required>'+
-                          '</div>'+
-                          '<div class="input-group">'+
-                            '<span class="input-group-text" id="getOn">地點</span>'+
-                            '<input type="text" name="takingPlace" class="form-control required" placeholder="上車地點" aria-describedby="getOn" id="gO" required>'+
-                          '</div>'+
-                          '<div class="input-group">'+
-                            '<span class="input-group-text" id="other">備註</span>'+
-                            '<input type="text" name="remark" class="form-control required" placeholder="" aria-describedby="other" id="oth">'+
-                          '</div>'+
-                          '<br>'+
-                          '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>'+
-                          '<button type="submit" onclick="sendRequest('+i+');window.setTimeout(setDisabled, 208000);closeS('+i+');" id="closeSBtn" class="btn btn-primary">確認發送</button>'+
+						'<iframe name="dummyframe" id="dummyframe" style="display: none;" ></iframe>'+
+                        '<form action="/changePassengerInfo" method="post" target="dummyframe" id="newModalForm">'+   
+							'<div class="input-group">'+
+								'<span class="input-group-text" id="time">今天</span>'+
+								'<input type="text" name="takingTime" class="form-control required" placeholder="24小時制" aria-describedby="time" pattern="([0-1]{1}[0-9]{1}|20|21|22|23):[0-5]{1}[0-9]{1}" id="t" required>'+
+							'</div>'+
+							'<div class="input-group">'+
+								'<span class="input-group-text" id="getOn">地點</span>'+
+								'<input type="text" name="takingPlace" class="form-control required" placeholder="上車地點" aria-describedby="getOn" id="gO" required>'+
+							'</div>'+
+								'<div class="input-group">'+
+								'<span class="input-group-text" id="other">備註</span>'+
+								'<input type="text" name="remark" class="form-control required" placeholder="" aria-describedby="other" id="oth">'+
+							'</div>'+
+							'<div class="input-group">'+
+								'<input type="hidden" name="orderStatus" value="sent">'+
+							'</div>'+
+							'<br>'+
+							'<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>'+
+							'<button type="submit" onclick="sendRequest('+i+');window.setTimeout(setDisabled, 208000);closeS('+i+');" id="closeSBtn" class="btn btn-primary">確認發送</button>'+
                         '</form>'+
                       '</div>'+
                     '</div>'+

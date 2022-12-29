@@ -51,7 +51,7 @@ function listPassengers(){
 						'</div>'
 					)
 				}
-				else alert("目前沒有共乘邀請喔!")
+				else swal("目前沒有共乘邀請喔!", "", "warning");
 			}
 		},
 		error: function(){
@@ -66,11 +66,15 @@ function logout(){
 		type: 'POST',
 		success:function(logoutRes){
 			if(logoutRes.result == "logout succ"){
-				alert("登出成功!");
-				location.href="/SignIn.html";
+				swal({
+                    title: "登出成功 !",
+                    icon: "success",
+                }).then(function () {
+                    location.href="/SignIn.html";
+                });
 			}
 			else{
-				alert("sth wrong")
+				swal("登出失敗!", "", "warning");
 			}
 		},
 		error: function(){

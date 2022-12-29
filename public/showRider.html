@@ -18,6 +18,24 @@
         <h2>海大共乘系統</h2>
         <div style="text-align: right;">
           <a href="chooseIdentity.html" type="button" class="btn btn-dark btn-sm">切換身分</a>
+          <a href="chooseIdentity.html" type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">登出</a>
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">登出</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  確定要登出嗎!!!!!!
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                  <button id="btn_logout" type="button" class="btn btn-primary" data-bs-dismiss="modal">確定</button></a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         
     </header>
@@ -26,7 +44,7 @@
       <!--篩選條件按鈕-->
       <a href="#" type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#selectmodal" style="align-items: center;" >篩選條件</a>
       <!--跳出視窗-->  
-      <div class="modal fade" id="selectmodal">
+      <div class="modal fade" id="selectmodal" area-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -36,30 +54,30 @@
             
             <div class="modal-body">
               <iframe name="dummyframe" id="dummyframe" style="display: none;" ></iframe>
-              <form action="http://127.0.0.1:3000/riderFilter" method="post" target="dummyframe">
+              <form action="http://127.0.0.1:3000/riderFilter" method="post" target="dummyframe" class="needs-validation" novalidate>
                 <div class="form-group1">
                   偏好車主性別
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="gender" id="sexM" value="男性">
+                    <input class="form-check-input" type="radio" name="gender" id="sexM" value="男性" required>
                     <label class="form-check-label" for="sexM">男</label>
                     <br>
-                    <input class="form-check-input" type="radio" name="gender" id="sexF" value="女性">
+                    <input class="form-check-input" type="radio" name="gender" id="sexF" value="女性" required>
                     <label class="form-check-label" for="sexF">女</label>                   
                   </div>                  
                 </div>        
                 <br>              
                 <div class="form-group2">
                   車主是否備有安全帽
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="helmet" id="yes" value="是">
+                  <div class="form-check" >
+                    <input class="form-check-input" type="radio" name="helmet" id="yes" value="是" required>
                     <label class="form-check-label" for="yes">有</label>
                     <br>
-                    <input class="form-check-input" type="radio" name="helmet" id="no" value="否">
+                    <input class="form-check-input" type="radio" name="helmet" id="no" value="否" required>
                     <label class="form-check-label" for="no">無</label>                   
                   </div>
                 </div>                            
                 <br>    
-                <select class="form-select" aria-label="Default select example">
+                <select class="form-select" aria-label="Default select example" >
                   <option selected>目的地地區</option>
                   <option value="仁愛區" name="area">仁愛區</option>
                   <option value="中正區" name="area">中正區</option>
@@ -71,7 +89,7 @@
                 </select>          
                 <div class="input-group">                  
                   <span class="input-group-text" id="destination">目的地</span>
-                  <input type="text" class="form-control" placeholder="完整地址" aria-label="Username" aria-describedby="destination" id="d" name="destination" required="required">
+                  <input type="text" class="form-control" placeholder="完整地址" aria-label="Username" aria-describedby="destination" id="d" name="destination" required>
                 </div>      
                 <select class="form-select" aria-label="Default select example">
                   <option selected>乘車地區</option>
@@ -88,7 +106,7 @@
                   <input type="text" class="form-control" placeholder="完整地址" aria-label="Username" aria-describedby="getOn" id="g">
                 </div>
                 <br>
-                <button type="submit" class="btn btn-primary" id="closeFBtn" onclick="closeF()">確認</button>
+                <button type="submit" class="btn btn-primary" id="closeFBtn" >確認</button>
               </form>      
             </div>
           </div>
@@ -126,7 +144,7 @@
                   <label class="form-check-label" for="newsexF">女</label>                   
                   </div>                  
                 </div>
-                <button type="submit" class="btn btn-primary" id="closeIBtn"  onClick="closeI()">確認</button>
+                <button type="submit" class="btn btn-primary" id="closeIBtn">確認</button>
               </form>
               
             </div>
@@ -146,25 +164,25 @@
 		var name;
 		$(document).ready(function () {
 		  alert("請先篩選");
-		});
-    function closeF(){
-      $('#closeFBtn').click(function() {
-				//modal收起
-				$('#selectmodal').modal('hide');
-		  });
-    }
-    function closeI(){
-      $('#closeIBtn').click(function() {
-				//modal收起
-				$('#infomodal').modal('hide');
-		  });
-    }
-    function closeS(num){
-      $('#closeSBtn').click(function() {
-				//modal收起
-				$('#sendmodal'+i).modal('hide');
-		  });
-    }
+    });
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (() => {
+      'use strict'
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      const forms = document.querySelectorAll('.needs-validation')
+
+      // Loop over them and prevent submission
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
 		function selectAnswer(){
 			var s = $("[name='Sex']:checked").val();
 			var h = $("[name='Helmet']:checked").val();
@@ -176,12 +194,15 @@
 		}
 		function sendRequest(c){
 			pressedBtn = c;
-      
+      /*$('#closeSBtn').click(function() {
+				//modal收起
+				$('#sendmodal'+c).modal('hide');
+		  });*/
 			for(var j = 0; j <= count - 1; j++){
 			  document.getElementById(j).disabled = true;
 			}     
 			$.ajax({
-				url : 'http://127.0.0.1:3000/matchOwner',
+				url : 'http://127.0.0.1:3000/getRiderFilter',
 				type : 'GET',
 				success:function(data){
 					name = JSON.stringify(data.result[c]);
@@ -206,81 +227,85 @@
 			console.log(n);
 			});
 		}
+    //顯示篩選內容
     function filter(){
-        
+      $('.card-group').empty();       
       $.ajax({
 			url : '/getRiderFilter',
 			type : 'GET',
 			success: function(data){
-        console.log("?????");		
         count = data.result.length;
+        if(count==0)alert("無結果，請更改篩選條件");
 		    for(var i = 0; i < data.result.length; i++){
           $('.card-group').append(   
           '<div class="col-md-12">'+
             '<div class="card border-primary">'+
-            '<div class="card-header" style="background-color: rgb(157, 215, 233)">'+
-              data.result[i].name+
-            '</div>'+
-            '<div class="card-body" style="background-color: rgb(205, 238, 248)">'+
-              '性別: '+ data.result[i].gender+
-              '<br>'+
-              '可搭乘時間: '+ data.result[i].workingTime+
-              '<br>'+
-              '可接送地點: '+ data.result[i].area+
-              '<br>'+
-              '聯絡方式: '+ data.result[i].phone+
-              '<br>'+
-              '是否備有安全帽: '+ data.result[i].helmet+
-            '</div>'+
-            '<div class="card-footer" style="background-color: rgb(157, 215, 233)">'+
-              '<div style="text-align: center;">'+
-                '評分: 星<br>'+
-                //'<button id="'+i+'" name="sendButton" class="btn btn-primary btn-sm" onclick="sendRequest('+i+');window.setTimeout(setDisabled, 208000);setstr(180);" style="background-color: rgb(0, 0, 0); text-align: center;">發送請求</button>'+
-                '<button id="'+i+'" name="sendButton" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#sendmodal'+i+'" style="background-color: rgb(0, 0, 0); text-align: center;">發送請求</button>'+
-                '<!--發送請求彈出視窗-->'+
-                '<div class="modal fade" id="sendmodal'+i+'">'+
-                  '<div class="modal-dialog">'+
-                    '<div class="modal-content">'+
-                      '<div class="modal-header">'+
-                        '<h1 class="modal-title fs-5" id="exampleModalLabel">希望乘車資訊</h1>'+
-                        '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'+
-                      '</div>'+
-                      '<div class="modal-body">'+
-                        '<div id="current_date">'+year+'/'+month+'/'+day+'</p>'+
-                        '<form action="http://127.0.0.1:3000/changePassengerInfo" method="post" target="dummyframe" id="newModalForm">'+   
-                          '<div class="input-group">'+
-                            '<span class="input-group-text" id="time">今天</span>'+
-                            '<input type="text" name="takingTime" class="form-control required" placeholder="24小時制" aria-describedby="time" pattern="([0-1]{1}[0-9]{1}|20|21|22|23):[0-5]{1}[0-9]{1}" id="t" required>'+
+              '<div class="row g-0">'+
+                '<div class="col-md-4" style="text-align:center;">'+
+                  '<img src="https://i.imgur.com/hFfcdxa.png" class="img-fluid rounded-start" alt="...">'+
+                '</div>'+
+                '<div class="col-md-8">'+
+                '<div class="card-header" style="background-color: rgb(157, 215, 233)">'+
+                  data.result[i].name+
+                '</div>'+
+                '<div class="card-body" style="background-color: rgb(205, 238, 248)">'+
+                  '性別: '+ data.result[i].gender+
+                  '<br>'+
+                  '可搭乘時間: '+ data.result[i].workingTime+
+                  '<br>'+
+                  '可接送地點: '+ data.result[i].area+
+                  '<br>'+
+                  '聯絡方式: '+ data.result[i].phone+
+                  '<br>'+
+                  '是否備有安全帽: '+ data.result[i].helmet+
+                '</div>'+
+                '<div class="card-footer" style="background-color: rgb(157, 215, 233)">'+
+                  '<div style="text-align: center;">'+
+                    '評分: 星<br>'+
+                    '<button id="'+i+'" name="sendButton" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#sendmodal'+i+'" style="background-color: rgb(0, 0, 0); text-align: center;">發送請求</button>'+
+                    '<!--發送請求彈出視窗-->'+
+                    '<div class="modal fade" id="sendmodal'+i+'">'+
+                      '<div class="modal-dialog">'+
+                        '<div class="modal-content">'+
+                          '<div class="modal-header">'+
+                            '<h1 class="modal-title fs-5" id="exampleModalLabel">希望乘車資訊</h1>'+
+                            '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'+
                           '</div>'+
-                          '<div class="input-group">'+
-                            '<span class="input-group-text" id="getOn">地點</span>'+
-                            '<input type="text" name="takingPlace" class="form-control required" placeholder="上車地點" aria-describedby="getOn" id="gO" required>'+
+                          '<div class="modal-body">'+
+                            '<div id="current_date">'+year+'/'+month+'/'+day+'</p>'+
+                            '<form action="http://127.0.0.1:3000/changePassengerInfo" method="post" target="dummyframe" id="newModalForm">'+   
+                              '<div class="input-group">'+
+                                '<span class="input-group-text" id="time">今天</span>'+
+                                '<input type="text" name="takingTime" class="form-control is-valid" placeholder="24小時制" aria-describedby="time" pattern="([0-1]{1}[0-9]{1}|20|21|22|23):[0-5]{1}[0-9]{1}" id="t" required>'+
+                              '</div>'+
+                              '<div class="input-group">'+
+                                '<span class="input-group-text" id="getOn">地點</span>'+
+                                '<input type="text" name="takingPlace" class="form-control is-valid" placeholder="上車地點" aria-describedby="getOn" id="gO" required>'+
+                              '</div>'+
+                              '<div class="input-group">'+
+                                '<span class="input-group-text" id="other">備註</span>'+
+                                '<input type="text" name="remark" class="form-control required" placeholder="" aria-describedby="other" id="oth">'+
+                              '</div>'+
+                              '<br>'+
+                              '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>'+
+                              '<button type="submit" onclick="sendRequest('+i+');window.setTimeout(setDisabled, 208000);" id="closeSBtn" class="btn btn-primary">確認發送</button>'+
+                            '</form>'+
                           '</div>'+
-                          '<div class="input-group">'+
-                            '<span class="input-group-text" id="other">備註</span>'+
-                            '<input type="text" name="remark" class="form-control required" placeholder="" aria-describedby="other" id="oth">'+
-                          '</div>'+
-                          '<br>'+
-                          '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>'+
-                          '<button type="submit" onclick="sendRequest('+i+');window.setTimeout(setDisabled, 208000);closeS('+i+');" id="closeSBtn" class="btn btn-primary">確認發送</button>'+
-                        '</form>'+
+                        '</div>'+
                       '</div>'+
                     '</div>'+
-                  '</div>'+
+                  '</div> '+         
                 '</div>'+
-              '</div> '+         
-            '</div>'+
-            '</div>'+
-          '<div>'             
+                '</div>'+
+              '<div>'+
+            '</div>'           
           )
         }
 			},
       error:function(){
         alert("no");
       }
-		})
-      
-           
+		})         
     }
 		function setDisabled() {
 			for(var k = 0; k <= count - 1; k++){

@@ -47,7 +47,6 @@ var LOCAL_O_DATA = {
     remark      : null,                                     // 備註
     rateTotal   : 0,                                        // 總評分	
     rateCount   : 0,                                        // 評分數量	
-    comment     : null,                                     // 評論
 };
 
 var LOCAL_P_DATA = {  
@@ -59,7 +58,9 @@ var LOCAL_P_DATA = {
     destination : null,                                     // 目的地
     other       : "No other condition or comment.",         // 其他說明
     remark      : null,                                     // 備註
-    orderStatus : "unsend"                                  // 訂單狀態 (unsend / sent / accepted / denyed)
+    orderStatus : "unsend",                                 // 訂單狀態 (unsend / sent / accepted / denyed)
+    rateTotal   : 0,                                        // 總評分	
+    rateCount   : 0,                                        // 評分數量	
 };
 
 /*  To avoid the data not changed to cover old data.  
@@ -86,7 +87,6 @@ function updateLocalOData(ownerData) {
     LOCAL_O_DATA.other       = (ownerData.other)       ? ownerData.other        : LOCAL_O_DATA.other;
     LOCAL_O_DATA.rateTotal    = (ownerData.rateTotal ) ? ownerData.rateTotal    : LOCAL_O_DATA.rateTotal   ;
     LOCAL_O_DATA.rateCount    = (ownerData.rateCount ) ? ownerData.rateCount    : LOCAL_O_DATA.rateCount   ;
-    LOCAL_O_DATA.comment      = (ownerData.comment   ) ? ownerData.comment      : LOCAL_O_DATA.comment     ;
     console.log("[succ] update local owner data successfully." );
 };
 function updateLocalPData(passengerData) { 
@@ -99,6 +99,8 @@ function updateLocalPData(passengerData) {
     LOCAL_P_DATA.other        = (passengerData.other       ) ? passengerData.other       : LOCAL_P_DATA.other       ;
     LOCAL_P_DATA.remark       = (passengerData.remark      ) ? passengerData.remark      : LOCAL_P_DATA.remark      ;
     LOCAL_P_DATA.orderStatus  = (passengerData.orderStatus ) ? passengerData.orderStatus : LOCAL_P_DATA.orderStatus ;
+    LOCAL_P_DATA.rateCount    = (passengerData.rateCount)    ? passengerData.rateCount   : LOCAL_P_DATA.rateCount   ;
+    LOCAL_P_DATA.rateTotal    = (passengerData.rateTotal)    ? passengerData.rateTotal   : LOCAL_P_DATA.rateTotal   ;
     console.log("[succ] update local passenger data successfully." );
 };
 
@@ -126,7 +128,8 @@ function clearLocalVar() {
     LOCAL_INFO.findPair      = null; 
     LOCAL_O_DATA.rateTotal   = 0;
     LOCAL_O_DATA.rateCount   = 0;
-    LOCAL_O_DATA.comment     = null;      
+    LOCAL_P_DATA.rateTotal   = 0;
+    LOCAL_P_DATA.rateCount   = 0; 
     LOCAL_P_DATA.orderStatus = "unsend";                        
     console.log("[succ] clear local variable successfully." );
 };
@@ -267,7 +270,6 @@ module.exports = class member{
                 returnCompenent.remark      = result[i].remark      ;
                 returnCompenent.rateTotal   = result[i].rateTotal   ;
                 returnCompenent.rateCount   = result[i].rateCount   ;
-                returnCompenent.comment     = result[i].comment     ;
                 
                 returnArray[i] = returnCompenent;
             }
@@ -295,7 +297,6 @@ module.exports = class member{
             remark:         req.body.remark,        //remark
             rateTotal:      req.body.rateTotal,
             rateCount:      req.body.rateCount,
-            comment:        req.body.comment
         };
         
         var changePassengerData = {
@@ -307,7 +308,9 @@ module.exports = class member{
             destination:    req.body.destination,   //其他資訊
             other:          req.body.other,         //拒絕原因
             remark:         req.body.remark,        //
-            orderStatus:    req.body.orderStatus
+            orderStatus:    req.body.orderStatus,
+            rateTotal:      req.body.rateTotal,
+            rateCount:      req.body.rateCount,
         };
 
         updateLocalInfo(changeBasicData);
@@ -415,7 +418,6 @@ module.exports = class member{
                 returnCompenent.remark      = result[i].remark      ;
                 returnCompenent.rateTotal   = result[i].rateTotal   ;
                 returnCompenent.rateCount   = result[i].rateCount   ;
-                returnCompenent.comment     = result[i].comment     ;
 
                 returnArray[i] = returnCompenent;
             }
@@ -667,8 +669,8 @@ module.exports = class member{
             findOneData({account: LOCAL_INFO.findPair}, 'ownerCollection').then(result =>{
             
                 rateData             = result;
-                rateData.rateTotal	 =  Number(result.rateTotal) + Number(newRate) ;
-                rateData.rateCount	 =  result.rateCount + 1	;
+                rateData.rateTotal	 = (result.rateTotal) ?  Number(result.rateTotal) + Number(newRate) : Number(newRate);
+                rateData.rateCount	 =  (result.rateCount) ? result.rateCount + 1 : 1;
                 inputDataByAcc(rateData, 'ownerCollection');    
             });
         }
@@ -676,8 +678,8 @@ module.exports = class member{
             findOneData({account: LOCAL_INFO.findPair}, 'passengerCollection').then(result =>{
             
                 rateData             = result;
-                rateData.rateTotal	 =  Number(result.rateTotal) + Number(newRate) ;
-                rateData.rateCount	 =  result.rateCount + 1	;
+                rateData.rateTotal	 = (result.rateTotal) ?  Number(result.rateTotal) + Number(newRate) : Number(newRate);
+                rateData.rateCount	 =  (result.rateCount) ? result.rateCount + 1 : 1;
                 inputDataByAcc(rateData, 'passengerCollection');    
             });
         }

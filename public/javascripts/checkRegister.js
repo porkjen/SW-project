@@ -11,15 +11,23 @@ function checkRegister(user_account, user_password, user_email){
         data: {account : user_account, password: user_password, email: user_email},
         success: function(chkRes){
             if(chkRes.result == "had account"){
-                alert("帳號已存在! 請重新輸入!");
-                location.reload();
+                swal({
+                    title: "帳號已存在! 請重新輸入!",
+                    icon: "error",
+                }).then(function () {
+                    location.reload();
+                });
             }
             else if(chkRes.result == "register succ"){
-                alert("註冊成功 !");
-                location.href="/chooseIdentity_main.html";
+                swal({
+                    title: "註冊成功 !",
+                    icon: "success",
+                }).then(function () {
+                    location.href="/chooseIdentity_main.html";
+                });
             }
             else{
-                alert("login error.");
+                alert("register error.");
             }
         },
         error: function(){

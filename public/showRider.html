@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="./stylesheets/showRider_style.css">
     <script src="https://code.jquery.com/jquery-3.4.1.js"
             integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
   </head>
   <body>
     <header>
@@ -170,13 +171,13 @@
       })
     })()
 		$(window).ready(function () {
-		 	alert("請先篩選");
+			swal("請先篩選");
 			$('#btn_changeBasicData').click(function() {
 				changeBasicData($('#nN').val(), $('#nP').val(), $('input[name=gender]:checked').val());
 			});
 			$('#btn_filter_query').click(function() {
 				$('#selectmodal').modal('hide');
-				alert("篩選中，請耐心等候");
+				swal("篩選中，請耐心等候");
 				filter_query(
 					$('input[name=gender_filter]:checked').val(), 
 					$('input[name=helmet]:checked').val(), 
@@ -197,15 +198,15 @@
 				data: {name : name, phone: phone, gender:gender},
 				success: function(chkRes){
 					if(chkRes.result == "change succ"){
-						alert("修改成功!");
+						swal("修改成功!","","success");
 						$('#infomodal').modal('hide');
 					}
 					else{
-						alert("change data error.");
+						swal("change data error.", "", "error");
 					}
 				},
 				error: function(){
-					alert("帳號已被登出，請重新登入");
+					swal("帳號已被登出，請重新登入", "", "error");
 					location.href="/SignIn.html";
 				}
 			})
@@ -231,7 +232,7 @@
 					}
 				},
 				error: function(){
-					alert("帳號已被登出，請重新登入");
+					swal("帳號已被登出，請重新登入", "", "error");
 					location.href="/SignIn.html";
 				}
 			})
@@ -289,7 +290,7 @@
 			type : 'GET',
 			success: function(data){
         count = data.result.length;
-        if(count==0)alert("無結果，請更改篩選條件");
+        if(count==0)swal("無結果，請更改篩選條件");
 		    for(var i = 0; i < data.result.length; i++){
           $('.card-group').append(   
           '<div class="col-md-12">'+
@@ -407,7 +408,7 @@
         }
 			},
       error:function(){
-        alert("no");
+        swal("no", "", "error");
       }
 		})         
     }

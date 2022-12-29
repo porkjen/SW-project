@@ -4,7 +4,6 @@ const matchOwner = require('../models/matchOwner');
 const riderFilter = require('../models/riderFilter_model');
 const findData = require('../models/findData_model');
 const findOneData = require('../models/findOneData_model');
-const rate = require('../models/rate');
 
 var list={};
 
@@ -662,27 +661,25 @@ module.exports = class member{
     }
 
     postRate(req, res, next){                               //新增評分
-        
-        LOCAL_P_DATA.orderStatus = "unsend";
-        inputDataByAcc(LOCAL_P_DATA, 'passengerCollection');
-        var rateData = {
-            account : LOCAL_O_DATA.account,
-            rateTotal : LOCAL_O_DATA.rateTotal,
-            rateCount : LOCAL_O_DATA.rateCount,
-            comment : LOCAL_O_DATA.comment,
-            rate : req.body.rate,
-            newComment : req.body.comment
-        };
-
-        rate(rateData).then(result =>{
-            res.json({
-                status: "rating 成功",
-                result: result
-            })
-        },(err) => {
-            res.json({
-                result: err
-            })
-        })
+        var rateData = {};
+        var newRate = req.body.rate;
+        if(LOCAL_INFO.identity == "passenger"){
+            findOneData({account: LOCAL_INFO.findPair}, 'ownerCollection').then(result =>{
+            
+                rateData             = result;
+                rateData.rateTotal	 =  Number(result.rateTotal) + Number(newRate) ;
+                rateData.rateCount	 =  result.rateCount + 1	;
+                inputDataByAcc(rateData, 'ownerCollection');    
+            });
+        }
+        else if(LOCAL_INFO.identity == "owner"){
+            findOneData({account: LOCAL_INFO.findPair}, 'passengerCollection').then(result =>{
+            
+                rateData             = result;
+                rateData.rateTotal	 =  Number(result.rateTotal) + Number(newRate) ;
+                rateData.rateCount	 =  result.rateCount + 1	;
+                inputDataByAcc(rateData, 'passengerCollection');    
+            });
+        }
     }
 }

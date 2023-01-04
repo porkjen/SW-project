@@ -427,22 +427,42 @@ module.exports = class member{
         }
     }
 
-    postUploadPhoto(req, res, next){        //上傳照片
+    postUploadPhoto(req, res, next){    //上傳照片
         upload(req, res, async () => {
             const client = new ImgurClient({
-              clientId: '73d766fcb0de170',
-              clientSecret: 'd15fa884f676e9c4d5ec0528b4c9f510ce72b76d',
-              refreshToken: 'd6cd7b8e0e067ba6f6292f0e85a7d1c24543efcb',
+                clientId: '73d766fcb0de170',
+                clientSecret: 'd15fa884f676e9c4d5ec0528b4c9f510ce72b76d',
+                refreshToken: 'd6cd7b8e0e067ba6f6292f0e85a7d1c24543efcb',
             });
             const response = await client.upload({
                 image: req.files[0].buffer.toString('base64'),
                 type: 'base64',
-                album: '4IcQTIb'
-              });
-              res.send({ url: response.data.link });
-            })
+                album: process.env.IMGUR_ALBUM_ID
+            });
+            res.send({ url: response.data.link });
+            LOCAL_O_DATA.picture = response.data.link;
+            var changeOwnerData = {
+                account:        LOCAL_INFO.account,     //帳號
+                gender:         req.body.gender,        //性別
+                license:        req.body.license,       //車牌
+                helmet:         req.body.helmet,        //安全帽
+                area:           req.body.area,          //接送區域
+                workingTime:    req.body.workingTime,   //時間
+                other:          req.body.other,         //其他資訊
+                remark:         req.body.remark,        //remark
+                picture:        response.data.link,
+                rateTotal:      req.body.rateTotal,
+                rateCount:      req.body.rateCount,
+            };
+            updateLocalOData(changeOwnerData);
+            inputDataByAcc(LOCAL_O_DATA, 'ownerCollection').then(() => {
+                console.log("[succ] change owner data 成功");
+                res.json({
+                    result: "change succ"
+                });
+            });
+        })
     }
-
     postFindPassenger(req, res, next){   //列出車主 mainPage 的乘客資料
         
         var passengerDataQuery = {

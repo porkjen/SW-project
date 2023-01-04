@@ -2,6 +2,7 @@
 //Client ID:73d766fcb0de170 Client secret:d15fa884f676e9c4d5ec0528b4c9f510ce72b76d
 //https://imgur.com/#access_token=367fae1c61694fbd3b82c7eac77fb680f6d32a52&expires_in=315360000&token_type=bearer&refresh_token=d6cd7b8e0e067ba6f6292f0e85a7d1c24543efcb&account_username=face021616&account_id=59042281
 $(window).ready(function(){
+	checkLogin();
 	$(".container").empty();
 	listPassengers();
 	$("#btn_logout").click(function(){
@@ -10,7 +11,32 @@ $(window).ready(function(){
 })
 
 var passengers = [];
-
+function checkLogin(){
+	if(sessionStorage.getItem("account") == null) {
+		swal({
+			title:"請先登入",
+			text: "還沒有登入唷! 要去登入嗎?",
+			icon: "warning",
+			buttons: {
+				cancel: {
+					text: "不用了",
+					value: "no",
+					visible: true
+				},
+				comfirm: {
+					text: "好~",
+					value: "yes",
+					color:"red",
+					visible: true
+				}
+			}
+		}).then((choice) => {
+			if(choice == "yes") {
+				location.href = "SignIn.html";
+			}
+		});
+	}
+}
 function listPassengers(){
 	$.ajax({
 		url: '/listPassenger',
@@ -66,6 +92,7 @@ function logout(){
 		type: 'POST',
 		success:function(logoutRes){
 			if(logoutRes.result == "logout succ"){
+				sessionStorage.removeItem("account");
 				swal({
                     title: "登出成功 !",
                     icon: "success",
@@ -89,52 +116,82 @@ function removeCard(num){
 }
 
 function acceptRequest(num){
-	$.ajax({
-		url: '/acceptOrder',
-		type: 'POST',
-		data: {account: passengers[num].account},
-		success:function(acceptRes){
-			if(acceptRes.result == "accept request succ"){
-				location.href = "/going.html"  
-			}
-		},
-		error: function(){
-			alert("accept order error");
-		}       
-	})
+	if(sessionStorage.getItem("account") == null) {
+		swal({
+			title:"請先登入",
+			text: "登入後才可以接受喔!",
+			icon: "info",
+		}).then(() => {
+			location.href = "SignIn.html";
+		});
+	}
+	else{
+		$.ajax({
+			url: '/acceptOrder',
+			type: 'POST',
+			data: {account: passengers[num].account},
+			success:function(acceptRes){
+				if(acceptRes.result == "accept request succ"){
+					location.href = "/going.html"  
+				}
+			},
+			error: function(){
+				alert("accept order error");
+			}       
+		})
+	}
 }
 
 function denyRequest(num){
-	$.ajax({
-		url: '/denyOrder',
-		type: 'POST',
-		data: {account: passengers[num].account, denyReason : $('#input_denyReason'+num+'').val()},
-		error: function(){
-			alert("deny order error");
-		}       
-	})
+	if(sessionStorage.getItem("account") == null) {
+		swal({
+			title:"請先登入",
+			text: "登入後才可以拒絕別人呢!",
+			icon: "info",
+		}).then(() => {
+			location.href = "SignIn.html";
+		});
+	}
+	else{
+		$.ajax({
+			url: '/denyOrder',
+			type: 'POST',
+			data: {account: passengers[num].account, denyReason : $('#input_denyReason'+num+'').val()},
+			error: function(){
+				alert("deny order error");
+			}       
+		})
+	}
 }
 
 function uploadPicture(){
-  const input = document.querySelector('#fileUpload');
+	if(sessionStorage.getItem("account") == null) {
+		swal({
+			title:"請先登入",
+			icon: "warning",
+		}).then(() => {
+			location.href = "SignIn.html";
+		});
+	}
+	else{
+		const input = document.querySelector('#fileUpload');
 
-  const formData = new FormData();
-  //formData.append('fileUpload', input.files[0]);
-  formData.append('fileUpload', $('input[name="fileUpload"]').get(0).files[0]);
-  console.log( $('input[name="fileUpload"]').get(0).files[0]);
-  $.ajax({
-    type: "POST",
-    url: '/uploadPhoto',
-    data: formData,
-    processData : false, 
-    contentType : false,
-    dataType: "json",
-    success: function(data) {
-      console.log(data);
-    }
-  });
-  
-  
+		const formData = new FormData();
+		//formData.append('fileUpload', input.files[0]);
+		formData.append('fileUpload', $('input[name="fileUpload"]').get(0).files[0]);
+		console.log( $('input[name="fileUpload"]').get(0).files[0]);
+		$.ajax({
+			type: "POST",
+			url: '/uploadPhoto',
+			data: formData,
+			processData : false, 
+			contentType : false,
+			dataType: "json",
+			success: function(data) {
+			console.log(data);
+			}
+		});
+	}
 }
 
 

@@ -1,3 +1,4 @@
+
 const insertNewData = require('../models/insertData_model');
 const inputDataByAcc = require('../models/updateData_model');
 const matchOwner = require('../models/matchOwner');
@@ -460,7 +461,6 @@ module.exports = class member{
         async function addArr(result){
             for(var i = 0; i < result.length; i++){
                 var returnCompenent = {};
-
                 await findOneData({account : result[i].account}, 'passengerCollection').then(basicResult => {
                     returnCompenent.gender      = basicResult.gender;
                     returnCompenent.helmet      = basicResult.helmet;

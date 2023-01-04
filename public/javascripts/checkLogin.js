@@ -19,6 +19,7 @@ function checkLogin(user_account, user_password){
                 });
             }
             else if(chkRes.result == "find user"){
+                sessionStorage.setItem("account", user_account);
                 swal({
                     title: "登入成功 !",
                     icon: "success",

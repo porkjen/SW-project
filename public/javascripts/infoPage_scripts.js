@@ -62,7 +62,7 @@ fileUploader.addEventListener('change', (event) => {
     console.log( $('input[name="fileUpload"]').get(0).files[0]);
     $.ajax({
         type: "POST",
-        url: 'uploadPhoto',
+        url: '/uploadPhoto',
         data: formData,
         processData : false, 
         contentType : false,

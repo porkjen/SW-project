@@ -85,7 +85,7 @@
             <div class="p1">
                 <b>滿意度</b>
             </div>
-            <form action="http://127.0.0.1:3000/rate" method="post">
+            <form method="post" id="rateForm" >
                 <div class="p2">
                     <div class = "ratestars">   
                         <input type="radio" id="five" name="rate" value="5" required>
@@ -104,7 +104,7 @@
                 <div align="center">
                     <h3><b>還想對他說些什麼</b></h3> 
                     <textarea id="comment" name ="comment" rows="10" cols="40" ></textarea><br>
-                    <button type="submit">送出</button>
+                    <button type="submit" onclick="window.location.href = 'chooseIdentity_main.html';">送出</button>
                 </div>
             </form>
             
@@ -128,5 +128,23 @@
             alert(score);
             alert(str);
         }
+        $("#rateForm").submit(function(e) {
+
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+
+            var form = $(this);
+            var actionUrl = form.attr('action');
+
+            $.ajax({
+                type: "POST",
+                url: "/rate",
+                data: form.serialize(), // serializes the form's elements.
+                success: function(data)
+                {
+                  alert(data); // show response from the php script.
+                }
+            });
+
+        });
     </script>
 </html>

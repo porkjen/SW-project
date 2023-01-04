@@ -146,7 +146,7 @@ function denyRequest(num){
 	if(sessionStorage.getItem("account") == null) {
 		swal({
 			title:"請先登入",
-			text: "登入後才可以拒絕別人呢!",
+			text: "登入後才可以拒絕別人喔!",
 			icon: "info",
 		}).then(() => {
 			location.href = "SignIn.html";
@@ -165,33 +165,25 @@ function denyRequest(num){
 }
 
 function uploadPicture(){
-	if(sessionStorage.getItem("account") == null) {
-		swal({
-			title:"請先登入",
-			icon: "warning",
-		}).then(() => {
-			location.href = "SignIn.html";
-		});
-	}
-	else{
-		const input = document.querySelector('#fileUpload');
+	const input = document.querySelector('#fileUpload');
 
-		const formData = new FormData();
-		//formData.append('fileUpload', input.files[0]);
-		formData.append('fileUpload', $('input[name="fileUpload"]').get(0).files[0]);
-		console.log( $('input[name="fileUpload"]').get(0).files[0]);
-		$.ajax({
-			type: "POST",
-			url: '/uploadPhoto',
-			data: formData,
-			processData : false, 
-			contentType : false,
-			dataType: "json",
-			success: function(data) {
+	const formData = new FormData();
+	//formData.append('fileUpload', input.files[0]);
+	formData.append('fileUpload', $('input[name="fileUpload"]').get(0).files[0]);
+	console.log( $('input[name="fileUpload"]').get(0).files[0]);
+	$.ajax({
+		type: "POST",
+		url: '/uploadPhoto',
+		data: formData,
+		processData : false, 
+		contentType : false,
+		dataType: "json",
+		success: function(data) {
 			console.log(data);
-			}
-		});
-	}
+		}
+	});
+  
+  
 }
 
 

@@ -341,7 +341,7 @@
 		}
 
 		function sendRequest(c){
-			if(sessionStorage.getItem("account") == null) 
+			if(sessionStorage.getItem("account") == null) {
 				swal({
 					title:"請先登入",
 					text: "還沒有登入唷! 要去登入嗎?",
@@ -367,6 +367,7 @@
 						location.reload();
 					}
                 });
+			}
 			pressedBtn = c;
 			if(document.getElementById('t'+c).value.length==0 || document.getElementById('gO'+c).value.length==0)
 				swal("", "請填寫上車時間和地點", "warning");
@@ -382,8 +383,12 @@
 					url : 'http://127.0.0.1:3000/getRiderFilter',
 					type : 'GET',
 					success:function(data){
-						name = JSON.stringify(data.result[c]);
-						post(name);       
+						var chosenOwnerData = data.result[c];
+						$.ajax({
+							url:"/sendOrderToOwner",
+							type:"POST",
+							data:chosenOwnerData
+						}) ;     
 					}       
 				})
 				for(var j = 0; j <= cardCount - 1; j++){
@@ -391,23 +396,6 @@
 				}  
 				window.setTimeout(setDisabled, 208000);
 			}
-			
-		}
-		function post(chosenOwnerData){
-			fetch('http://127.0.0.1:3000/sendOrderToOwner', {
-			body: chosenOwnerData, // must match 'Content-Type' header
-			cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached         
-			headers: {
-				'content-type': 'application/json'
-			},
-			method: 'POST', // *GET, POST, PUT, DELETE, etc.
-			mode: 'cors'
-			})
-			.then(response => console.log(chosenOwnerData))
-			.then(response => response.json()) 
-			.catch(function() {
-				console.log(chosenOwnerData);
-			});
 		}
 		function setDisabled() {	
 			for(var k = 0; k <= count - 1; k++){

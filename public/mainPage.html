@@ -167,15 +167,15 @@
                         </div>
                         <div class="modal-body">
                           <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
-                          <form >
+                          <!-- <form > -->
                             <div class="mb-3">
                               <label for="formFileMultiple" class="form-label">放上你的機車照吧!</label>
-                              <input class="form-control" type="file" id="fileUpload" name="fileUpload" accept="image/*" multiple="multiple"/> 
+                              <input class="form-control" type="file" id="fileUpload" name="fileUpload" accept=".png, .jpg, .jpeg, image/*" multiple="multiple"/> 
                             </div>
                             <div class="modal-footer">
-                              <button  type="button" class="btn btn-outline-success" data-bs-dismiss="modal" onClick="uploadPicture()">確認</button>
+                              <button id="btn_uploadPicture" class="btn btn-outline-success" data-bs-dismiss="modal" onClick="uploadPicture();">確認</button>
                             </div>
-                          </form>
+                          <!-- </form> -->
                         </div>
                       </div>
                     </div>

@@ -298,6 +298,7 @@ module.exports = class member{
             workingTime:    req.body.workingTime,   //時間
             other:          req.body.other,         //其他資訊
             remark:         req.body.remark,        //remark
+            picture:        req.body.picture,
             rateTotal:      req.body.rateTotal,
             rateCount:      req.body.rateCount,
         };

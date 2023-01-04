@@ -242,7 +242,7 @@ $("#ownerLocForm").submit(function(e) {
     
     $.ajax({
         type: "POST",
-        url: "/hangeOwnerLoc",
+        url: "/changeOwnerLoc",
         data: form.serialize(), // serializes the form's elements.
         success: function(data)
         {

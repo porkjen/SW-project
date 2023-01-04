@@ -457,10 +457,7 @@ module.exports = class member{
             };
             updateLocalOData(changeOwnerData);
             inputDataByAcc(LOCAL_O_DATA, 'ownerCollection').then(() => {
-                console.log("[succ] change owner data 成功");
-                res.json({
-                    result: "change succ"
-                });
+                console.log("[succ] upload owner picture 成功");
             });
         })
     }

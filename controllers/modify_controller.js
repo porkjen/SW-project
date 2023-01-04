@@ -425,20 +425,20 @@ module.exports = class member{
         }
     }
 
-    postUploadPhoto(req, res, next){    //上傳照片
+    postUploadPhoto(req, res, next){        //上傳照片
         upload(req, res, async () => {
             const client = new ImgurClient({
-                clientId: process.env.IMGUR_CLIENTID,
-                clientSecret: process.env.IMGUR_CLIENT_SECRET,
-                refreshToken: process.env.IMGUR_REFRESH_TOKEN,
+              clientId: '73d766fcb0de170',
+              clientSecret: 'd15fa884f676e9c4d5ec0528b4c9f510ce72b76d',
+              refreshToken: 'd6cd7b8e0e067ba6f6292f0e85a7d1c24543efcb',
             });
             const response = await client.upload({
                 image: req.files[0].buffer.toString('base64'),
                 type: 'base64',
-                album: process.env.IMGUR_ALBUM_ID
-            });
-            res.send({ url: response.data.link });
-        })
+                album: '4IcQTIb'
+              });
+              res.send({ url: response.data.link });
+            })
     }
 
     postFindPassenger(req, res, next){   //列出車主 mainPage 的乘客資料

@@ -559,7 +559,7 @@ module.exports = class member{
 
         findOneData(myOwner, 'basicCollection').then(result =>{
             var sendContent = 
-                "<p>叮咚! 有新的訂單囉!<br><a href='http://127.0.0.1:3000/mainPage.html'>來去海大共乘網看看~</a><br>";
+                "<p>叮咚! 有新的訂單囉!<br><a href='/mainPage.html'>來去海大共乘網看看~</a><br>";
             var sendData = {
                 from:       from,
                 to:         result.email,

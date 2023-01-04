@@ -416,6 +416,7 @@ module.exports = class member{
                 returnCompenent.gender      = result[i].gender      ;
                 returnCompenent.license     = result[i].license     ;
                 returnCompenent.helmet      = result[i].helmet      ;
+                returnCompenent.picture     = result[i].picture     ;
                 returnCompenent.area        = result[i].area        ;
                 returnCompenent.workingTime = result[i].workingTime ;
                 returnCompenent.other       = result[i].other       ;

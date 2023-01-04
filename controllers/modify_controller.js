@@ -5,6 +5,8 @@ const matchOwner = require('../models/matchOwner');
 const riderFilter = require('../models/riderFilter_model');
 const findData = require('../models/findData_model');
 const findOneData = require('../models/findOneData_model');
+const upload = require('../service/image');
+const { ImgurClient } = require('imgur');
 
 var list={};
 

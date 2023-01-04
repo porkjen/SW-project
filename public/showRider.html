@@ -180,12 +180,34 @@
 					swal("請填寫完整資訊!", "", "error");
 				}
 			});
-			$('#btn_logout').click(function(){				// 登出
+			$("#btn_logout").click(function(){
 				logout();
 			});
-
 		});
-		
+		//登出
+		function logout(){
+			$.ajax({
+				url: '/logout',
+				type: 'POST',
+				success:function(logoutRes){
+					if(logoutRes.result == "logout succ"){
+						swal({
+							title: "登出成功 !",
+							icon: "success",
+						}).then(function () {
+							location.href="/SignIn.html";
+						});
+					}
+					else{
+						swal("登出失敗!", "", "warning");
+					}
+				},
+				error: function(){
+					alert("登出失敗!");
+				}    
+			});
+		}
+		//post修改乘客資料
 		function changeBasicData(name, phone, gender){
 			$.ajax({
 				url: '/changePassengerInfo',
@@ -207,6 +229,7 @@
 				}
 			})
 		}
+		//post篩選資料
 		function filter_query(gender, helmet, area, destination, takingPlace){
 			$.ajax({
 				url: '/riderFilter',
@@ -229,6 +252,7 @@
 				}
 			})
 		}
+		
 		function filter(){		// 顯示篩選內容
 			$('.card-group').empty();       
 			$.ajax({
@@ -323,6 +347,7 @@
 					}
 			});         
 		}
+		//post乘客乘車資料
 		function sendAndSet_query(takingTime, takingPlace, remark){
 			$.ajax({
 				url: '/changePassengerInfo',
@@ -340,6 +365,16 @@
 			})
 		}
 
+		/*function selectAnswer(){
+			var s = $("[name='Sex']:checked").val();
+			var h = $("[name='Helmet']:checked").val();
+			var d = document.getElementById("d").value;
+			var g = document.getElementById("g").value;
+			alert(d);
+			alert(g);
+			//var z = $('select').val();
+		}*/
+		//發送邀請
 		function sendRequest(c){
 			if(sessionStorage.getItem("account") == null) {
 				swal({
@@ -380,7 +415,7 @@
 					document.getElementById("oth"+c).value				
 				);
 				$.ajax({
-					url : 'http://127.0.0.1:3000/getRiderFilter',
+					url : '/getRiderFilter',
 					type : 'GET',
 					success:function(data){
 						var chosenOwnerData = data.result[c];
@@ -397,7 +432,39 @@
 				window.setTimeout(setDisabled, 208000);
 			}
 		}
-		function setDisabled() {	
+		/*function sendRequest(c){
+			pressedBtn = c;
+			for(var j = 0; j <= count - 1; j++){
+			  document.getElementById(j).disabled = true;
+			}     
+			$.ajax({
+				url : 'http://127.0.0.1:3000/getRiderFilter',
+				type : 'GET',
+				success:function(data){
+					name = JSON.stringify(data.result[c]);
+					//alert(name);  
+					post(name);       
+				}       
+			})
+		}*/
+		function post(n){
+			fetch('/sendOrderToOwner', {
+			body: n, // must match 'Content-Type' header
+			cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached         
+			headers: {
+				'content-type': 'application/json'
+			},
+			method: 'POST', // *GET, POST, PUT, DELETE, etc.
+			mode: 'cors'
+			})
+			.then(response => console.log(n))
+			.then(response => response.json()) 
+			.catch(function() {
+				console.log(n);
+			});
+		}
+	
+		function setDisabled() {
 			for(var k = 0; k <= count - 1; k++){
 			  document.getElementById(k).disabled = false;
 			}

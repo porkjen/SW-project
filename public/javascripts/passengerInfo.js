@@ -1,5 +1,4 @@
-
-$("#passengerForm").submit(function(e) {
+$("#infoForm").submit(function(e) {
 
     e.preventDefault(); // avoid to execute the actual submit of the form.
 
@@ -13,6 +12,10 @@ $("#passengerForm").submit(function(e) {
         success: function(data)
         {
           alert(data); // show response from the php script.
+          console.log("passengerInfo succ");
+        },
+        error:function(){
+            alert(data); // show response from the php script.
         }
     });
     

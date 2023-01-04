@@ -620,7 +620,7 @@ module.exports = class member{
                 '    電話 : ' + LOCAL_INFO.phone + '<br>' +
                 '    車牌 : ' + LOCAL_O_DATA.license + '<br>' +
                 '    備註 : ' + LOCAL_O_DATA.other + '</p>' +
-                "<br><a href='https://sw-project-production-71e8.up.railway.appp/going.html'>來去海大共乘網看看~</a><br>"+
+                "<br><a href='https://sw-project-production-71e8.up.railway.app/going.html'>來去海大共乘網看看~</a><br>"+
                 '<p>有任何問題請電話詳細聯絡~</p>';
 
             var sendData = {
